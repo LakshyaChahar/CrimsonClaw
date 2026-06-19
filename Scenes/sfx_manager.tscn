@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://c32dpqo5xfaok"]
+
+[ext_resource type="Script" uid="uid://li3dvvikphrk" path="res://Scripts/sfx_manager.gd" id="1_sfx"]
+
+[node name="SFXManager" type="Node" unique_id=827018702]
+script = ExtResource("1_sfx")
