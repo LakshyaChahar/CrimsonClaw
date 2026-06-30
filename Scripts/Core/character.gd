@@ -129,4 +129,3 @@ func die() -> void:
 		# If a death state is registered, transition to it
 		if state_machine.states.has("dead"):
 			state_machine.change_state("dead")
-

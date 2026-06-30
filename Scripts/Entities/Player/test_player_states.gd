@@ -4,7 +4,7 @@ func _initialize() -> void:
 	print("--- Starting Character State Machine Tests ---")
 	
 	# 1. Load scene
-	var scene_path = "res://Scenes/player.tscn"
+	var scene_path = "res://Scenes/Entities/Player/player.tscn"
 	var player_scene = load(scene_path)
 	if not player_scene:
 		print("FAILED: Could not load player.tscn")
