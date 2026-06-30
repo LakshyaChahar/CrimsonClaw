@@ -1,0 +1,55 @@
+extends Character
+class_name Player
+
+@export_group("Input Action Names")
+@export var action_left: String = "move_left"
+@export var action_right: String = "move_right"
+@export var action_jump: String = "jump"
+@export var action_dash: String = "dash"
+@export var action_skill: String = "attack"
+
+# Fallback actions if the custom input map is not defined
+var final_left: String
+var final_right: String
+var final_jump: String
+var final_dash: String
+var final_skill: String
+
+# Buffer timers to make the controls feel smooth
+var jump_buffer_timer: float = 0.0
+@export var jump_buffer_time: float = 0.1
+
+func _ready() -> void:
+	super._ready()
+	_init_input_actions()
+
+func _process(delta: float) -> void:
+	# Tick buffers
+	jump_buffer_timer = max(0.0, jump_buffer_timer - delta)
+	
+	# Read horizontal movement
+	input_direction.x = Input.get_axis(final_left, final_right)
+	input_direction.y = Input.get_axis("ui_up", "ui_down") # for aiming dash/skills
+	
+	# Handle jump input with buffering
+	if Input.is_action_just_pressed(final_jump):
+		jump_buffer_timer = jump_buffer_time
+		
+	wants_jump = jump_buffer_timer > 0.0
+	
+	# Clear wants_jump if the state machine transitions to jump (handled inside states)
+	
+	# Handle dash input
+	if Input.is_action_just_pressed(final_dash):
+		wants_dash = true
+		
+	# Handle skill input
+	if Input.is_action_just_pressed(final_skill):
+		wants_skill = true
+
+func _init_input_actions() -> void:
+	final_left = action_left if InputMap.has_action(action_left) else "ui_left"
+	final_right = action_right if InputMap.has_action(action_right) else "ui_right"
+	final_jump = action_jump if InputMap.has_action(action_jump) else "ui_accept"
+	final_dash = action_dash if InputMap.has_action(action_dash) else "ui_select"
+	final_skill = action_skill if InputMap.has_action(action_skill) else "ui_focus_next"
