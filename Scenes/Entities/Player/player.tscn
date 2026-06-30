@@ -1,14 +1,15 @@
 [gd_scene format=3 uid="uid://jiqs5mkwrmsd"]
 
-[ext_resource type="Script" uid="uid://c8b31dmvgcuji" path="res://Scripts/player.gd" id="1_player"]
-[ext_resource type="Script" uid="uid://o574iqi28cq3" path="res://Scripts/character_animation_manager.gd" id="2_anim_mgr"]
-[ext_resource type="Script" uid="uid://ch643o6echy12" path="res://Scripts/character_state_machine.gd" id="3_state_mc"]
-[ext_resource type="Script" uid="uid://ddk8u8be7emn4" path="res://Scripts/States/idle_state.gd" id="4_idle"]
-[ext_resource type="Script" uid="uid://shyanp7t2iom" path="res://Scripts/States/walk_state.gd" id="5_walk"]
-[ext_resource type="Script" uid="uid://doa2b830cb1gc" path="res://Scripts/States/jump_state.gd" id="6_jump"]
-[ext_resource type="Script" uid="uid://dkl26vg3lqj2j" path="res://Scripts/States/fall_state.gd" id="7_fall"]
-[ext_resource type="Script" uid="uid://15qthe6hnhq7" path="res://Scripts/States/dash_state.gd" id="8_dash"]
-[ext_resource type="Script" uid="uid://c3cvwg5dio4ji" path="res://Scripts/States/skill_state.gd" id="9_skill"]
+[ext_resource type="Script" uid="uid://c8b31dmvgcuji" path="res://Scripts/Entities/Player/player.gd" id="1_player"]
+[ext_resource type="Script" uid="uid://o574iqi28cq3" path="res://Scripts/Core/character_animation_manager.gd" id="2_anim_mgr"]
+[ext_resource type="Script" uid="uid://ch643o6echy12" path="res://Scripts/Core/character_state_machine.gd" id="3_state_mc"]
+[ext_resource type="Script" uid="uid://ddk8u8be7emn4" path="res://Scripts/Entities/Player/States/idle_state.gd" id="4_idle"]
+[ext_resource type="Script" uid="uid://shyanp7t2iom" path="res://Scripts/Entities/Player/States/walk_state.gd" id="5_walk"]
+[ext_resource type="Script" uid="uid://doa2b830cb1gc" path="res://Scripts/Entities/Player/States/jump_state.gd" id="6_jump"]
+[ext_resource type="Script" uid="uid://dkl26vg3lqj2j" path="res://Scripts/Entities/Player/States/fall_state.gd" id="7_fall"]
+[ext_resource type="Script" uid="uid://15qthe6hnhq7" path="res://Scripts/Entities/Player/States/dash_state.gd" id="8_dash"]
+[ext_resource type="Script" uid="uid://c3cvwg5dio4ji" path="res://Scripts/Entities/Player/States/skill_state.gd" id="9_skill"]
+[ext_resource type="Script" path="res://Scripts/Entities/Player/States/dead_state.gd" id="10_dead"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1"]
 radius = 8.0
@@ -82,3 +83,6 @@ script = ExtResource("8_dash")
 
 [node name="Skill" type="Node" parent="CharacterStateMachine" unique_id=383665329]
 script = ExtResource("9_skill")
+
+[node name="Dead" type="Node" parent="CharacterStateMachine" unique_id=230948234]
+script = ExtResource("10_dead")

@@ -16,7 +16,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-SfxManager="*res://Scenes/sfx_manager.tscn"
+SfxManager="*res://Scenes/Core/Autoloads/sfx_manager.tscn"
 
 [input]
 
