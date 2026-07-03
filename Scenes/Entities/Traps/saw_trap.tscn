@@ -1,0 +1,198 @@
+[gd_scene format=3 uid="uid://cku1aeds5crdb"]
+
+[ext_resource type="Texture2D" uid="uid://b613jax3hfrec" path="res://Assets/traps/Saw Trap - Level 3.png" id="1_5isgm"]
+[ext_resource type="Script" uid="uid://bvu7qmbpd5wqi" path="res://Scripts/Entities/Trap/saw_trap.gd" id="1_foc2j"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_foc2j"]
+atlas = ExtResource("1_5isgm")
+region = Rect2(0, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lneu4"]
+atlas = ExtResource("1_5isgm")
+region = Rect2(96, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wx5yg"]
+atlas = ExtResource("1_5isgm")
+region = Rect2(192, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1egfm"]
+atlas = ExtResource("1_5isgm")
+region = Rect2(288, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oslsw"]
+atlas = ExtResource("1_5isgm")
+region = Rect2(384, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eq0ux"]
+atlas = ExtResource("1_5isgm")
+region = Rect2(480, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3anic"]
+atlas = ExtResource("1_5isgm")
+region = Rect2(576, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mgii1"]
+atlas = ExtResource("1_5isgm")
+region = Rect2(672, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gmvkq"]
+atlas = ExtResource("1_5isgm")
+region = Rect2(768, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cxnxm"]
+atlas = ExtResource("1_5isgm")
+region = Rect2(864, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2po6r"]
+atlas = ExtResource("1_5isgm")
+region = Rect2(960, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3k8m8"]
+atlas = ExtResource("1_5isgm")
+region = Rect2(1056, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ubjrg"]
+atlas = ExtResource("1_5isgm")
+region = Rect2(1152, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rtppy"]
+atlas = ExtResource("1_5isgm")
+region = Rect2(1248, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_somtj"]
+atlas = ExtResource("1_5isgm")
+region = Rect2(1344, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bx82k"]
+atlas = ExtResource("1_5isgm")
+region = Rect2(1440, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_prs6p"]
+atlas = ExtResource("1_5isgm")
+region = Rect2(1536, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_khdvj"]
+atlas = ExtResource("1_5isgm")
+region = Rect2(1632, 0, 96, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_dg0q5"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_foc2j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lneu4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wx5yg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1egfm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oslsw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eq0ux")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3anic")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mgii1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gmvkq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cxnxm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2po6r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3k8m8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ubjrg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rtppy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_somtj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bx82k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_prs6p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_khdvj")
+}],
+"loop": true,
+"name": &"default",
+"speed": 9.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_itwp6"]
+radius = 14.0
+
+[sub_resource type="Animation" id="Animation_uvi7s"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("DamageArea/CollisionShape2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-31, -31)]
+}
+
+[sub_resource type="Animation" id="Animation_bgylo"]
+resource_name = "SawTrapAnimation"
+length = 18.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("DamageArea/CollisionShape2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2, 3, 4, 5, 6, 7.01, 8, 9, 11, 12, 13, 14, 15, 16, 17),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [Vector2(-31, -31), Vector2(-28, -21), Vector2(-21, -11), Vector2(-11, -4), Vector2(0, -1), Vector2(11, -4), Vector2(21, -11), Vector2(28, -21), Vector2(30, -32), Vector2(27, -20), Vector2(21, -11), Vector2(11, -4), Vector2(-1, 0), Vector2(-12, -4), Vector2(-21, -11), Vector2(-28, -21)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_8jtsm"]
+_data = {
+&"RESET": SubResource("Animation_uvi7s"),
+&"SawTrapAnimation": SubResource("Animation_bgylo")
+}
+
+[node name="SawTrap" type="Node2D" unique_id=1537352391]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=692398565]
+sprite_frames = SubResource("SpriteFrames_dg0q5")
+autoplay = "default"
+
+[node name="DamageArea" type="Area2D" parent="." unique_id=1182121305]
+collision_layer = 4
+script = ExtResource("1_foc2j")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DamageArea" unique_id=1922932630]
+position = Vector2(-31, -31)
+shape = SubResource("CircleShape2D_itwp6")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=411973817]
+libraries/ = SubResource("AnimationLibrary_8jtsm")
+autoplay = &"SawTrapAnimation"
+speed_scale = 9.0

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://vkox4a7olaui"
-path="res://.godot/imported/firewallbrown5.png-02ae5ab3f1045ed662e77200385c9cd4.ctex"
+uid="uid://b613jax3hfrec"
+path="res://.godot/imported/Saw Trap - Level 3.png-8d8294b887dd001a1ab8681473097d5d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/firewallbrown5.png"
-dest_files=["res://.godot/imported/firewallbrown5.png-02ae5ab3f1045ed662e77200385c9cd4.ctex"]
+source_file="res://Assets/traps/Saw Trap - Level 3.png"
+dest_files=["res://.godot/imported/Saw Trap - Level 3.png-8d8294b887dd001a1ab8681473097d5d.ctex"]
 
 [params]
 
@@ -37,4 +37,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=0
+detect_3d/compress_to=1
