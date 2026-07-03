@@ -1,0 +1,380 @@
+[gd_scene format=3 uid="uid://dm7q55brlfsy"]
+
+[ext_resource type="Texture2D" uid="uid://ccrd0tobpq0bp" path="res://Assets/traps/Ceiling Trap - Level 3.png" id="1_ueic0"]
+[ext_resource type="Script" uid="uid://ck3ontur07tl6" path="res://Scripts/Entities/Trap/ceiling_trap.gd" id="2_5gxhq"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5gxhq"]
+atlas = ExtResource("1_ueic0")
+region = Rect2(0, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hede1"]
+atlas = ExtResource("1_ueic0")
+region = Rect2(96, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_06crm"]
+atlas = ExtResource("1_ueic0")
+region = Rect2(192, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3vudk"]
+atlas = ExtResource("1_ueic0")
+region = Rect2(288, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5cqtv"]
+atlas = ExtResource("1_ueic0")
+region = Rect2(384, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_loco2"]
+atlas = ExtResource("1_ueic0")
+region = Rect2(480, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jym3v"]
+atlas = ExtResource("1_ueic0")
+region = Rect2(576, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5b7fv"]
+atlas = ExtResource("1_ueic0")
+region = Rect2(672, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a8b8r"]
+atlas = ExtResource("1_ueic0")
+region = Rect2(768, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_inoft"]
+atlas = ExtResource("1_ueic0")
+region = Rect2(864, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s2hkn"]
+atlas = ExtResource("1_ueic0")
+region = Rect2(960, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ofil4"]
+atlas = ExtResource("1_ueic0")
+region = Rect2(1056, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pbgpu"]
+atlas = ExtResource("1_ueic0")
+region = Rect2(1152, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uyr6g"]
+atlas = ExtResource("1_ueic0")
+region = Rect2(1248, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3qppd"]
+atlas = ExtResource("1_ueic0")
+region = Rect2(1344, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dwv50"]
+atlas = ExtResource("1_ueic0")
+region = Rect2(1440, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vtkea"]
+atlas = ExtResource("1_ueic0")
+region = Rect2(1536, 0, 96, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_p7k2q"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5gxhq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hede1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_06crm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3vudk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5cqtv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_loco2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jym3v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5b7fv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a8b8r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_inoft")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s2hkn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ofil4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pbgpu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uyr6g")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3qppd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dwv50")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vtkea")
+}],
+"loop": true,
+"name": &"default",
+"speed": 20.0
+}]
+
+[sub_resource type="Animation" id="Animation_xlhph"]
+resource_name = "CeilingTrapAnimation"
+length = 16.0
+loop_mode = 1
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("DamageAreas/WoodenBlockArea/CollisionPolygon2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [Vector2(0, -16), Vector2(0, -9), Vector2(0, 0), Vector2(0, 10), Vector2(0, 28), Vector2(0, 28), Vector2(0, 28), Vector2(0, 24), Vector2(-19, 12.999999), Vector2(0, 5), Vector2(0, 0), Vector2(0, -5), Vector2(0, -10), Vector2(0, -15)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("DamageAreas/WoodenBlockArea/CollisionPolygon2D:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("DamageAreas/SpikeArea/CollisionShape2D:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [Vector2(0, 0), Vector2(0, 0), Vector2(0, 0), Vector2(0, 0), Vector2(0, 0), Vector2(0, 0), Vector2(0, 0), Vector2(0, 30), Vector2(19, 13), Vector2(19, 13), Vector2(19, 13), Vector2(19, 13), Vector2(19, 13), Vector2(19, 13)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("DamageAreas/SpikeArea/CollisionShape2D:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [false, false, false, false, false, false, false, true, true, false, false, false, false, false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("DamageAreas/WoodenBlockArea/CollisionPolygon2D:rotation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 10, 11, 12, 13, 14, 15, 16),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0.0, 0.0, 0.7959587, 0.0, 0.0, 0.0, 0.0, 0.0]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("DamageAreas/SpikeArea/CollisionShape2D:rotation")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(10, 11, 12, 13, 14, 15, 16),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0.0, -0.7929976, -0.7929976, -0.7929976, -0.7929976, -0.7929976, -0.7929976]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("DamageAreas/WoodenBlockArea/CollisionPolygon2D:shape:size")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [Vector2(22.78676, 32), Vector2(22.78676, 32), Vector2(24, 32), Vector2(24, 32), Vector2(64, 8), Vector2(64, 8), Vector2(64, 8), Vector2(64, 8), Vector2(25.45443, 5.6565437), Vector2(25.45443, 32), Vector2(25.45443, 32), Vector2(25.45443, 32), Vector2(25.45443, 32), Vector2(25.45443, 32)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("DamageAreas/SpikeArea/CollisionShape2D:shape:size")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [Vector2(22.62677, 4), Vector2(22.62677, 4), Vector2(22.62677, 4), Vector2(22.62677, 4), Vector2(22.62677, 4), Vector2(22.62677, 4), Vector2(22.62677, 4), Vector2(64, 4), Vector2(25.455114, 5.6566925), Vector2(25.455114, 5.6566925), Vector2(25.455114, 5.6566925), Vector2(25.455114, 5.6566925), Vector2(25.455114, 5.6566925), Vector2(25.455114, 5.6566925)]
+}
+
+[sub_resource type="Animation" id="Animation_5rwwo"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("DamageAreas/WoodenBlockArea/CollisionPolygon2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -16)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("DamageAreas/WoodenBlockArea/CollisionPolygon2D:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("DamageAreas/SpikeArea/CollisionShape2D:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("DamageAreas/SpikeArea/CollisionShape2D:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("DamageAreas/WoodenBlockArea/CollisionPolygon2D:rotation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.7959587]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("DamageAreas/SpikeArea/CollisionShape2D:rotation")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-0.7929976]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("DamageAreas/WoodenBlockArea/CollisionPolygon2D:shape:size")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(22.78676, 32)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("DamageAreas/SpikeArea/CollisionShape2D:shape:size")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(22.62677, 4)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_wjvii"]
+_data = {
+&"CeilingTrapAnimation": SubResource("Animation_xlhph"),
+&"RESET": SubResource("Animation_5rwwo")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0opuu"]
+resource_local_to_scene = true
+size = Vector2(22.78676, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ueic0"]
+resource_local_to_scene = true
+size = Vector2(22.62677, 4)
+
+[node name="CeilingTrap" type="Node2D" unique_id=1626029599]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1685556540]
+sprite_frames = SubResource("SpriteFrames_p7k2q")
+autoplay = "default"
+frame = 16
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1889201064]
+libraries/ = SubResource("AnimationLibrary_wjvii")
+autoplay = &"CeilingTrapAnimation"
+speed_scale = 18.824
+
+[node name="DamageAreas" type="Node2D" parent="." unique_id=502194065]
+
+[node name="WoodenBlockArea" type="Area2D" parent="DamageAreas" unique_id=1051932653]
+collision_layer = 4
+script = ExtResource("2_5gxhq")
+
+[node name="CollisionPolygon2D" type="CollisionShape2D" parent="DamageAreas/WoodenBlockArea" unique_id=738347595]
+position = Vector2(0, -16)
+rotation = 0.7959587
+scale = Vector2(0.9999999, 0.9999999)
+shape = SubResource("RectangleShape2D_0opuu")
+
+[node name="SpikeArea" type="Area2D" parent="DamageAreas" unique_id=837405348]
+collision_layer = 4
+script = ExtResource("2_5gxhq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DamageAreas/SpikeArea" unique_id=740145537]
+visible = false
+rotation = -0.7929976
+scale = Vector2(0.9999999, 0.9999999)
+shape = SubResource("RectangleShape2D_ueic0")
