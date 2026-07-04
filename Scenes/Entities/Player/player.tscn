@@ -9,7 +9,10 @@
 [ext_resource type="Script" uid="uid://dkl26vg3lqj2j" path="res://Scripts/Entities/Player/States/fall_state.gd" id="7_fall"]
 [ext_resource type="Script" uid="uid://15qthe6hnhq7" path="res://Scripts/Entities/Player/States/dash_state.gd" id="8_dash"]
 [ext_resource type="Script" uid="uid://c3cvwg5dio4ji" path="res://Scripts/Entities/Player/States/skill_state.gd" id="9_skill"]
-[ext_resource type="Script" path="res://Scripts/Entities/Player/States/dead_state.gd" id="10_dead"]
+[ext_resource type="Script" uid="uid://bugi7oikbimpt" path="res://Scripts/Entities/Player/States/dead_state.gd" id="10_dead"]
+[ext_resource type="Script" uid="uid://cks5b8uy7k5xl" path="res://Scripts/Core/hitbox.gd" id="11_0yfgq"]
+[ext_resource type="Script" uid="uid://bohxydkawxl6a" path="res://Scripts/Core/hurtbox.gd" id="12_hurtbox"]
+
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1"]
 radius = 8.0
@@ -48,6 +51,8 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_0fwr3"]
+
 [node name="Player" type="CharacterBody2D" unique_id=1658174949]
 script = ExtResource("1_player")
 
@@ -56,7 +61,7 @@ shape = SubResource("CapsuleShape2D_1")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=19559982]
 sprite_frames = SubResource("SpriteFrames_1")
-animation = &"idle"
+animation = &"attack"
 
 [node name="CharacterAnimationManager" type="Node" parent="." unique_id=1083209188 node_paths=PackedStringArray("sprite")]
 script = ExtResource("2_anim_mgr")
@@ -86,3 +91,20 @@ script = ExtResource("9_skill")
 
 [node name="Dead" type="Node" parent="CharacterStateMachine" unique_id=230948234]
 script = ExtResource("10_dead")
+
+[node name="SwordHitbox" type="Area2D" parent="." unique_id=375673010]
+collision_layer = 16
+collision_mask = 8
+script = ExtResource("11_0yfgq")
+
+[node name="SwordHitbox" type="CollisionShape2D" parent="SwordHitbox" unique_id=261566378]
+shape = SubResource("CircleShape2D_0fwr3")
+disabled = true
+
+[node name="Hurtbox" type="Area2D" parent="." unique_id=375673011]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("12_hurtbox")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=261566379]
+shape = SubResource("CapsuleShape2D_1")

@@ -19,9 +19,40 @@ var final_skill: String
 var jump_buffer_timer: float = 0.0
 @export var jump_buffer_time: float = 0.1
 
+@export_group("Bloodthirst System")
+@export var max_bloodthirst: float = 100.0
+@export var current_bloodthirst: float = 0.0
+signal bloodthirst_changed(old_value: float, new_value: float)
+
 func _ready() -> void:
 	super._ready()
 	_init_input_actions()
+	
+	# Connect to all child hitboxes recursively to increase bloodthirst on successful hits
+	var hitboxes = find_children("*", "Hitbox", true, false)
+	for hitbox in hitboxes:
+		if hitbox is Hitbox:
+			hitbox.hit_registered.connect(_on_attack_hit)
+
+## Safely increases bloodthirst, capped at max_bloodthirst
+func add_bloodthirst(amount: float) -> void:
+	var old_value = current_bloodthirst
+	current_bloodthirst = clamp(current_bloodthirst + amount, 0.0, max_bloodthirst)
+	if old_value != current_bloodthirst:
+		bloodthirst_changed.emit(old_value, current_bloodthirst)
+
+## Consumes bloodthirst if enough is available. Returns true if successful.
+func consume_bloodthirst(amount: float) -> bool:
+	if current_bloodthirst >= amount:
+		var old_value = current_bloodthirst
+		current_bloodthirst -= amount
+		bloodthirst_changed.emit(old_value, current_bloodthirst)
+		return true
+	return false
+
+func _on_attack_hit(_hurtbox: Hurtbox) -> void:
+	# Gain 10 bloodthirst per hit (adjust as needed or read custom stats from hitbox)
+	add_bloodthirst(10.0)
 
 func _process(delta: float) -> void:
 	# Tick buffers
