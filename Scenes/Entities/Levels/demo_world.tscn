@@ -1,0 +1,193 @@
+[gd_scene format=3 uid="uid://nu44hx2npggx"]
+
+[ext_resource type="PackedScene" uid="uid://jiqs5mkwrmsd" path="res://Scenes/Entities/Player/player.tscn" id="1_j4s22"]
+[ext_resource type="PackedScene" uid="uid://cku1aeds5crdb" path="res://Scenes/Entities/Traps/saw_trap.tscn" id="2_t4p05"]
+[ext_resource type="PackedScene" uid="uid://dm7q55brlfsy" path="res://Scenes/Entities/Traps/ceiling_trap.tscn" id="3_724lq"]
+[ext_resource type="PackedScene" uid="uid://coe2cgirmntry" path="res://Scenes/Entities/Traps/arrow_trap.tscn" id="4_vwv7i"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t2on6"]
+size = Vector2(40, 40)
+
+[node name="DemoWorld" type="Node2D" unique_id=265415480]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1385785041]
+layer = -1
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=1074454173]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Blocks" type="Node2D" parent="." unique_id=932847086]
+
+[node name="Block" type="StaticBody2D" parent="Blocks" unique_id=956997886]
+position = Vector2(498, 404)
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Blocks/Block" unique_id=1893099468]
+position = Vector2(20, 20)
+shape = SubResource("RectangleShape2D_t2on6")
+
+[node name="ColorRect" type="ColorRect" parent="Blocks/Block" unique_id=1902258404]
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0, 0, 0, 1)
+
+[node name="Block2" type="StaticBody2D" parent="Blocks" unique_id=2132654078]
+position = Vector2(538, 404)
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Blocks/Block2" unique_id=1809813241]
+position = Vector2(20, 20)
+shape = SubResource("RectangleShape2D_t2on6")
+
+[node name="ColorRect" type="ColorRect" parent="Blocks/Block2" unique_id=87618965]
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0, 0, 0, 1)
+
+[node name="Block3" type="StaticBody2D" parent="Blocks" unique_id=1042666335]
+position = Vector2(617, 404)
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Blocks/Block3" unique_id=334045296]
+position = Vector2(20, 20)
+shape = SubResource("RectangleShape2D_t2on6")
+
+[node name="ColorRect" type="ColorRect" parent="Blocks/Block3" unique_id=720313189]
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0, 0, 0, 1)
+
+[node name="Block4" type="StaticBody2D" parent="Blocks" unique_id=317247035]
+position = Vector2(578, 404)
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Blocks/Block4" unique_id=1950604694]
+position = Vector2(20, 20)
+shape = SubResource("RectangleShape2D_t2on6")
+
+[node name="ColorRect" type="ColorRect" parent="Blocks/Block4" unique_id=1648827530]
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0, 0, 0, 1)
+
+[node name="Block5" type="StaticBody2D" parent="Blocks" unique_id=2110028691]
+position = Vector2(340, 404)
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Blocks/Block5" unique_id=656362660]
+position = Vector2(20, 20)
+shape = SubResource("RectangleShape2D_t2on6")
+
+[node name="ColorRect" type="ColorRect" parent="Blocks/Block5" unique_id=333804008]
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0, 0, 0, 1)
+
+[node name="Block6" type="StaticBody2D" parent="Blocks" unique_id=2140514235]
+position = Vector2(380, 404)
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Blocks/Block6" unique_id=803443333]
+position = Vector2(20, 20)
+shape = SubResource("RectangleShape2D_t2on6")
+
+[node name="ColorRect" type="ColorRect" parent="Blocks/Block6" unique_id=1207087810]
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0, 0, 0, 1)
+
+[node name="Block7" type="StaticBody2D" parent="Blocks" unique_id=42446265]
+position = Vector2(459, 404)
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Blocks/Block7" unique_id=258008060]
+position = Vector2(20, 20)
+shape = SubResource("RectangleShape2D_t2on6")
+
+[node name="ColorRect" type="ColorRect" parent="Blocks/Block7" unique_id=1512602319]
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0, 0, 0, 1)
+
+[node name="Block8" type="StaticBody2D" parent="Blocks" unique_id=192536309]
+position = Vector2(420, 404)
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Blocks/Block8" unique_id=78028162]
+position = Vector2(20, 20)
+shape = SubResource("RectangleShape2D_t2on6")
+
+[node name="ColorRect" type="ColorRect" parent="Blocks/Block8" unique_id=1954383801]
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0, 0, 0, 1)
+
+[node name="Block9" type="StaticBody2D" parent="Blocks" unique_id=1036646220]
+position = Vector2(657, 404)
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Blocks/Block9" unique_id=1189033232]
+position = Vector2(20, 20)
+shape = SubResource("RectangleShape2D_t2on6")
+
+[node name="ColorRect" type="ColorRect" parent="Blocks/Block9" unique_id=86982438]
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0, 0, 0, 1)
+
+[node name="Block10" type="StaticBody2D" parent="Blocks" unique_id=664122586]
+position = Vector2(697, 404)
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Blocks/Block10" unique_id=555787813]
+position = Vector2(20, 20)
+shape = SubResource("RectangleShape2D_t2on6")
+
+[node name="ColorRect" type="ColorRect" parent="Blocks/Block10" unique_id=638979286]
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0, 0, 0, 1)
+
+[node name="Block11" type="StaticBody2D" parent="Blocks" unique_id=599918668]
+position = Vector2(776, 404)
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Blocks/Block11" unique_id=832231302]
+position = Vector2(20, 20)
+shape = SubResource("RectangleShape2D_t2on6")
+
+[node name="ColorRect" type="ColorRect" parent="Blocks/Block11" unique_id=1608733122]
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0, 0, 0, 1)
+
+[node name="Block12" type="StaticBody2D" parent="Blocks" unique_id=896975325]
+position = Vector2(737, 404)
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Blocks/Block12" unique_id=2010981061]
+position = Vector2(20, 20)
+shape = SubResource("RectangleShape2D_t2on6")
+
+[node name="ColorRect" type="ColorRect" parent="Blocks/Block12" unique_id=349230812]
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0, 0, 0, 1)
+
+[node name="Player" parent="." unique_id=1658174949 instance=ExtResource("1_j4s22")]
+position = Vector2(359, 248)
+
+[node name="Traps" type="Node2D" parent="." unique_id=487498401]
+
+[node name="SawTrap" parent="Traps" unique_id=1537352391 instance=ExtResource("2_t4p05")]
+position = Vector2(493, 378)
+
+[node name="CeilingTrap" parent="Traps" unique_id=1626029599 instance=ExtResource("3_724lq")]
+position = Vector2(603, 372)
+
+[node name="ArrowTrap" parent="Traps" unique_id=798843905 instance=ExtResource("4_vwv7i")]
+position = Vector2(757, 377)

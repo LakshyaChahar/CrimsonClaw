@@ -179,6 +179,7 @@ _data = {
 }
 
 [node name="SawTrap" type="Node2D" unique_id=1537352391]
+z_index = 1
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=692398565]
 sprite_frames = SubResource("SpriteFrames_dg0q5")
@@ -186,7 +187,9 @@ autoplay = "default"
 
 [node name="DamageArea" type="Area2D" parent="." unique_id=1182121305]
 collision_layer = 4
+collision_mask = 2
 script = ExtResource("1_foc2j")
+knockback = Vector2(-500, 0)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DamageArea" unique_id=1922932630]
 position = Vector2(-31, -31)
