@@ -26,6 +26,7 @@ signal bloodthirst_changed(old_value: float, new_value: float)
 
 func _ready() -> void:
 	super._ready()
+	add_to_group("Player")
 	_init_input_actions()
 	
 	# Connect to all child hitboxes recursively to increase bloodthirst on successful hits

@@ -12,6 +12,7 @@
 [ext_resource type="Script" uid="uid://bugi7oikbimpt" path="res://Scripts/Entities/Player/States/dead_state.gd" id="10_dead"]
 [ext_resource type="Script" uid="uid://cks5b8uy7k5xl" path="res://Scripts/Core/hitbox.gd" id="11_0yfgq"]
 [ext_resource type="Script" uid="uid://bohxydkawxl6a" path="res://Scripts/Core/hurtbox.gd" id="12_hurtbox"]
+[ext_resource type="Texture2D" path="res://icon.svg" id="13_icon"]
 
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1"]
@@ -20,32 +21,50 @@ height = 24.0
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_1"]
 animations = [{
-"frames": [],
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("13_icon")
+}],
 "loop": false,
 "name": &"attack",
 "speed": 5.0
 }, {
-"frames": [],
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("13_icon")
+}],
 "loop": false,
 "name": &"dash",
 "speed": 5.0
 }, {
-"frames": [],
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("13_icon")
+}],
 "loop": true,
 "name": &"fall",
 "speed": 5.0
 }, {
-"frames": [],
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("13_icon")
+}],
 "loop": true,
 "name": &"idle",
 "speed": 5.0
 }, {
-"frames": [],
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("13_icon")
+}],
 "loop": false,
 "name": &"jump",
 "speed": 5.0
 }, {
-"frames": [],
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("13_icon")
+}],
 "loop": true,
 "name": &"walk",
 "speed": 5.0
