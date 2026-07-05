@@ -12,8 +12,7 @@
 [ext_resource type="Script" uid="uid://bugi7oikbimpt" path="res://Scripts/Entities/Player/States/dead_state.gd" id="10_dead"]
 [ext_resource type="Script" uid="uid://cks5b8uy7k5xl" path="res://Scripts/Core/hitbox.gd" id="11_0yfgq"]
 [ext_resource type="Script" uid="uid://bohxydkawxl6a" path="res://Scripts/Core/hurtbox.gd" id="12_hurtbox"]
-[ext_resource type="Texture2D" path="res://icon.svg" id="13_icon"]
-
+[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="13_icon"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1"]
 radius = 8.0
@@ -73,12 +72,15 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_0fwr3"]
 
 [node name="Player" type="CharacterBody2D" unique_id=1658174949]
+z_index = 2
+collision_layer = 2
 script = ExtResource("1_player")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=810423284]
 shape = SubResource("CapsuleShape2D_1")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=19559982]
+visible = false
 sprite_frames = SubResource("SpriteFrames_1")
 animation = &"attack"
 
@@ -112,7 +114,7 @@ script = ExtResource("9_skill")
 script = ExtResource("10_dead")
 
 [node name="SwordHitbox" type="Area2D" parent="." unique_id=375673010]
-collision_layer = 16
+collision_layer = 4
 collision_mask = 8
 script = ExtResource("11_0yfgq")
 
@@ -121,7 +123,7 @@ shape = SubResource("CircleShape2D_0fwr3")
 disabled = true
 
 [node name="Hurtbox" type="Area2D" parent="." unique_id=375673011]
-collision_layer = 4
+collision_layer = 2
 collision_mask = 0
 script = ExtResource("12_hurtbox")
 

@@ -114,6 +114,7 @@ func take_damage(amount: float) -> void:
 		return
 	var old_health = current_health
 	current_health = max(current_health - amount, 0.0)
+	print(current_health, self)
 	
 	if old_health != current_health:
 		health_changed.emit(old_health, current_health)
