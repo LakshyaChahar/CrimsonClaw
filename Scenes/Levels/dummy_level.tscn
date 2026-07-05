@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://bwfu3d3cn1pla"]
+
+[ext_resource type="PackedScene" uid="uid://jiqs5mkwrmsd" path="res://Scenes/Entities/Player/player.tscn" id="1_player"]
+[ext_resource type="PackedScene" uid="uid://cc2a6kluxes7" path="res://Scenes/Entities/Enemy/enemy.tscn" id="2_enemy"]
+[ext_resource type="PackedScene" uid="uid://cku1aeds5crdb" path="res://Scenes/Entities/Traps/saw_trap.tscn" id="3_saw_trap"]
+[ext_resource type="PackedScene" uid="uid://dm7q55brlfsy" path="res://Scenes/Entities/Traps/ceiling_trap.tscn" id="4_ua8hs"]
+[ext_resource type="PackedScene" uid="uid://coe2cgirmntry" path="res://Scenes/Entities/Traps/arrow_trap.tscn" id="5_dac6x"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_floor"]
+size = Vector2(2000, 40)
+
+[node name="DummyLevel" type="Node2D" unique_id=1427923591]
+
+[node name="Floor" type="StaticBody2D" parent="." unique_id=39950600]
+position = Vector2(0, 100)
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor" unique_id=83291001]
+shape = SubResource("RectangleShape2D_floor")
+
+[node name="Polygon2D" type="Polygon2D" parent="Floor" unique_id=2011849398]
+color = Color(0.2, 0.2, 0.2, 1)
+polygon = PackedVector2Array(-1000, -20, 1000, -20, 1000, 20, -1000, 20)
+
+[node name="Player" parent="." unique_id=1836431379 instance=ExtResource("1_player")]
+position = Vector2(0, 50)
+
+[node name="Camera2D" type="Camera2D" parent="Player" unique_id=1090073344]
+zoom = Vector2(2, 2)
+
+[node name="Enemy" parent="." unique_id=238807970 instance=ExtResource("2_enemy")]
+position = Vector2(300, 50)
+
+[node name="Traps" type="Node2D" parent="." unique_id=2132875128]
+
+[node name="SawTrap" parent="Traps" unique_id=1577018637 instance=ExtResource("3_saw_trap")]
+position = Vector2(-200, 80)
+
+[node name="CeilingTrap" parent="Traps" unique_id=1626029599 instance=ExtResource("4_ua8hs")]
+position = Vector2(151, 52)
+
+[node name="ArrowTrap" parent="Traps" unique_id=798843905 instance=ExtResource("5_dac6x")]
+position = Vector2(578, 55)

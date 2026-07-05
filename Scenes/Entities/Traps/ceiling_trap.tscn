@@ -125,7 +125,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_vtkea")
 }],
-"loop": true,
+"loop": false,
 "name": &"default",
 "speed": 20.0
 }]
@@ -231,6 +231,18 @@ tracks/7/keys = {
 "update": 1,
 "values": [Vector2(22.62677, 4), Vector2(22.62677, 4), Vector2(22.62677, 4), Vector2(22.62677, 4), Vector2(22.62677, 4), Vector2(22.62677, 4), Vector2(22.62677, 4), Vector2(64, 4), Vector2(25.455114, 5.6566925), Vector2(25.455114, 5.6566925), Vector2(25.455114, 5.6566925), Vector2(25.455114, 5.6566925), Vector2(25.455114, 5.6566925), Vector2(25.455114, 5.6566925)]
 }
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("AnimatedSprite2D:frame")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+}
 
 [sub_resource type="Animation" id="Animation_5rwwo"]
 length = 0.001
@@ -330,6 +342,18 @@ tracks/7/keys = {
 "update": 0,
 "values": [Vector2(22.62677, 4)]
 }
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("AnimatedSprite2D:frame")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [16]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_wjvii"]
 _data = {
@@ -350,7 +374,6 @@ z_index = 1
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1685556540]
 sprite_frames = SubResource("SpriteFrames_p7k2q")
-autoplay = "default"
 frame = 16
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1889201064]
@@ -361,7 +384,7 @@ speed_scale = 18.824
 [node name="DamageAreas" type="Node2D" parent="." unique_id=502194065]
 
 [node name="WoodenBlockArea" type="Area2D" parent="DamageAreas" unique_id=1051932653]
-collision_layer = 4
+collision_layer = 16
 collision_mask = 2
 script = ExtResource("2_5gxhq")
 
@@ -372,7 +395,7 @@ scale = Vector2(0.9999999, 0.9999999)
 shape = SubResource("RectangleShape2D_0opuu")
 
 [node name="SpikeArea" type="Area2D" parent="DamageAreas" unique_id=837405348]
-collision_layer = 4
+collision_layer = 16
 collision_mask = 2
 script = ExtResource("2_5gxhq")
 

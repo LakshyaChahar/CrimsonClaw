@@ -1,0 +1,104 @@
+[gd_scene format=3 uid="uid://cc2a6kluxes7"]
+
+[ext_resource type="Script" uid="uid://b7bqmijn7m85" path="res://Scripts/Entities/Enemy/enemy.gd" id="1_enemy"]
+[ext_resource type="Script" uid="uid://o574iqi28cq3" path="res://Scripts/Core/character_animation_manager.gd" id="2_anim_mgr"]
+[ext_resource type="Script" uid="uid://ch643o6echy12" path="res://Scripts/Core/character_state_machine.gd" id="3_state_mc"]
+[ext_resource type="Script" uid="uid://hasrwey3fali" path="res://Scripts/Entities/Enemy/States/enemy_idle_state.gd" id="4_idle"]
+[ext_resource type="Script" uid="uid://bsnyo0jm4b8um" path="res://Scripts/Entities/Enemy/States/enemy_walk_state.gd" id="5_walk"]
+[ext_resource type="Script" uid="uid://bvy2egwkpybek" path="res://Scripts/Entities/Enemy/States/enemy_attack_state.gd" id="6_attack"]
+[ext_resource type="Script" uid="uid://1nmwna68cnsy" path="res://Scripts/Entities/Enemy/States/enemy_dead_state.gd" id="7_dead"]
+[ext_resource type="Script" uid="uid://cks5b8uy7k5xl" path="res://Scripts/Core/hitbox.gd" id="8_hitbox"]
+[ext_resource type="Script" uid="uid://bohxydkawxl6a" path="res://Scripts/Core/hurtbox.gd" id="9_hurtbox"]
+[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="10_icon"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1"]
+radius = 8.0
+height = 24.0
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_icon")
+}],
+"loop": false,
+"name": &"attack",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_icon")
+}],
+"loop": false,
+"name": &"die",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_icon")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_icon")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0fwr3"]
+radius = 16.0
+
+[node name="Enemy" type="CharacterBody2D" unique_id=1481718111]
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("1_enemy")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1308292761]
+shape = SubResource("CapsuleShape2D_1")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=264250259]
+visible = false
+sprite_frames = SubResource("SpriteFrames_1")
+animation = &"idle"
+
+[node name="CharacterAnimationManager" type="Node" parent="." unique_id=1859292065 node_paths=PackedStringArray("sprite")]
+script = ExtResource("2_anim_mgr")
+sprite = NodePath("../AnimatedSprite2D")
+
+[node name="CharacterStateMachine" type="Node" parent="." unique_id=1981702836 node_paths=PackedStringArray("initial_state")]
+script = ExtResource("3_state_mc")
+initial_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="CharacterStateMachine" unique_id=867411355]
+script = ExtResource("4_idle")
+
+[node name="Walk" type="Node" parent="CharacterStateMachine" unique_id=802061987]
+script = ExtResource("5_walk")
+
+[node name="Attack" type="Node" parent="CharacterStateMachine" unique_id=1257259005]
+script = ExtResource("6_attack")
+
+[node name="Dead" type="Node" parent="CharacterStateMachine" unique_id=1308204377]
+script = ExtResource("7_dead")
+
+[node name="Hitbox" type="Area2D" parent="." unique_id=392328271]
+collision_layer = 16
+collision_mask = 2
+script = ExtResource("8_hitbox")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=25963196]
+shape = SubResource("CircleShape2D_0fwr3")
+disabled = true
+
+[node name="Hurtbox" type="Area2D" parent="." unique_id=1618800605]
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("9_hurtbox")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=586747509]
+shape = SubResource("CapsuleShape2D_1")

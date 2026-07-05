@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://dixilp7gqxtbh"]
+
+[ext_resource type="Script" uid="uid://kvt0bppsrtg5" path="res://Scripts/Entities/Trap/arrow.gd" id="1_jcvc0"]
+[ext_resource type="Texture2D" uid="uid://bamx4xkcylbg3" path="res://Assets/traps/Arrow.png" id="2_bv1la"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kykuj"]
+size = Vector2(28, 5)
+
+[node name="Arrow" type="Area2D" unique_id=862625001]
+collision_layer = 16
+collision_mask = 2
+script = ExtResource("1_jcvc0")
+speed = 1000.0
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1353682874]
+texture = ExtResource("2_bv1la")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1287549948]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_kykuj")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=1395984237]
+
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
