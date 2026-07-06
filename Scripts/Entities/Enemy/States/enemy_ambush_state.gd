@@ -20,13 +20,17 @@ func enter() -> void:
 	# Determine direction to player and face them
 	var enemy = character as Enemy
 	if enemy and enemy.target:
-		var dir_to_player = sign(enemy.target.global_position.x - enemy.global_position.x)
+		var diff = enemy.target.global_position - enemy.global_position
+		var dir_to_player = sign(diff.x)
 		if dir_to_player != 0:
 			character.input_direction.x = dir_to_player
 			character.update_facing_direction()
-	
-	# Apply lunge/dash velocity towards player
-	character.velocity.x = character.facing_direction * lunge_speed
+		
+		# Set 2D velocity towards target
+		character.velocity = diff.normalized() * lunge_speed
+	else:
+		# Fallback to horizontal lunge
+		character.velocity = Vector2(character.facing_direction * lunge_speed, 0.0)
 	
 	hitbox = character.find_child("Hitbox")
 	if hitbox:
@@ -59,10 +63,13 @@ func exit() -> void:
 
 func physics_update(delta: float) -> void:
 	timer += delta
-	character.apply_gravity(delta)
 	
-	# Gradually slow down the lunge velocity
-	character.velocity.x = move_toward(character.velocity.x, 0.0, character.friction * delta)
+	# Apply gravity only after the active lunge phase is complete
+	if timer >= hitbox_disable_time:
+		character.apply_gravity(delta)
+	
+	# Gradually slow down the lunge velocity in all directions
+	character.velocity = character.velocity.move_toward(Vector2.ZERO, character.friction * delta)
 	character.move_and_slide()
 	
 	if hitbox_shape:
