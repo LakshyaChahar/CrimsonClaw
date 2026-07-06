@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://cku1aeds5crdb" path="res://Scenes/Entities/Traps/saw_trap.tscn" id="3_saw_trap"]
 [ext_resource type="PackedScene" uid="uid://dm7q55brlfsy" path="res://Scenes/Entities/Traps/ceiling_trap.tscn" id="4_ua8hs"]
 [ext_resource type="PackedScene" uid="uid://coe2cgirmntry" path="res://Scenes/Entities/Traps/arrow_trap.tscn" id="5_dac6x"]
+[ext_resource type="PackedScene" path="res://Scenes/Entities/Enemy/Stalkerghoul.tscn" id="6_stalker_ghoul"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_floor"]
 size = Vector2(2000, 40)
@@ -30,6 +31,12 @@ zoom = Vector2(2, 2)
 
 [node name="Enemy" parent="." unique_id=238807970 instance=ExtResource("2_enemy")]
 position = Vector2(300, 50)
+
+[node name="NormalEnemy2" parent="." instance=ExtResource("2_enemy")]
+position = Vector2(500, 50)
+
+[node name="Stalkerghoul" parent="." instance=ExtResource("6_stalker_ghoul")]
+position = Vector2(-400, 50)
 
 [node name="Traps" type="Node2D" parent="." unique_id=2132875128]
 
