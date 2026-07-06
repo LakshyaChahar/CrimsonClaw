@@ -7,11 +7,14 @@ func enter() -> void:
 		character.animation_manager.play_anim("idle", 0)
 
 func physics_update(delta: float) -> void:
-	character.apply_gravity(delta)
-	character.apply_horizontal_movement(delta, 0.0, character.acceleration, character.friction)
-	character.move_and_slide()
-	
 	var enemy = character as Enemy
+	var is_stealth_hidden = enemy and enemy.is_stealth and not enemy.is_revealed
+	
+	if not is_stealth_hidden:
+		character.apply_gravity(delta)
+		character.apply_horizontal_movement(delta, 0.0, character.acceleration, character.friction)
+		character.move_and_slide()
+	
 	if enemy and enemy.target:
 		if enemy.is_stealth and not enemy.is_revealed:
 			return

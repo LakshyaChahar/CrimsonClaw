@@ -62,7 +62,6 @@ script = ExtResource("1_enemy")
 shape = SubResource("CapsuleShape2D_1")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=264250259]
-visible = false
 sprite_frames = SubResource("SpriteFrames_1")
 animation = &"idle"
 
