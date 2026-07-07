@@ -36,4 +36,4 @@ position = Vector2(809, 70)
 position = Vector2(660, 103)
 
 [node name="MovingPlatform4" parent="." unique_id=797985181 instance=ExtResource("3_1pw1y")]
-position = Vector2(1533, 136)
+position = Vector2(1532, 101)
