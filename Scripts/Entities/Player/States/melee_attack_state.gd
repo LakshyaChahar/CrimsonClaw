@@ -32,6 +32,10 @@ func enter() -> void:
 			sprite.animation_finished.connect(_on_animation_finished)
 			sprite.frame_changed.connect(_on_frame_changed)
 			
+			# Handle placeholder/short animations by enabling hitbox immediately
+			if hitbox_shape and sprite.sprite_frames and sprite.sprite_frames.has_animation("attack") and sprite.sprite_frames.get_frame_count("attack") <= 2:
+				hitbox_shape.set_deferred("disabled", false)
+			
 	# Halt horizontal movement during melee swing
 	character.velocity.x = 0.0
 
@@ -70,9 +74,10 @@ func _on_frame_changed() -> void:
 		
 	# --- HITBOX TIMING CONFIGURATION ---
 	# We enable the hitbox only on specific "active swing" frames of the animation.
-	# Example: If your "attack" animation has 5 frames, and the swing happens on frames 2 & 3:
 	if sprite.animation == "attack":
-		if sprite.frame in [2, 3]:
+		if sprite.sprite_frames and sprite.sprite_frames.has_animation("attack") and sprite.sprite_frames.get_frame_count("attack") <= 2:
+			hitbox_shape.set_deferred("disabled", false)
+		elif sprite.frame in [2, 3]:
 			hitbox_shape.set_deferred("disabled", false) # Enable hitbox
 		else:
 			hitbox_shape.set_deferred("disabled", true)  # Disable hitbox
