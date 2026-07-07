@@ -13,7 +13,7 @@ tile_map_data = PackedByteArray("AABHAOf/AAAIABsAAABGAOf/AAAIABsAAABFAOf/AAAIABs
 tile_set = ExtResource("1_vhtmg")
 
 [node name="Player" parent="." unique_id=1658174949 instance=ExtResource("5_e26np")]
-position = Vector2(248, 56)
+position = Vector2(139, 126)
 collision_layer = 3
 
 [node name="MovingPlatform" parent="." unique_id=609589785 instance=ExtResource("2_e26np")]
