@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dy1f4a7kcsbry"
-path="res://.godot/imported/Chair.png-d1d3a365a2004306ed47f2bae936e59b.ctex"
+uid="uid://bfxjfo26qwioh"
+path="res://.godot/imported/spr_torch.png-f8d6511be0ea682a8c46af16b81fc0ea.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://free-office-pixel-art/free-office-pixel-art/Chair.png"
-dest_files=["res://.godot/imported/Chair.png-d1d3a365a2004306ed47f2bae936e59b.ctex"]
+source_file="res://Tileset/dungeon_tileset/spr_torch.png"
+dest_files=["res://.godot/imported/spr_torch.png-f8d6511be0ea682a8c46af16b81fc0ea.ctex"]
 
 [params]
 

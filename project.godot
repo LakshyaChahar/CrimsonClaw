@@ -19,6 +19,11 @@ config/icon="res://icon.svg"
 
 SfxManager="*res://Scenes/Core/Autoloads/sfx_manager.tscn"
 
+[display]
+
+window/size/viewport_width=480
+window/size/viewport_height=270
+
 [input]
 
 move_left={

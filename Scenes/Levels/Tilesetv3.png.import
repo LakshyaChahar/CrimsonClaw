@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d04iuff64qh22"
-path="res://.godot/imported/sink.png-85a12ad105845ed21ac2162c4f03a0ad.ctex"
+uid="uid://c7mwxq4qdtpyc"
+path="res://.godot/imported/Tilesetv3.png-e610c46fd00885420b7336d3b1ef3c62.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://free-office-pixel-art/free-office-pixel-art/sink.png"
-dest_files=["res://.godot/imported/sink.png-85a12ad105845ed21ac2162c4f03a0ad.ctex"]
+source_file="res://Scenes/Levels/Tilesetv3.png"
+dest_files=["res://.godot/imported/Tilesetv3.png-e610c46fd00885420b7336d3b1ef3c62.ctex"]
 
 [params]
 

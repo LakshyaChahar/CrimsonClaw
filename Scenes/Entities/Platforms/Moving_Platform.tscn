@@ -1,0 +1,58 @@
+[gd_scene format=3 uid="uid://ds2hql8j0q047"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1djjo"]
+size = Vector2(129, 20)
+
+[sub_resource type="Animation" id="Animation_1djjo"]
+length = 6.0333333
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatableBody2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 3, 5.9333334),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 0), Vector2(64, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_l3qqx"]
+resource_name = "moving_plat"
+length = 6.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatableBody2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 3, 6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(64, 0), Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ruby1"]
+_data = {
+&"RESET": SubResource("Animation_1djjo"),
+&"moving_plat": SubResource("Animation_l3qqx")
+}
+
+[node name="MovingPlatform" type="Node2D" unique_id=609589785]
+
+[node name="AnimatableBody2D" type="AnimatableBody2D" parent="." unique_id=2016621840]
+
+[node name="ColorRect" type="ColorRect" parent="AnimatableBody2D" unique_id=553012832]
+offset_right = 129.0
+offset_bottom = 20.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AnimatableBody2D" unique_id=1519810607]
+position = Vector2(64.5, 10)
+shape = SubResource("RectangleShape2D_1djjo")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="AnimatableBody2D" unique_id=966409276]
+root_node = NodePath("../..")
+libraries/ = SubResource("AnimationLibrary_ruby1")
+autoplay = &"RESET"

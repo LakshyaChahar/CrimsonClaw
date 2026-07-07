@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://crvdaumr20dyr"
-path="res://.godot/imported/water-cooler.png-6fada2bdc6318336c36fab560e77c26d.ctex"
+uid="uid://cgqjjpab7lgbg"
+path="res://.godot/imported/Tilesetv3.png-d5b16168ae2823e4f4a0d0a0cf072bee.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://free-office-pixel-art/free-office-pixel-art/water-cooler.png"
-dest_files=["res://.godot/imported/water-cooler.png-6fada2bdc6318336c36fab560e77c26d.ctex"]
+source_file="res://Tileset/dungeon_tileset/Tilesetv3.png"
+dest_files=["res://.godot/imported/Tilesetv3.png-d5b16168ae2823e4f4a0d0a0cf072bee.ctex"]
 
 [params]
 
