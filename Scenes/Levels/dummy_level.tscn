@@ -27,7 +27,7 @@ polygon = PackedVector2Array(-1000, -20, 1000, -20, 1000, 20, -1000, 20)
 [node name="Player" parent="." unique_id=1836431379 instance=ExtResource("1_player")]
 position = Vector2(0, 50)
 
-[node name="Camera2D" type="Camera2D" parent="Player" unique_id=1090073344]
+[node name="Camera2D2" type="Camera2D" parent="Player" unique_id=1090073344]
 zoom = Vector2(1.2, 1.2)
 
 [node name="Enemy" parent="." unique_id=238807970 instance=ExtResource("2_enemy")]

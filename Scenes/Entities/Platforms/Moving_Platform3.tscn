@@ -5,6 +5,7 @@ size = Vector2(96, 8)
 
 [sub_resource type="Animation" id="Animation_1djjo"]
 length = 4.9666667
+loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true

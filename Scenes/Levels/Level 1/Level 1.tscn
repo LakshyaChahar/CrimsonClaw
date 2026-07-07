@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://ds2hql8j0q047" path="res://Scenes/Entities/Platforms/Moving_Platform.tscn" id="2_e26np"]
 [ext_resource type="PackedScene" uid="uid://cgt2w5axorl5r" path="res://Scenes/Entities/Platforms/Moving_Platform3up&down.tscn" id="3_1pw1y"]
 [ext_resource type="PackedScene" uid="uid://cku1aeds5crdb" path="res://Scenes/Entities/Traps/saw_trap.tscn" id="4_qle2p"]
+[ext_resource type="PackedScene" uid="uid://cft1ra8ijxe36" path="res://Scenes/Entities/Platforms/Moving_Platformopp.tscn" id="5_1pw1y"]
 [ext_resource type="PackedScene" uid="uid://jiqs5mkwrmsd" path="res://Scenes/Entities/Player/player.tscn" id="5_e26np"]
 
 [node name="Level1" type="Node2D" unique_id=1796022972]
@@ -16,24 +17,6 @@ tile_set = ExtResource("1_vhtmg")
 position = Vector2(139, 126)
 collision_layer = 3
 
-[node name="MovingPlatform" parent="." unique_id=609589785 instance=ExtResource("2_e26np")]
-position = Vector2(451, 174)
-
-[node name="MovingPlatform3" parent="." unique_id=1798009386 instance=ExtResource("2_e26np")]
-position = Vector2(761, 155)
-
-[node name="MovingPlatform2" parent="." unique_id=1137159906 instance=ExtResource("2_e26np")]
-position = Vector2(582, 105)
-
-[node name="MovingPlatform6" parent="." unique_id=1306363438 instance=ExtResource("2_e26np")]
-position = Vector2(728, -131)
-
-[node name="MovingPlatform4" parent="." unique_id=1483388046 instance=ExtResource("2_e26np")]
-position = Vector2(543, -51)
-
-[node name="MovingPlatform5" parent="." unique_id=1346768034 instance=ExtResource("3_1pw1y")]
-position = Vector2(329, -138)
-
 [node name="SawTrap" parent="." unique_id=1537352391 instance=ExtResource("4_qle2p")]
 position = Vector2(530, -392)
 
@@ -43,11 +26,14 @@ position = Vector2(657, -390)
 [node name="SawTrap3" parent="." unique_id=607674795 instance=ExtResource("4_qle2p")]
 position = Vector2(788, -390)
 
-[node name="MovingPlatform7" parent="." unique_id=262011836 instance=ExtResource("2_e26np")]
-position = Vector2(336, -326)
+[node name="MovingPlatform" parent="." unique_id=609589785 instance=ExtResource("2_e26np")]
+position = Vector2(437, 153)
 
-[node name="MovingPlatform8" parent="." unique_id=1971374249 instance=ExtResource("3_1pw1y")]
-position = Vector2(1535, 101)
+[node name="MovingPlatform3" parent="." unique_id=795652698 instance=ExtResource("2_e26np")]
+position = Vector2(809, 70)
 
-[node name="MovingPlatform9" parent="." unique_id=985338948 instance=ExtResource("3_1pw1y")]
-position = Vector2(31, -149)
+[node name="MovingPlatform2" parent="." unique_id=209288058 instance=ExtResource("5_1pw1y")]
+position = Vector2(660, 103)
+
+[node name="MovingPlatform4" parent="." unique_id=797985181 instance=ExtResource("3_1pw1y")]
+position = Vector2(1533, 136)
