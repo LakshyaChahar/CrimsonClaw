@@ -1,7 +1,7 @@
-[gd_scene format=3 uid="uid://cwswd3n4fqq57"]
+[gd_scene format=3 uid="uid://cgt2w5axorl5r"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1djjo"]
-size = Vector2(96, 16)
+size = Vector2(96, 8)
 
 [sub_resource type="Animation" id="Animation_1djjo"]
 length = 4.9333334
@@ -46,10 +46,10 @@ _data = {
 
 [node name="ColorRect" type="ColorRect" parent="AnimatableBody2D" unique_id=553012832]
 offset_right = 96.0
-offset_bottom = 16.0
+offset_bottom = 8.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AnimatableBody2D" unique_id=1519810607]
-position = Vector2(48, 8)
+position = Vector2(48, 4)
 shape = SubResource("RectangleShape2D_1djjo")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="AnimatableBody2D" unique_id=966409276]
