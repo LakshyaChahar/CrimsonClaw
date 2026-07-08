@@ -13,7 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://ba27r1fxtw8c7" path="res://Tileset/Converted_Vampire/Walk.png" id="6_l6pm8"]
 [ext_resource type="Script" uid="uid://dkl26vg3lqj2j" path="res://Scripts/Entities/Player/States/fall_state.gd" id="7_fall"]
 [ext_resource type="Script" uid="uid://15qthe6hnhq7" path="res://Scripts/Entities/Player/States/dash_state.gd" id="8_dash"]
-[ext_resource type="Script" uid="uid://c3cvwg5dio4ji" path="res://Scripts/Entities/Player/States/skill_state.gd" id="9_skill"]
+[ext_resource type="Script" uid="uid://ceg320yt7j4ia" path="res://Scripts/Entities/Player/States/melee_attack_state.gd" id="9_skill"]
 [ext_resource type="Script" uid="uid://bugi7oikbimpt" path="res://Scripts/Entities/Player/States/dead_state.gd" id="10_dead"]
 [ext_resource type="Script" uid="uid://cks5b8uy7k5xl" path="res://Scripts/Core/hitbox.gd" id="11_0yfgq"]
 [ext_resource type="Script" uid="uid://bohxydkawxl6a" path="res://Scripts/Core/hurtbox.gd" id="12_hurtbox"]
@@ -281,6 +281,36 @@ animations = [{
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0fwr3"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
+bg_color = Color(0.12, 0.12, 0.12, 0.8)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.25, 0.25, 0.25, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+expand_margin_left = 1.0
+expand_margin_top = 1.0
+expand_margin_right = 1.0
+expand_margin_bottom = 1.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_health"]
+bg_color = Color(0.85, 0.15, 0.2, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_blood"]
+bg_color = Color(0.65, 0.05, 0.7, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
 [node name="Player" type="CharacterBody2D" unique_id=1658174949]
 z_index = 2
 script = ExtResource("1_player")
@@ -289,6 +319,14 @@ script = ExtResource("1_player")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=810423284]
 shape = SubResource("CapsuleShape2D_1")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=2045404950]
+position_smoothing_enabled = true
+position_smoothing_speed = 10.0
+drag_left_margin = 0.0
+drag_top_margin = 0.0
+drag_right_margin = 0.0
+drag_bottom_margin = 0.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=19559982]
 position = Vector2(6, -50)
@@ -342,3 +380,31 @@ script = ExtResource("12_hurtbox")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=261566379]
 shape = SubResource("CapsuleShape2D_1")
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=191024357]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD" unique_id=191024358]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -166.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = 54.0
+grow_horizontal = 0
+theme_override_constants/separation = 6
+
+[node name="HealthBar" type="ProgressBar" parent="HUD/VBoxContainer" unique_id=191024359]
+custom_minimum_size = Vector2(150, 14)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_health")
+value = 100.0
+show_percentage = false
+
+[node name="BloodthirstBar" type="ProgressBar" parent="HUD/VBoxContainer" unique_id=191024360]
+custom_minimum_size = Vector2(150, 8)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_blood")
+show_percentage = false

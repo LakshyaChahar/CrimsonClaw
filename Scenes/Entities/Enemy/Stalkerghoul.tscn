@@ -207,7 +207,8 @@ animations = [{
 radius = 16.0
 
 [node name="Stalkerghoul" type="CharacterBody2D" unique_id=1282923343]
-collision_layer = 2
+collision_layer = 8
+collision_mask = 3
 script = ExtResource("1_enemy")
 is_stealth = true
 
@@ -243,8 +244,8 @@ script = ExtResource("11_ambush")
 lunge_speed = 700.0
 
 [node name="Hitbox" type="Area2D" parent="." unique_id=1121732304]
-collision_layer = 32
-collision_mask = 4
+collision_layer = 16
+collision_mask = 2
 script = ExtResource("8_hitbox")
 damage = 25.0
 knockback_force = 200.0
