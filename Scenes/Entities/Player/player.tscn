@@ -110,6 +110,14 @@ region = Rect2(640, 0, 128, 128)
 atlas = ExtResource("5_s4doi")
 region = Rect2(768, 0, 128, 128)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_ornjt"]
+atlas = ExtResource("4_oedhw")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8clp8"]
+atlas = ExtResource("4_oedhw")
+region = Rect2(0, 0, 128, 128)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_s1342"]
 atlas = ExtResource("6_l6pm8")
 region = Rect2(0, 0, 128, 128)
@@ -230,6 +238,12 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_8mwgt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ornjt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8clp8")
 }],
 "loop": false,
 "name": &"jump",
@@ -279,7 +293,9 @@ shape = SubResource("CapsuleShape2D_1")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=19559982]
 position = Vector2(6, -50)
 sprite_frames = SubResource("SpriteFrames_1")
-animation = &"walk"
+animation = &"jump"
+frame = 8
+frame_progress = 1.0
 
 [node name="CharacterAnimationManager" type="Node" parent="." unique_id=1083209188 node_paths=PackedStringArray("sprite")]
 script = ExtResource("2_anim_mgr")
