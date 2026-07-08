@@ -315,8 +315,6 @@ corner_radius_bottom_left = 3
 z_index = 2
 script = ExtResource("1_player")
 
-[node name="Camera2D" type="Camera2D" parent="." unique_id=817047953]
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=810423284]
 shape = SubResource("CapsuleShape2D_1")
 
