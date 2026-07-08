@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://bmsat136ep0i5" path="res://Scenes/Entities/Platforms/Moving_Platformshort+ve.tscn" id="8_18wkv"]
 [ext_resource type="PackedScene" uid="uid://bclyh2xxe00lp" path="res://Scenes/Entities/Platforms/Moving_Platformshort-ve.tscn" id="9_7wylk"]
 [ext_resource type="PackedScene" uid="uid://dy6f7wyuq08p2" path="res://Scenes/Entities/Enemy/Stalkerghoul.tscn" id="10_18wkv"]
+[ext_resource type="PackedScene" uid="uid://cc2a6kluxes7" path="res://Scenes/Entities/Enemy/enemy.tscn" id="11_7wylk"]
 
 [node name="Level1" type="Node2D" unique_id=1796022972]
 
@@ -68,3 +69,9 @@ position = Vector2(1366, -424)
 
 [node name="Stalkerghoul3" parent="." unique_id=1260292666 instance=ExtResource("10_18wkv")]
 position = Vector2(231, -441)
+
+[node name="Enemy" parent="." unique_id=1481718111 instance=ExtResource("11_7wylk")]
+position = Vector2(988, -81)
+
+[node name="Enemy2" parent="." unique_id=321874547 instance=ExtResource("11_7wylk")]
+position = Vector2(279, 165)
