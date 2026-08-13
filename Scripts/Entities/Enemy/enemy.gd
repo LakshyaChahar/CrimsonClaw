@@ -4,8 +4,8 @@ class_name Enemy
 
 @export_group("AI Settings")
 @export var detection_range: float = 300.0
-@export var attack_range: float = 50.0
-@export var attack_cooldown: float = 1.5
+@export var attack_range: float = 40.0
+@export var attack_cooldown: float = 1.0
 
 @export_group("Stealth Settings")
 @export var is_stealth: bool = false
@@ -80,10 +80,16 @@ func reveal_enemy() -> void:
 
 # Searches the scene tree to locate the player character
 func _find_target() -> void:
+	if not is_inside_tree() or not get_tree():
+		return
+		
 	var players = get_tree().get_nodes_in_group("Player")
 	if players.size() > 0:
 		target = players[0]
-	else:
-		var player_node = get_tree().root.find_child("Player", true, false)
-		if player_node:
+		return
+		
+	var root_node = get_tree().current_scene if get_tree().current_scene else get_tree().root
+	if root_node:
+		var player_node = root_node.find_child("Player", true, false)
+		if player_node is Node2D:
 			target = player_node

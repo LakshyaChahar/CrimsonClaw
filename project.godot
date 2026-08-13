@@ -10,8 +10,8 @@ config_version=5
 
 [application]
 
-config/name="Crimson Claw"
-run/main_scene="res://Scenes/Levels/dummy_level.tscn"
+config/name="Crimson Claw latest"
+run/main_scene="res://Scenes/Levels/combat_demo_level.tscn"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 

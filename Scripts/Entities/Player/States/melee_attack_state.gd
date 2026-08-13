@@ -4,6 +4,9 @@ class_name MeleeAttackState
 ## Duration of the attack state. Used as a fallback if animation signals are not received.
 @export var attack_duration: float = 0.4
 
+## The specific frame indices of the "attack" animation where the hitbox should be active.
+@export var active_frames: Array[int] = [2, 3]
+
 var timer: float = 0.0
 var anim_finished: bool = false
 var hitbox_shape: CollisionShape2D = null
@@ -29,6 +32,13 @@ func enter() -> void:
 		character.animation_manager.play_anim("attack", 2)
 		var sprite = character.animation_manager.sprite
 		if sprite:
+			if sprite.sprite_frames and sprite.sprite_frames.has_animation("attack"):
+				var frames = sprite.sprite_frames.get_frame_count("attack")
+				var fps = sprite.sprite_frames.get_animation_speed("attack")
+				if fps > 0:
+					var anim_len = float(frames) / fps
+					sprite.speed_scale = anim_len / attack_duration
+					
 			sprite.animation_finished.connect(_on_animation_finished)
 			sprite.frame_changed.connect(_on_frame_changed)
 			
@@ -43,6 +53,7 @@ func exit() -> void:
 	# Clean up connections
 	if character.animation_manager and character.animation_manager.sprite:
 		var sprite = character.animation_manager.sprite
+		sprite.speed_scale = 1.0
 		if sprite.animation_finished.is_connected(_on_animation_finished):
 			sprite.animation_finished.disconnect(_on_animation_finished)
 		if sprite.frame_changed.is_connected(_on_frame_changed):
@@ -77,7 +88,7 @@ func _on_frame_changed() -> void:
 	if sprite.animation == "attack":
 		if sprite.sprite_frames and sprite.sprite_frames.has_animation("attack") and sprite.sprite_frames.get_frame_count("attack") <= 2:
 			hitbox_shape.set_deferred("disabled", false)
-		elif sprite.frame in [2, 3]:
+		elif sprite.frame in active_frames:
 			hitbox_shape.set_deferred("disabled", false) # Enable hitbox
 		else:
 			hitbox_shape.set_deferred("disabled", true)  # Disable hitbox
