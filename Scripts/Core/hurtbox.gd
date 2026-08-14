@@ -34,20 +34,28 @@ func receive_hit(damage: float, knockback: Vector2, stun_duration: float, attack
 	if is_invincible:
 		return
 		
+	var entity = owner if owner else get_parent()
+		
+	# Ignore hit if the entity is currently dashing
+	if entity and "is_dashing" in entity and entity.is_dashing:
+		return
+		
 	var final_damage = damage * damage_multiplier
 	
 	# Emit signal for custom visual effects, sound, or state changes
 	hit_received.emit(final_damage, knockback, stun_duration, attacker)
 	
-	# If the owner is a Character, apply the damage
-	if owner and owner.has_method("take_damage"):
-		owner.take_damage(final_damage)
+	# If the entity is a Character, apply the damage
+	if entity and entity.has_method("take_damage"):
+		entity.take_damage(final_damage)
 		
-	# Apply knockback/stun if the owner is a Character and we can manipulate its velocity
-	if owner is Character:
+	# Apply knockback/stun if the entity is a Character and we can manipulate its velocity
+	if entity is Character:
 		# Apply knockback directly to character velocity if desired, or handle it via signal in a state
 		if knockback != Vector2.ZERO:
-			owner.velocity = knockback
+			entity.velocity = knockback
+		if stun_duration > 0.0 and entity.has_method("stun"):
+			entity.stun(stun_duration)
 			
 	# Start i-frames
 	if invincibility_duration > 0.0:
@@ -57,19 +65,13 @@ func receive_hit(damage: float, knockback: Vector2, stun_duration: float, attack
 func start_invincibility() -> void:
 	is_invincible = true
 	invincibility_started.emit()
-	
-	# Disable the collision shape deferredly to avoid physics engine warnings
-	if collision_shape:
-		collision_shape.set_deferred("disabled", true)
 		
 	# Trigger a timer to end invincibility
-	await get_tree().create_timer(invincibility_duration).timeout
+	if is_inside_tree():
+		await get_tree().create_timer(invincibility_duration).timeout
 	end_invincibility()
 
 ## Ends the invincibility period.
 func end_invincibility() -> void:
 	is_invincible = false
 	invincibility_ended.emit()
-	
-	if collision_shape:
-		collision_shape.set_deferred("disabled", false)

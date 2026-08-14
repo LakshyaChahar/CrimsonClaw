@@ -1,8 +1,14 @@
 extends CharacterState
 class_name MeleeAttackState
 
+## The exact name of the Hitbox Node in the Scene Tree that this attack uses.
+@export var hitbox_node_name: String = "SwordHitbox"
+
 ## Duration of the attack state. Used as a fallback if animation signals are not received.
 @export var attack_duration: float = 0.4
+
+## The specific frame indices of the "attack" animation where the hitbox should be active.
+@export var active_frames: Array[int] = [2, 3]
 
 var timer: float = 0.0
 var anim_finished: bool = false
@@ -14,21 +20,41 @@ func enter() -> void:
 	character.wants_skill = false # Reset the input register
 	
 	# Find the sword hitbox collision shape dynamically
-	var hitbox = character.find_child("SwordHitbox")
+	var hitbox = character.find_child(hitbox_node_name)
 	if hitbox:
 		# Search for any CollisionShape2D child node
 		for child in hitbox.get_children():
 			if child is CollisionShape2D:
 				hitbox_shape = child
 				break
-		# Option A: Flip the hitbox's scale.x depending on the character's facing direction
-		hitbox.scale.x = character.facing_direction
+		# --- 8-Directional Attack Logic ---
+		# We rotate the entire Area2D. Since its CollisionShape2D is offset by (20, 0),
+		# rotating it will automatically orbit the hitbox around the player in 8 directions.
+		var attack_dir = character.input_direction
+		
+		# Option A: Prevent downward/diagonal-down attacks while grounded
+		if character.is_grounded() and attack_dir.y > 0.0:
+			attack_dir.y = 0.0
+			
+		# Default to facing direction if no valid input is given (e.g. standing still)
+		if attack_dir == Vector2.ZERO:
+			attack_dir = Vector2(character.facing_direction, 0.0)
+			
+		# Automatically converts Vector2 to the exact rotation angle!
+		hitbox.rotation = attack_dir.angle()
 	
 	# Play attack animation
 	if character.animation_manager:
 		character.animation_manager.play_anim("attack", 2)
 		var sprite = character.animation_manager.sprite
 		if sprite:
+			if sprite.sprite_frames and sprite.sprite_frames.has_animation("attack"):
+				var frames = sprite.sprite_frames.get_frame_count("attack")
+				var fps = sprite.sprite_frames.get_animation_speed("attack")
+				if fps > 0:
+					var anim_len = float(frames) / fps
+					sprite.speed_scale = anim_len / attack_duration
+					
 			sprite.animation_finished.connect(_on_animation_finished)
 			sprite.frame_changed.connect(_on_frame_changed)
 			
@@ -43,6 +69,7 @@ func exit() -> void:
 	# Clean up connections
 	if character.animation_manager and character.animation_manager.sprite:
 		var sprite = character.animation_manager.sprite
+		sprite.speed_scale = 1.0
 		if sprite.animation_finished.is_connected(_on_animation_finished):
 			sprite.animation_finished.disconnect(_on_animation_finished)
 		if sprite.frame_changed.is_connected(_on_frame_changed):
@@ -51,6 +78,11 @@ func exit() -> void:
 	# Always turn off the hitbox shape when leaving the attack state
 	if hitbox_shape:
 		hitbox_shape.set_deferred("disabled", true)
+		
+	# Reset the hitbox rotation so it doesn't affect other attacks later!
+	var hitbox = character.find_child(hitbox_node_name)
+	if hitbox:
+		hitbox.rotation_degrees = 0.0
 
 func physics_update(delta: float) -> void:
 	timer -= delta
@@ -77,7 +109,7 @@ func _on_frame_changed() -> void:
 	if sprite.animation == "attack":
 		if sprite.sprite_frames and sprite.sprite_frames.has_animation("attack") and sprite.sprite_frames.get_frame_count("attack") <= 2:
 			hitbox_shape.set_deferred("disabled", false)
-		elif sprite.frame in [2, 3]:
+		elif sprite.frame in active_frames:
 			hitbox_shape.set_deferred("disabled", false) # Enable hitbox
 		else:
 			hitbox_shape.set_deferred("disabled", true)  # Disable hitbox
