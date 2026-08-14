@@ -65,10 +65,6 @@ func receive_hit(damage: float, knockback: Vector2, stun_duration: float, attack
 func start_invincibility() -> void:
 	is_invincible = true
 	invincibility_started.emit()
-	
-	# Disable the collision shape deferredly to avoid physics engine warnings
-	if collision_shape:
-		collision_shape.set_deferred("disabled", true)
 		
 	# Trigger a timer to end invincibility
 	if is_inside_tree():
@@ -79,6 +75,3 @@ func start_invincibility() -> void:
 func end_invincibility() -> void:
 	is_invincible = false
 	invincibility_ended.emit()
-	
-	if collision_shape:
-		collision_shape.set_deferred("disabled", false)

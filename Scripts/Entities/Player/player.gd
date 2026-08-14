@@ -80,29 +80,37 @@ func _on_attack_hit(_hurtbox: Hurtbox) -> void:
 	# Gain 10 bloodthirst per hit (adjust as needed or read custom stats from hitbox)
 	add_bloodthirst(10.0)
 
+var dash_buffer_timer: float = 0.0
+@export var dash_buffer_time: float = 0.15
+
+var skill_buffer_timer: float = 0.0
+@export var skill_buffer_time: float = 0.15
+
 func _process(delta: float) -> void:
-	# Tick buffers
+	if is_dead:
+		return
+		
+	# Tick input buffers
 	jump_buffer_timer = max(0.0, jump_buffer_timer - delta)
+	dash_buffer_timer = max(0.0, dash_buffer_timer - delta)
+	skill_buffer_timer = max(0.0, skill_buffer_timer - delta)
 	
-	# Read horizontal movement
+	# Read movement inputs
 	input_direction.x = Input.get_axis(final_left, final_right)
-	input_direction.y = Input.get_axis("ui_up", "ui_down") # for aiming dash/skills
+	input_direction.y = Input.get_axis("look_up", "look_down")
 	
-	# Handle jump input with buffering
+	# Update action flags with buffered inputs
 	if Input.is_action_just_pressed(final_jump):
 		jump_buffer_timer = jump_buffer_time
-		
 	wants_jump = jump_buffer_timer > 0.0
 	
-	# Clear wants_jump if the state machine transitions to jump (handled inside states)
-	
-	# Handle dash input
 	if Input.is_action_just_pressed(final_dash):
-		wants_dash = true
+		dash_buffer_timer = dash_buffer_time
+	wants_dash = dash_buffer_timer > 0.0
 		
-	# Handle skill input
 	if Input.is_action_just_pressed(final_skill):
-		wants_skill = true
+		skill_buffer_timer = skill_buffer_time
+	wants_skill = skill_buffer_timer > 0.0
 
 func _init_input_actions() -> void:
 	final_left = action_left if InputMap.has_action(action_left) else "ui_left"

@@ -44,8 +44,10 @@ func enter() -> void:
 		hitbox_shape.set_deferred("disabled", true)
 
 func exit() -> void:
-	if character.animation_manager and character.animation_manager.sprite:
-		character.animation_manager.sprite.speed_scale = 1.0
+	if character.animation_manager:
+		character.animation_manager.current_priority = 0
+		if character.animation_manager.sprite:
+			character.animation_manager.sprite.speed_scale = 1.0
 		
 	if hitbox_shape:
 		hitbox_shape.set_deferred("disabled", true)
@@ -61,9 +63,11 @@ func physics_update(delta: float) -> void:
 	
 	if hitbox_shape:
 		if timer >= hitbox_enable_time and timer < hitbox_disable_time:
-			hitbox_shape.set_deferred("disabled", false)
+			if hitbox_shape.disabled:
+				hitbox_shape.set_deferred("disabled", false)
 		else:
-			hitbox_shape.set_deferred("disabled", true)
+			if not hitbox_shape.disabled:
+				hitbox_shape.set_deferred("disabled", true)
 			
 	if timer >= attack_duration:
 		state_machine.change_state("walk")

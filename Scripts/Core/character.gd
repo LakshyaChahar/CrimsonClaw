@@ -120,13 +120,24 @@ func take_damage(amount: float) -> void:
 		return
 	var old_health = current_health
 	current_health = max(current_health - amount, 0.0)
-	print(current_health, self)
+	print("[Combat] ", name, " took ", amount, " damage. Health: ", current_health, "/", max_health)
+	
+	_play_hit_flash()
 	
 	if old_health != current_health:
 		health_changed.emit(old_health, current_health)
 		
 	if current_health <= 0.0:
 		die()
+
+func _play_hit_flash() -> void:
+	if animation_manager and animation_manager.sprite:
+		var sprite = animation_manager.sprite
+		var orig_modulate = sprite.modulate
+		sprite.modulate = Color(1.0, 0.2, 0.2, 1.0) # Flash Red
+		var tween = create_tween()
+		if tween:
+			tween.tween_property(sprite, "modulate", orig_modulate, 0.15)
 
 ## Handles death logic and triggers death state if configured
 func die() -> void:

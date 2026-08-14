@@ -1,8 +1,7 @@
 [gd_scene format=3 uid="uid://c8m7k3cap1x0q"]
 
 [ext_resource type="PackedScene" uid="uid://jiqs5mkwrmsd" path="res://Scenes/Entities/Player/player.tscn" id="1_player"]
-[ext_resource type="PackedScene" uid="uid://cc2a6kluxes7" path="res://Scenes/Entities/Enemy/enemy.tscn" id="2_enemy"]
-[ext_resource type="PackedScene" uid="uid://dy6f7wyuq08p2" path="res://Scenes/Entities/Enemy/Stalkerghoul.tscn" id="3_ghoul"]
+[ext_resource type="PackedScene" uid="uid://dy6f7wyuq08p2" path="res://Scenes/Entities/Enemy/Stalkerghoul.tscn" id="3_ctats"]
 [ext_resource type="PackedScene" uid="uid://cku1aeds5crdb" path="res://Scenes/Entities/Traps/saw_trap.tscn" id="4_saw"]
 [ext_resource type="PackedScene" uid="uid://dm7q55brlfsy" path="res://Scenes/Entities/Traps/ceiling_trap.tscn" id="5_ceiling"]
 [ext_resource type="PackedScene" uid="uid://coe2cgirmntry" path="res://Scenes/Entities/Traps/arrow_trap.tscn" id="6_arrow"]
@@ -26,12 +25,13 @@ polygon = PackedVector2Array(-1500, -20, 1500, -20, 1500, 20, -1500, 20)
 [node name="Player" parent="." unique_id=100000001 instance=ExtResource("1_player")]
 position = Vector2(0, 150)
 
-[node name="EnemyZombie" parent="." unique_id=100000002 instance=ExtResource("2_enemy")]
-position = Vector2(160, 150)
-
-[node name="Stalkerghoul" parent="." unique_id=100000003 instance=ExtResource("3_ghoul")]
-position = Vector2(-220, 150)
-reveal_range = 250.0
+[node name="Stalkerghoul" parent="." unique_id=1282923343 instance=ExtResource("3_ctats")]
+position = Vector2(111, 57)
+detection_range = 400.0
+attack_cooldown = 0.2
+detect_from_above = true
+ambush_damage = 50.0
+ambush_lunge_speed = 1050.0
 
 [node name="Traps" type="Node2D" parent="." unique_id=100000004]
 
