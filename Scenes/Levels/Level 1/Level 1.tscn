@@ -3045,7 +3045,6 @@ tile_set = ExtResource("1_vhtmg")
 
 [node name="Player" parent="." unique_id=1658174949 instance=ExtResource("5_e26np")]
 position = Vector2(-160, -674)
-collision_layer = 3
 
 [node name="SawTrap" parent="." unique_id=1537352391 instance=ExtResource("4_qle2p")]
 position = Vector2(254, -838)

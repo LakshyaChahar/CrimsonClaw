@@ -199,7 +199,7 @@ sprite_frames = SubResource("SpriteFrames_dg0q5")
 
 [node name="AttackArea" type="Area2D" parent="." unique_id=1182121305]
 collision_layer = 16
-collision_mask = 2
+collision_mask = 10
 script = ExtResource("1_foc2j")
 knockback = Vector2(-500, 0)
 

@@ -24,26 +24,29 @@ func _ready() -> void:
 	monitorable = false
 	
 	area_entered.connect(_on_area_entered)
-
+ 
 func _on_area_entered(area: Area2D) -> void:
 	if area is Hurtbox:
 		var hurtbox = area as Hurtbox
 		
-		# Prevent hitting own owner (e.g. player hitting player, or enemy hitting enemy)
-		if hurtbox.owner == owner:
+		var attacker = owner if owner else get_parent()
+		var victim = hurtbox.owner if hurtbox.owner else hurtbox.get_parent()
+		
+		# Prevent hitting own owner (only if both are valid and equal)
+		if attacker != null and victim != null and attacker == victim:
 			return
 			
 		# Determine dynamic knockback direction if none is set
 		var kb_dir = knockback_direction
 		if kb_dir == Vector2.ZERO:
 			# Calculate direction pointing from this hitbox's owner/position to the target
-			var target_pos = hurtbox.owner.global_position if hurtbox.owner else hurtbox.global_position
-			var source_pos = owner.global_position if owner else global_position
+			var target_pos = victim.global_position if victim else hurtbox.global_position
+			var source_pos = attacker.global_position if attacker else global_position
 			kb_dir = (target_pos - source_pos).normalized()
 			# If positions are exactly the same, default to facing direction or right
 			if kb_dir == Vector2.ZERO:
 				kb_dir = Vector2.RIGHT
 		
 		# Apply hit to the hurtbox
-		hurtbox.receive_hit(damage, kb_dir * knockback_force, stun_duration, owner)
+		hurtbox.receive_hit(damage, kb_dir * knockback_force, stun_duration, attacker)
 		hit_registered.emit(hurtbox)

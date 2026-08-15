@@ -17,6 +17,7 @@
 [ext_resource type="Script" uid="uid://bugi7oikbimpt" path="res://Scripts/Entities/Player/States/dead_state.gd" id="10_dead"]
 [ext_resource type="Script" uid="uid://cks5b8uy7k5xl" path="res://Scripts/Core/hitbox.gd" id="11_0yfgq"]
 [ext_resource type="Script" uid="uid://bohxydkawxl6a" path="res://Scripts/Core/hurtbox.gd" id="12_hurtbox"]
+[ext_resource type="Script" uid="uid://csc3uyoxphj5b" path="res://Scripts/Entities/Player/States/stun_state.gd" id="13_stun"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1"]
 radius = 8.0
@@ -280,6 +281,7 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0fwr3"]
+radius = 38.209946
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
 bg_color = Color(0.12, 0.12, 0.12, 0.8)
@@ -311,8 +313,9 @@ corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 
-[node name="Player" type="CharacterBody2D" unique_id=1658174949]
+[node name="Player" type="CharacterBody2D" unique_id=1658174949 groups=["Player"]]
 z_index = 2
+collision_layer = 2
 script = ExtResource("1_player")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=810423284]
@@ -362,12 +365,17 @@ script = ExtResource("9_skill")
 [node name="Dead" type="Node" parent="CharacterStateMachine" unique_id=230948234]
 script = ExtResource("10_dead")
 
+[node name="Stun" type="Node" parent="CharacterStateMachine" unique_id=230948235]
+script = ExtResource("13_stun")
+
 [node name="SwordHitbox" type="Area2D" parent="." unique_id=375673010]
+position = Vector2(0, -25)
 collision_layer = 4
 collision_mask = 8
 script = ExtResource("11_0yfgq")
 
 [node name="SwordHitbox" type="CollisionShape2D" parent="SwordHitbox" unique_id=261566378]
+position = Vector2(20, 0)
 shape = SubResource("CircleShape2D_0fwr3")
 disabled = true
 
@@ -398,7 +406,6 @@ layout_mode = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_bg")
 theme_override_styles/fill = SubResource("StyleBoxFlat_health")
 value = 100.0
-show_percentage = false
 
 [node name="BloodthirstBar" type="ProgressBar" parent="HUD/VBoxContainer" unique_id=191024360]
 custom_minimum_size = Vector2(150, 8)

@@ -59,6 +59,11 @@ func change_state(new_state_name: String) -> void:
 	var previous_state = current_state
 	if current_state:
 		current_state.exit()
+		
+	# Globally prevent animation priority locking when changing states
+	var character = get_parent() as Character
+	if character and character.animation_manager:
+		character.animation_manager.current_priority = 0
 	
 	current_state = next_state
 	current_state.enter()

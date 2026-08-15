@@ -13,6 +13,8 @@
 [ext_resource type="Script" uid="uid://1nmwna68cnsy" path="res://Scripts/Entities/Enemy/States/enemy_dead_state.gd" id="7_dead"]
 [ext_resource type="Script" uid="uid://cks5b8uy7k5xl" path="res://Scripts/Core/hitbox.gd" id="8_hitbox"]
 [ext_resource type="Script" uid="uid://bohxydkawxl6a" path="res://Scripts/Core/hurtbox.gd" id="9_hurtbox"]
+[ext_resource type="Script" path="res://Scripts/Entities/Player/States/stun_state.gd" id="10_stun"]
+
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1"]
 radius = 8.0
@@ -274,12 +276,17 @@ script = ExtResource("6_attack")
 [node name="Dead" type="Node" parent="CharacterStateMachine" unique_id=1308204377]
 script = ExtResource("7_dead")
 
+[node name="Stun" type="Node" parent="CharacterStateMachine" unique_id=1308204378]
+script = ExtResource("10_stun")
+
+
 [node name="Hitbox" type="Area2D" parent="." unique_id=392328271]
 collision_layer = 16
 collision_mask = 2
 script = ExtResource("8_hitbox")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=25963196]
+position = Vector2(18, 0)
 shape = SubResource("CircleShape2D_0fwr3")
 disabled = true
 
@@ -290,7 +297,3 @@ script = ExtResource("9_hurtbox")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=586747509]
 shape = SubResource("CapsuleShape2D_1")
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="." unique_id=1748961561]
-position = Vector2(1, 34)
-shape = SubResource("CapsuleShape2D_f3bx6")
