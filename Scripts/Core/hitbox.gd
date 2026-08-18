@@ -13,6 +13,20 @@ class_name Hitbox
 ## The duration of stun applied to the victim.
 @export var stun_duration: float = 0.2
 
+@export_group("Bloodthirst")
+## Bloodthirst gained by attacker when this hitbox strikes a target.
+@export var bloodthirst_gain: float = 10.0
+
+@export_group("Fire Status Properties")
+## Whether this hitbox causes victims to catch fire.
+@export var inflicts_fire: bool = false
+
+## Damage per second inflicted while on fire.
+@export var fire_dps: float = 5.0
+
+## Duration of the burn effect in seconds.
+@export var fire_duration: float = 3.0
+
 ## Emitted when this hitbox successfully strikes a hurtbox.
 signal hit_registered(hurtbox: Hurtbox)
 
@@ -48,5 +62,6 @@ func _on_area_entered(area: Area2D) -> void:
 				kb_dir = Vector2.RIGHT
 		
 		# Apply hit to the hurtbox
-		hurtbox.receive_hit(damage, kb_dir * knockback_force, stun_duration, attacker)
+		hurtbox.receive_hit(damage, kb_dir * knockback_force, stun_duration, attacker, inflicts_fire, fire_dps, fire_duration)
 		hit_registered.emit(hurtbox)
+
