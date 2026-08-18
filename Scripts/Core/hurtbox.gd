@@ -30,7 +30,7 @@ func _ready() -> void:
 	monitorable = true
 
 ## Handles taking a hit from a hitbox.
-func receive_hit(damage: float, knockback: Vector2, stun_duration: float, attacker: Node2D) -> void:
+func receive_hit(damage: float, knockback: Vector2, stun_duration: float, attacker: Node2D, inflicts_fire: bool = false, fire_dps: float = 0.0, fire_duration: float = 0.0) -> void:
 	if is_invincible:
 		return
 		
@@ -48,6 +48,15 @@ func receive_hit(damage: float, knockback: Vector2, stun_duration: float, attack
 	# If the entity is a Character, apply the damage
 	if entity and entity.has_method("take_damage"):
 		entity.take_damage(final_damage)
+		
+	# Apply fire status if enabled
+	if inflicts_fire and entity:
+		var burn_comp = entity.find_child("BurnComponent") as BurnComponent
+		if not burn_comp:
+			burn_comp = BurnComponent.new()
+			burn_comp.name = "BurnComponent"
+			entity.call_deferred("add_child", burn_comp)
+		burn_comp.apply_burn(fire_dps, fire_duration)
 		
 	# Apply knockback/stun if the entity is a Character and we can manipulate its velocity
 	if entity is Character:

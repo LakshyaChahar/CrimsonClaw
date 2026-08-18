@@ -20,7 +20,10 @@ signal died()
 @export_group("Dash Properties")
 @export var dash_speed: float = 650.0
 @export var dash_duration: float = 0.18
-@export var dash_cooldown: float = 0.8
+@export var dash_cooldown: float = 0.6
+@export var post_dash_iframe_duration: float = 0.15
+## Minimum required bloodthirst to perform a dash.
+@export var dash_min_required_bloodthirst: float = 0.0
 
 @export_group("Health System")
 @export var max_health: float = 100.0
@@ -56,6 +59,8 @@ var stun_timer: float = 0.0
 var gravity: float = ProjectSettings.get_setting("physics/2d/default_gravity", 980.0)
 
 func _ready() -> void:
+	current_health = max_health
+	
 	# Retrieve helper managers if attached
 	animation_manager = get_node_or_null("CharacterAnimationManager")
 	if not animation_manager:
@@ -130,14 +135,19 @@ func take_damage(amount: float) -> void:
 	if current_health <= 0.0:
 		die()
 
+func get_base_modulate() -> Color:
+	var burn_comp = find_child("BurnComponent") as BurnComponent
+	if burn_comp and burn_comp.is_on_fire:
+		return Color(1.0, 0.45, 0.1) # Fire Orange tint
+	return Color.WHITE
+
 func _play_hit_flash() -> void:
 	if animation_manager and animation_manager.sprite:
 		var sprite = animation_manager.sprite
-		var orig_modulate = sprite.modulate
-		sprite.modulate = Color(1.0, 0.2, 0.2, 1.0) # Flash Red
+		sprite.modulate = Color(1.0, 0.25, 0.25, 1.0) # Flash Red
 		var tween = create_tween()
 		if tween:
-			tween.tween_property(sprite, "modulate", orig_modulate, 0.15)
+			tween.tween_property(sprite, "modulate", get_base_modulate(), 0.15)
 
 ## Handles death logic and triggers death state if configured
 func die() -> void:

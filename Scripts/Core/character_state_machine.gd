@@ -49,6 +49,9 @@ func _physics_process(delta: float) -> void:
 func change_state(new_state_name: String) -> void:
 	var state_key = new_state_name.to_lower()
 	if not states.has(state_key):
+		state_key = state_key.replace("_", "")
+		
+	if not states.has(state_key):
 		push_warning("CharacterStateMachine: State '" + new_state_name + "' not found!")
 		return
 	

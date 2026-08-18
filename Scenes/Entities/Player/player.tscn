@@ -18,10 +18,11 @@
 [ext_resource type="Script" uid="uid://cks5b8uy7k5xl" path="res://Scripts/Core/hitbox.gd" id="11_0yfgq"]
 [ext_resource type="Script" uid="uid://bohxydkawxl6a" path="res://Scripts/Core/hurtbox.gd" id="12_hurtbox"]
 [ext_resource type="Script" uid="uid://csc3uyoxphj5b" path="res://Scripts/Entities/Player/States/stun_state.gd" id="13_stun"]
+[ext_resource type="Script" uid="uid://d1cdxdfuiukti" path="res://Scripts/Entities/Player/States/ignis_claw_state.gd" id="14_ignis_claw"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1"]
-radius = 8.0
-height = 24.0
+radius = 12.0
+height = 48.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hkmxn"]
 atlas = ExtResource("2_p22ti")
@@ -280,8 +281,12 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_0fwr3"]
-radius = 38.209946
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_sword"]
+radius = 36.0
+height = 78.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ignis"]
+radius = 55.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
 bg_color = Color(0.12, 0.12, 0.12, 0.8)
@@ -316,12 +321,15 @@ corner_radius_bottom_left = 3
 [node name="Player" type="CharacterBody2D" unique_id=1658174949 groups=["Player"]]
 z_index = 2
 collision_layer = 2
+collision_mask = 9
 script = ExtResource("1_player")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=810423284]
+position = Vector2(0, -21)
 shape = SubResource("CapsuleShape2D_1")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=2045404950]
+position = Vector2(0, 0)
 position_smoothing_enabled = true
 position_smoothing_speed = 10.0
 drag_left_margin = 0.0
@@ -330,7 +338,7 @@ drag_right_margin = 0.0
 drag_bottom_margin = 0.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=19559982]
-position = Vector2(6, -50)
+position = Vector2(0, -21)
 sprite_frames = SubResource("SpriteFrames_1")
 animation = &"jump"
 frame = 8
@@ -368,23 +376,41 @@ script = ExtResource("10_dead")
 [node name="Stun" type="Node" parent="CharacterStateMachine" unique_id=230948235]
 script = ExtResource("13_stun")
 
+[node name="IgnisClaw" type="Node" parent="CharacterStateMachine" unique_id=383665330]
+script = ExtResource("14_ignis_claw")
+
 [node name="SwordHitbox" type="Area2D" parent="." unique_id=375673010]
-position = Vector2(0, -25)
+position = Vector2(0, 0)
 collision_layer = 4
 collision_mask = 8
 script = ExtResource("11_0yfgq")
 
 [node name="SwordHitbox" type="CollisionShape2D" parent="SwordHitbox" unique_id=261566378]
-position = Vector2(20, 0)
-shape = SubResource("CircleShape2D_0fwr3")
+position = Vector2(48, -22)
+shape = SubResource("CapsuleShape2D_sword")
+disabled = true
+
+[node name="IgnisClawHitbox" type="Area2D" parent="." unique_id=375673012]
+position = Vector2(0, -25)
+collision_layer = 4
+collision_mask = 8
+script = ExtResource("11_0yfgq")
+inflicts_fire = true
+fire_dps = 8.0
+
+[node name="IgnisClawHitboxShape" type="CollisionShape2D" parent="IgnisClawHitbox" unique_id=261566380]
+position = Vector2(30, 0)
+shape = SubResource("CircleShape2D_ignis")
 disabled = true
 
 [node name="Hurtbox" type="Area2D" parent="." unique_id=375673011]
+position = Vector2(0, 0)
 collision_layer = 2
 collision_mask = 0
 script = ExtResource("12_hurtbox")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=261566379]
+position = Vector2(0, -21)
 shape = SubResource("CapsuleShape2D_1")
 
 [node name="HUD" type="CanvasLayer" parent="." unique_id=191024357]

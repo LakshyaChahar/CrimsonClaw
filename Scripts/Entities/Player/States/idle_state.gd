@@ -34,6 +34,10 @@ func physics_update(delta: float) -> void:
 		state_machine.change_state("walk")
 		return
 		
+	if "wants_ignis_claw" in character and character.wants_ignis_claw:
+		state_machine.change_state("ignis_claw")
+		return
+
 	if character.wants_skill:
 		state_machine.change_state("skill")
 		return
