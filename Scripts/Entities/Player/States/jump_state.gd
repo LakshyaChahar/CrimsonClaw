@@ -31,6 +31,10 @@ func physics_update(delta: float) -> void:
 			state_machine.change_state("idle")
 		return
 		
+	if "wants_hellforge_dive" in character and character.wants_hellforge_dive:
+		state_machine.change_state("hellforge_dive")
+		return
+
 	if "wants_ignis_claw" in character and character.wants_ignis_claw:
 		state_machine.change_state("ignis_claw")
 		return
@@ -38,3 +42,4 @@ func physics_update(delta: float) -> void:
 	if character.wants_skill:
 		state_machine.change_state("skill")
 		return
+

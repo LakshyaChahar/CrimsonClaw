@@ -1,0 +1,182 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Scripts/Entities/Enemy/pyro_archon_boss.gd" id="1_pyro_boss"]
+[ext_resource type="Script" uid="uid://o574iqi28cq3" path="res://Scripts/Core/character_animation_manager.gd" id="2_anim_mgr"]
+[ext_resource type="Texture2D" uid="uid://b37yxtl7l4nty" path="res://Scenes/Entities/Assets/Ghoul/ATTACK.png" id="2_mygee"]
+[ext_resource type="Script" uid="uid://ch643o6echy12" path="res://Scripts/Core/character_state_machine.gd" id="3_state_mc"]
+[ext_resource type="Script" uid="uid://hasrwey3fali" path="res://Scripts/Entities/Enemy/States/enemy_idle_state.gd" id="4_idle"]
+[ext_resource type="Texture2D" uid="uid://gt7bv4b00joy" path="res://Scenes/Entities/Assets/Ghoul/IDLE.png" id="4_w65vx"]
+[ext_resource type="Script" uid="uid://bsnyo0jm4b8um" path="res://Scripts/Entities/Enemy/States/enemy_walk_state.gd" id="5_walk"]
+[ext_resource type="Script" uid="uid://bvy2egwkpybek" path="res://Scripts/Entities/Enemy/States/enemy_attack_state.gd" id="6_attack"]
+[ext_resource type="Script" uid="uid://1nmwna68cnsy" path="res://Scripts/Entities/Enemy/States/enemy_dead_state.gd" id="7_dead"]
+[ext_resource type="Script" uid="uid://cks5b8uy7k5xl" path="res://Scripts/Core/hitbox.gd" id="8_hitbox"]
+[ext_resource type="Script" uid="uid://bohxydkawxl6a" path="res://Scripts/Core/hurtbox.gd" id="9_hurtbox"]
+[ext_resource type="Script" path="res://Scripts/Entities/Enemy/States/pyro_archon_snipe_state.gd" id="10_snipe_state"]
+[ext_resource type="Script" uid="uid://csc3uyoxphj5b" path="res://Scripts/Entities/Player/States/stun_state.gd" id="11_stun"]
+[ext_resource type="PackedScene" path="res://Scenes/Entities/Enemy/sniper_beam_projectile.tscn" id="12_sniper_scene"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1"]
+radius = 12.0
+height = 36.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_avogl"]
+atlas = ExtResource("2_mygee")
+region = Rect2(0, 0, 79, 69)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l268d"]
+atlas = ExtResource("2_mygee")
+region = Rect2(79, 0, 79, 69)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2dv7q"]
+atlas = ExtResource("2_mygee")
+region = Rect2(158, 0, 79, 69)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uvddn"]
+atlas = ExtResource("2_mygee")
+region = Rect2(237, 0, 79, 69)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_001"]
+atlas = ExtResource("4_w65vx")
+region = Rect2(0, 0, 79, 69)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_002"]
+atlas = ExtResource("4_w65vx")
+region = Rect2(79, 0, 79, 69)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_003"]
+atlas = ExtResource("4_w65vx")
+region = Rect2(158, 0, 79, 69)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_004"]
+atlas = ExtResource("4_w65vx")
+region = Rect2(237, 0, 79, 69)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_pyro"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_avogl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l268d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2dv7q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uvddn")
+}],
+"loop": false,
+"name": &"attack",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_001")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_002")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_003")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_004")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_001")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_002")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_003")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_004")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 6.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_pyro_hit"]
+radius = 22.0
+
+[node name="PyroArchonBoss" type="CharacterBody2D" groups=["Enemies"]]
+z_index = 2
+collision_layer = 8
+collision_mask = 1
+script = ExtResource("1_pyro_boss")
+snipe_cooldown = 5.5
+telegraph_duration = 1.2
+recovery_duration = 2.2
+projectile_speed = 1200.0
+projectile_damage = 20.0
+min_teleport_distance = 180.0
+max_teleport_distance = 400.0
+projectile_scene = ExtResource("12_sniper_scene")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -18)
+shape = SubResource("CapsuleShape2D_1")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+modulate = Color(1, 0.45, 0.2, 1)
+position = Vector2(0, -21)
+sprite_frames = SubResource("SpriteFrames_pyro")
+animation = &"idle"
+
+[node name="CharacterAnimationManager" type="Node" parent="." node_paths=PackedStringArray("sprite")]
+script = ExtResource("2_anim_mgr")
+sprite = NodePath("../AnimatedSprite2D")
+
+[node name="CharacterStateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("3_state_mc")
+initial_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="CharacterStateMachine"]
+script = ExtResource("4_idle")
+
+[node name="Walk" type="Node" parent="CharacterStateMachine"]
+script = ExtResource("5_walk")
+
+[node name="Attack" type="Node" parent="CharacterStateMachine"]
+script = ExtResource("6_attack")
+
+[node name="Dead" type="Node" parent="CharacterStateMachine"]
+script = ExtResource("7_dead")
+
+[node name="Stun" type="Node" parent="CharacterStateMachine"]
+script = ExtResource("11_stun")
+
+[node name="Snipe" type="Node" parent="CharacterStateMachine"]
+script = ExtResource("10_snipe_state")
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 2
+script = ExtResource("8_hitbox")
+damage = 25.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(0, -18)
+shape = SubResource("CircleShape2D_pyro_hit")
+disabled = true
+
+[node name="Hurtbox" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("9_hurtbox")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(0, -18)
+shape = SubResource("CapsuleShape2D_1")
+
+[node name="Muzzle" type="Marker2D" parent="."]
+position = Vector2(16, -18)

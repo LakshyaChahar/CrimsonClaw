@@ -1,0 +1,17 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Scripts/Entities/Enemy/ground_shockwave.gd" id="1_shockwave"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wave"]
+size = Vector2(30, 32)
+
+[node name="GroundShockwave" type="Area2D"]
+collision_layer = 16
+collision_mask = 2
+script = ExtResource("1_shockwave")
+speed = 450.0
+damage = 30.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -16)
+shape = SubResource("RectangleShape2D_wave")

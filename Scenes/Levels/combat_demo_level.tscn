@@ -1,33 +1,38 @@
 [gd_scene format=3 uid="uid://c8m7k3cap1x0q"]
 
-[ext_resource type="PackedScene" uid="uid://jiqs5mkwrmsd" path="res://Scenes/Entities/Player/player.tscn" id="1_player"]
 [ext_resource type="PackedScene" uid="uid://cku1aeds5crdb" path="res://Scenes/Entities/Traps/saw_trap.tscn" id="4_saw"]
 [ext_resource type="PackedScene" uid="uid://dm7q55brlfsy" path="res://Scenes/Entities/Traps/ceiling_trap.tscn" id="5_ceiling"]
 [ext_resource type="PackedScene" uid="uid://coe2cgirmntry" path="res://Scenes/Entities/Traps/arrow_trap.tscn" id="6_arrow"]
 [ext_resource type="PackedScene" uid="uid://dy6f7wyuq08p2" path="res://Scenes/Entities/Enemy/Stalkerghoul.tscn" id="6_b62ms"]
 [ext_resource type="PackedScene" uid="uid://cc2a6kluxes7" path="res://Scenes/Entities/Enemy/enemy.tscn" id="6_ctats"]
+[ext_resource type="PackedScene" uid="uid://jiqs5mkwrmsd" path="res://Scenes/Entities/Player/player.tscn" id="7_11doo"]
 [ext_resource type="PackedScene" uid="uid://b8ya3k2ranged" path="res://Scenes/Entities/Enemy/ranged_enemy.tscn" id="7_b62ms"]
+[ext_resource type="PackedScene" path="res://Scenes/Entities/Enemy/veil_walker_boss.tscn" id="8_veil"]
+[ext_resource type="PackedScene" path="res://Scenes/Entities/Enemy/pyro_archon_boss.tscn" id="9_pyro"]
+[ext_resource type="PackedScene" path="res://Scenes/Entities/Enemy/dread_vanguard_boss.tscn" id="10_dread"]
+[ext_resource type="Script" uid="uid://q4vlj5kjqoe" path="res://Scripts/Core/sub_boss_coordinator.gd" id="11_coord"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_floor"]
-size = Vector2(3000, 40)
+size = Vector2(3467, 40)
 
 [node name="CombatDemoLevel" type="Node2D" unique_id=987654321]
+
+[node name="SubBossCoordinator" type="Node" parent="." unique_id=999888777]
+script = ExtResource("11_coord")
 
 [node name="Floor" type="StaticBody2D" parent="." unique_id=123456789]
 position = Vector2(0, 200)
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Floor" unique_id=123456790]
+position = Vector2(233.5, 0)
 shape = SubResource("RectangleShape2D_floor")
 
 [node name="Polygon2D" type="Polygon2D" parent="Floor" unique_id=123456791]
+position = Vector2(233, 0)
+scale = Vector2(1.1553333, 1)
 color = Color(0.2, 0.25, 0.3, 1)
 polygon = PackedVector2Array(-1500, -20, 1500, -20, 1500, 20, -1500, 20)
-
-[node name="Player" parent="." unique_id=100000001 instance=ExtResource("1_player")]
-position = Vector2(0, 150)
-dash_speed = 750.0
-dash_duration = 0.3
 
 [node name="Traps" type="Node2D" parent="." unique_id=100000004]
 
@@ -35,7 +40,7 @@ dash_duration = 0.3
 position = Vector2(450, 175)
 
 [node name="CeilingTrap" parent="Traps" unique_id=100000006 instance=ExtResource("5_ceiling")]
-position = Vector2(-450, 110)
+position = Vector2(-456, 130)
 
 [node name="ArrowTrap" parent="Traps" unique_id=100000007 instance=ExtResource("6_arrow")]
 position = Vector2(650, 150)
@@ -47,13 +52,30 @@ max_health = 300.0
 [node name="Enemy2" parent="." unique_id=650708294 instance=ExtResource("6_ctats")]
 position = Vector2(196, 141)
 
-[node name="Enemy" parent="Enemy2" unique_id=1305916607 instance=ExtResource("6_ctats")]
-position = Vector2(-38, -1)
-
 [node name="Stalkerghoul" parent="." unique_id=1282923343 instance=ExtResource("6_b62ms")]
-position = Vector2(-607, 25)
+position = Vector2(-614, 70)
 ambush_damage = 45.0
 ambush_lunge_speed = 850.0
 
 [node name="RangedEnemy" parent="." unique_id=771122339 instance=ExtResource("7_b62ms")]
 position = Vector2(-376, 121)
+
+[node name="Player" parent="." unique_id=1658174949 instance=ExtResource("7_11doo")]
+position = Vector2(-722, 140)
+melee_stun_duration = 0.3
+hellforge_impact_damage = 50.0
+hellforge_knockback_force = 650.0
+hellforge_fire_dps = 15.0
+hellforge_min_required_bloodthirst = 50.0
+
+[node name="DreadVanguardBoss" parent="." unique_id=100526397 instance=ExtResource("10_dread")]
+position = Vector2(1174, 157)
+
+[node name="PyroArchonBoss" parent="." unique_id=1408255325 instance=ExtResource("9_pyro")]
+position = Vector2(1313, 145)
+
+[node name="VeilWalkerBoss" parent="." unique_id=1302346881 instance=ExtResource("8_veil")]
+position = Vector2(1471, 134)
+
+[node name="Enemy3" parent="." unique_id=1305916607 instance=ExtResource("6_ctats")]
+position = Vector2(158, 140)

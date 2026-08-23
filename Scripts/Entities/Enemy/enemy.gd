@@ -44,6 +44,22 @@ func _ready() -> void:
 		is_revealed = false
 		set_stealth_mode(true)
 
+	_setup_floating_health_bar()
+
+func _setup_floating_health_bar() -> void:
+	var bar = find_child("FloatingHealthBar", false, false) as FloatingHealthBar
+	if not bar:
+		bar = FloatingHealthBar.new()
+		bar.name = "FloatingHealthBar"
+		
+		# Option B for Bosses/Sub-Bosses, Option A for Normal Enemies
+		var is_boss = (self is VeilWalkerBoss) or (self is PyroArchonBoss) or (self is DreadVanguardBoss) or ("is_sub_boss" in self)
+		bar.is_boss_bar = is_boss
+		bar.bar_width = 48.0 if is_boss else 34.0
+		bar.offset_y = -44.0 if is_boss else -36.0
+		
+		add_child(bar)
+
 func _physics_process(delta: float) -> void:
 	super._physics_process(delta)
 	
@@ -99,6 +115,22 @@ func reveal_enemy() -> void:
 			state_machine.change_state("ambush")
 		elif state_machine.states.has("walk"):
 			state_machine.change_state("walk")
+
+## Checks if the enemy is currently inside the player's active camera screen bounds
+func is_visible_in_screen(margin: float = 40.0) -> bool:
+	var vp = get_viewport()
+	if not vp:
+		return true
+	var cam = vp.get_camera_2d()
+	if not cam:
+		return true
+
+	var screen_rect = vp.get_visible_rect()
+	var cam_center = cam.get_screen_center_position()
+	var half_size = (screen_rect.size * 0.5) / cam.zoom + Vector2(margin, margin)
+	var cam_bounds = Rect2(cam_center - half_size, half_size * 2.0)
+
+	return cam_bounds.has_point(global_position)
 
 # Searches the scene tree to locate the player character
 func _find_target() -> void:

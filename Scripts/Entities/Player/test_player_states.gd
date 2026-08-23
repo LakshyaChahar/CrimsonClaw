@@ -135,5 +135,22 @@ func _initialize() -> void:
 		return
 	print("SUCCESS: Transitioned to Skill")
 	
+	# 11. Test Idle -> HellforgeDive transition
+	print("Testing transition: Idle -> HellforgeDive")
+	player.current_bloodthirst = 100.0
+	player.wants_hellforge_dive = true
+	sm.change_state("idle")
+	
+	player._physics_process(0.016)
+	sm._physics_process(0.016)
+	
+	print("Current state after Hellforge Dive request: ", sm.current_state.name)
+	if sm.current_state.name.to_lower() != "hellforgedive":
+		print("FAILED: State did not transition to HellforgeDive, got: ", sm.current_state.name)
+		quit(1)
+		return
+	print("SUCCESS: Transitioned to HellforgeDive")
+
 	print("--- All Tests Passed Successfully! ---")
 	quit(0)
+

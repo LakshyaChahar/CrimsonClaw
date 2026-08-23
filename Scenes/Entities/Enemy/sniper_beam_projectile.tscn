@@ -1,0 +1,23 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Scripts/Entities/Enemy/sniper_beam_projectile.gd" id="1_sniper_proj"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_beam"]
+size = Vector2(40, 8)
+
+[node name="SniperBeamProjectile" type="Area2D"]
+collision_layer = 16
+collision_mask = 2
+script = ExtResource("1_sniper_proj")
+speed = 1200.0
+damage = 35.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(20, 0)
+shape = SubResource("RectangleShape2D_beam")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(20, 0)
+rect = Rect2(-20, -10, 40, 20)
+
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

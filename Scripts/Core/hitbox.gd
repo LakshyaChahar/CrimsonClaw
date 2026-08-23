@@ -65,3 +65,7 @@ func _on_area_entered(area: Area2D) -> void:
 		hurtbox.receive_hit(damage, kb_dir * knockback_force, stun_duration, attacker, inflicts_fire, fire_dps, fire_duration)
 		hit_registered.emit(hurtbox)
 
+func check_overlapping_hits() -> void:
+	for area in get_overlapping_areas():
+		_on_area_entered(area)
+
