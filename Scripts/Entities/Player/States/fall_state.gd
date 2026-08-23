@@ -17,7 +17,8 @@ func enter() -> void:
 func physics_update(delta: float) -> void:
 	coyote_timer = max(0.0, coyote_timer - delta)
 	
-	if character.wants_jump and coyote_timer > 0.0:
+	if character.wants_jump and (coyote_timer > 0.0 or character.jumps_left > 0):
+		character.consume_jump_buffer()
 		state_machine.change_state("jump")
 		return
 		

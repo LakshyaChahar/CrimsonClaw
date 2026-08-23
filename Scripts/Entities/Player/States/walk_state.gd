@@ -4,6 +4,7 @@ class_name WalkState
 func enter() -> void:
 	if character.animation_manager:
 		character.animation_manager.play_anim("walk", 0)
+	character.reset_jumps()
 
 func physics_update(delta: float) -> void:
 	# Apply gravity in case we step off a ledge
