@@ -367,6 +367,10 @@ func _process(delta: float) -> void:
 	if Input.is_key_pressed(KEY_F11):
 		_toggle_fullscreen()
 
+func consume_jump_buffer() -> void:
+	jump_buffer_timer = 0.0
+	wants_jump = false
+
 func _toggle_fullscreen() -> void:
 	var window = get_window()
 	if window:

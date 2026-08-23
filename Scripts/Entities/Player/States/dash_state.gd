@@ -52,10 +52,11 @@ func enter() -> void:
 	if character.animation_manager:
 		character.animation_manager.play_anim("dash", 2)
 		
-	if character.input_direction != Vector2.ZERO:
-		character.dash_direction = character.input_direction.normalized()
-	else:
-		character.dash_direction = Vector2(character.facing_direction, 0.0)
+	# Enforce strictly horizontal dash (left or right)
+	var horiz_dir: float = sign(character.input_direction.x) if character.input_direction.x != 0.0 else float(character.facing_direction)
+	if horiz_dir == 0.0:
+		horiz_dir = 1.0
+	character.dash_direction = Vector2(horiz_dir, 0.0)
 		
 	character.velocity = character.dash_direction * dash_speed
 	dash_timer = dash_duration
@@ -65,6 +66,10 @@ func exit() -> void:
 	character.wants_dash = false
 	if "dash_buffer_timer" in character:
 		character.dash_buffer_timer = 0.0
+		
+	# Set dash cooldown timer so dash cannot be spammed
+	character.dash_cooldown_timer = dash_cooldown
+	character.can_dash = false
 		
 	# Restore original physical collision layer & mask
 	character.collision_layer = saved_collision_layer
@@ -87,16 +92,10 @@ func exit() -> void:
 		if character.animation_manager.sprite:
 			character.animation_manager.sprite.speed_scale = 1.0
 		character.animation_manager.current_priority = 0
-	
-	# Start cooldown timer (dash reload time) after dash finishes
-	get_tree().create_timer(dash_cooldown).timeout.connect(
-		func(): 
-			if is_instance_valid(character): 
-				character.can_dash = true
-	)
 
 func physics_update(delta: float) -> void:
 	dash_timer -= delta
+	character.velocity.y = 0.0 # Maintain level horizontal dash
 	character.move_and_slide()
 	
 	if dash_timer <= 0.0:
