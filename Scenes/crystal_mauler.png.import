@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://niuvjo64orlo"
-path="res://.godot/imported/crystal_mauler.png-fb58c39c18090609e804c3ef2a029478.ctex"
+path="res://.godot/imported/crystal_mauler.png-bf92714091290eacf7693ef9d7dc2fb3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Tileset/Lively_NPCs_v3.1/Lively_NPCs_v3.1/sprite sheets/elementals/crystal_mauler.png"
-dest_files=["res://.godot/imported/crystal_mauler.png-fb58c39c18090609e804c3ef2a029478.ctex"]
+source_file="res://Scenes/crystal_mauler.png"
+dest_files=["res://.godot/imported/crystal_mauler.png-bf92714091290eacf7693ef9d7dc2fb3.ctex"]
 
 [params]
 
