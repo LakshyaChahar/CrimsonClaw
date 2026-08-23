@@ -14,8 +14,11 @@ signal died()
 
 @export_group("Jump Parameters")
 @export var jump_force: float = -420.0
+@export var max_jumps: int = 2
 @export var gravity_scale: float = 1.0
 @export var max_fall_speed: float = 800.0
+
+var jumps_left: int = 2
 
 @export_group("Dash Properties")
 @export var dash_speed: float = 650.0
@@ -24,6 +27,8 @@ signal died()
 @export var post_dash_iframe_duration: float = 0.15
 ## Minimum required bloodthirst to perform a dash.
 @export var dash_min_required_bloodthirst: float = 0.0
+
+var dash_cooldown_timer: float = 0.0
 
 @export_group("Health System")
 @export var max_health: float = 100.0
@@ -71,10 +76,12 @@ func _ready() -> void:
 		state_machine = find_child("*CharacterStateMachine*")
 
 func _physics_process(delta: float) -> void:
-	# Manage dash cooldown timer in the background
-	if not can_dash and not is_dashing:
-		# Cooldown tick can be handled here or in a state
-		pass
+	# Manage dash cooldown timer
+	if dash_cooldown_timer > 0.0:
+		dash_cooldown_timer -= delta
+		can_dash = false
+	elif not is_dashing:
+		can_dash = true
 		
 	# Passive health regeneration slowly over time
 	if not is_dead and current_health < max_health:
@@ -109,6 +116,14 @@ func update_facing_direction() -> void:
 ## Returns true if the character is physically on the floor or if the floor state is forced.
 func is_grounded() -> bool:
 	return is_on_floor() or force_on_floor
+
+## Resets available jumps back to max_jumps
+func reset_jumps() -> void:
+	jumps_left = max_jumps
+
+## Consumes/clears the jump buffer and input flag
+func consume_jump_buffer() -> void:
+	wants_jump = false
 
 ## Restores health by a certain amount, capped at max_health
 func heal(amount: float) -> void:

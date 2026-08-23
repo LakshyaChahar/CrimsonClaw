@@ -5,9 +5,19 @@ func enter() -> void:
 	if character.animation_manager:
 		character.animation_manager.play_anim("jump", 1)
 	character.velocity.y = character.jump_force
-	character.wants_jump = false
+	character.consume_jump_buffer()
+	if character.jumps_left > 0:
+		character.jumps_left -= 1
 
 func physics_update(delta: float) -> void:
+	# Check mid-air jump (double jump while rising)
+	if character.wants_jump and character.jumps_left > 0:
+		character.consume_jump_buffer()
+		character.jumps_left -= 1
+		character.velocity.y = character.jump_force
+		if character.animation_manager:
+			character.animation_manager.play_anim("jump", 1)
+			
 	character.apply_gravity(delta)
 	
 	var target_speed = character.input_direction.x * character.move_speed

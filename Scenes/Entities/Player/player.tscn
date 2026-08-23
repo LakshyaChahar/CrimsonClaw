@@ -210,6 +210,30 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_fd7sw")
+}],
+"loop": true,
+"name": &"hellforge_fall",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o25qk")
+}],
+"loop": false,
+"name": &"hellforge_land",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l6pm8")
+}],
+"loop": false,
+"name": &"hellforge_rise",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_7dcmg")
 }, {
 "duration": 1.0,
@@ -243,7 +267,33 @@ animations = [{
 "name": &"idle",
 "speed": 5.0
 }, {
-"frames": [],
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o25qk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bvxs1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d82u1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8mwgt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ornjt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8clp8")
+}],
+"loop": false,
+"name": &"ignis_claw",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l6pm8")
+}],
 "loop": false,
 "name": &"jump",
 "speed": 5.0
@@ -349,7 +399,7 @@ collision_mask = 9
 script = ExtResource("1_player")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=810423284]
-position = Vector2(0, -21)
+position = Vector2(7, -11)
 shape = SubResource("CapsuleShape2D_1")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=2045404950]
@@ -361,10 +411,10 @@ drag_right_margin = 0.0
 drag_bottom_margin = 0.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=19559982]
-position = Vector2(-4.999998, -33)
-scale = Vector2(1.6770834, 1.5208334)
+position = Vector2(-3, -48)
+scale = Vector2(1.9800618, 2.0260415)
 sprite_frames = SubResource("SpriteFrames_1")
-animation = &"dash"
+animation = &"hellforge_rise"
 
 [node name="CharacterAnimationManager" type="Node" parent="." unique_id=1083209188 node_paths=PackedStringArray("sprite")]
 script = ExtResource("2_anim_mgr")
