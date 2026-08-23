@@ -1,4 +1,4 @@
-# Walk state for chasing the player
+# Walk state for chasing the player with modular special attack state transitions
 extends CharacterState
 class_name EnemyWalkState
 
@@ -19,9 +19,27 @@ func physics_update(delta: float) -> void:
 		state_machine.change_state("idle")
 		return
 		
+	# Check for special boss attack states with Coordinator token check (prevents dogpiling!)
+	if enemy.has_method("can_perform_special_attack") and enemy.can_perform_special_attack():
+		if SubBossCoordinator.can_attack(enemy):
+			if "next_special_attack" in enemy:
+				if enemy.next_special_attack == "slam" and state_machine.has_node("Slam"):
+					state_machine.change_state("slam")
+					return
+				elif enemy.next_special_attack == "charge" and state_machine.has_node("Charge"):
+					state_machine.change_state("charge")
+					return
+			if state_machine.has_node("Snipe"):
+				state_machine.change_state("snipe")
+				return
+			elif state_machine.has_node("PhaseStrike"):
+				state_machine.change_state("phasestrike")
+				return
+
 	if dist <= enemy.attack_range and enemy.attack_cooldown_timer <= 0.0:
-		state_machine.change_state("attack")
-		return
+		if enemy.is_visible_in_screen():
+			state_machine.change_state("attack")
+			return
 		
 	var dir_to_player = sign(enemy.target.global_position.x - enemy.global_position.x)
 	if dir_to_player == 0:

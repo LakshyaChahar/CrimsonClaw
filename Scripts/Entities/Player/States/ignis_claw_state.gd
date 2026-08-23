@@ -39,7 +39,8 @@ func enter() -> void:
 		character.wants_ignis_claw = false
 
 	if min_required_bloodthirst > 0.0:
-		if "current_bloodthirst" in character and character.current_bloodthirst < min_required_bloodthirst:
+		var is_tyrant_active = ("is_tyrant" in character and character.is_tyrant)
+		if not is_tyrant_active and "current_bloodthirst" in character and character.current_bloodthirst < min_required_bloodthirst:
 			state_machine.change_state("idle" if character.is_grounded() else "fall")
 			return
 				

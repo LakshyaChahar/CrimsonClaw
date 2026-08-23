@@ -11,7 +11,7 @@ signal invincibility_started()
 signal invincibility_ended()
 
 ## Duration of invincibility frames (i-frames) after being hit.
-@export var invincibility_duration: float = 0.5
+@export var invincibility_duration: float = 0.08
 
 ## Multiplier for incoming damage (useful for defenses, weak points, etc.).
 @export var damage_multiplier: float = 1.0
@@ -45,7 +45,11 @@ func receive_hit(damage: float, knockback: Vector2, stun_duration: float, attack
 	# Emit signal for custom visual effects, sound, or state changes
 	hit_received.emit(final_damage, knockback, stun_duration, attacker)
 	
-	# If the entity is a Character, apply the damage
+	# If entity has a directional shield (e.g. DreadVanguardBoss), process shield damage first
+	if entity and entity.has_method("process_shield_damage") and attacker:
+		final_damage = entity.process_shield_damage(final_damage, attacker.global_position)
+
+	# If the entity is a Character, apply the final damage
 	if entity and entity.has_method("take_damage"):
 		entity.take_damage(final_damage)
 		

@@ -96,6 +96,8 @@ func enter() -> void:
 		if hitbox_shape:
 			hitbox_shape.position = offset
 			hitbox_shape.rotation = rot_angle
+			hitbox_shape.set_deferred("disabled", false)
+			hitbox.call_deferred("check_overlapping_hits")
 	
 	# Play attack animation
 	if character.animation_manager:
@@ -110,11 +112,6 @@ func enter() -> void:
 					sprite.speed_scale = anim_len / attack_duration
 					
 			sprite.animation_finished.connect(_on_animation_finished)
-			sprite.frame_changed.connect(_on_frame_changed)
-			
-			# Handle placeholder/short animations by enabling hitbox immediately
-			if hitbox_shape and sprite.sprite_frames and sprite.sprite_frames.has_animation("attack") and sprite.sprite_frames.get_frame_count("attack") <= 2:
-				hitbox_shape.set_deferred("disabled", false)
 			
 	# Halt horizontal movement during melee swing
 	character.velocity.x = 0.0
@@ -126,8 +123,6 @@ func exit() -> void:
 		sprite.speed_scale = 1.0
 		if sprite.animation_finished.is_connected(_on_animation_finished):
 			sprite.animation_finished.disconnect(_on_animation_finished)
-		if sprite.frame_changed.is_connected(_on_frame_changed):
-			sprite.frame_changed.disconnect(_on_frame_changed)
 			
 	# Always turn off and reset the hitbox shape when leaving the attack state
 	if hitbox_shape:
@@ -149,21 +144,6 @@ func physics_update(delta: float) -> void:
 				state_machine.change_state("idle")
 		else:
 			state_machine.change_state("fall")
-
-func _on_frame_changed() -> void:
-	var sprite = character.animation_manager.sprite
-	if not sprite or not hitbox_shape:
-		return
-		
-	# --- HITBOX TIMING CONFIGURATION ---
-	# We enable the hitbox only on specific "active swing" frames of the animation.
-	if sprite.animation == "attack":
-		if sprite.sprite_frames and sprite.sprite_frames.has_animation("attack") and sprite.sprite_frames.get_frame_count("attack") <= 2:
-			hitbox_shape.set_deferred("disabled", false)
-		elif sprite.frame in active_frames:
-			hitbox_shape.set_deferred("disabled", false) # Enable hitbox
-		else:
-			hitbox_shape.set_deferred("disabled", true)  # Disable hitbox
 
 func _on_animation_finished() -> void:
 	anim_finished = true
