@@ -31,7 +31,7 @@ var jump_buffer_timer: float = 0.0
 
 @export_group("Bloodthirst System")
 @export var max_bloodthirst: float = 100.0
-@export var current_bloodthirst: float = 0.0
+@export var current_bloodthirst: float = 100.0
 signal bloodthirst_changed(old_value: float, new_value: float)
 
 @export_group("Crimson Tyrant Transformation (Designer Panel)")
@@ -144,7 +144,6 @@ func _ready() -> void:
 	health_changed.connect(_on_health_changed)
 	bloodthirst_changed.connect(_on_bloodthirst_changed)
 
-	setup_camera_limits()
 	get_tree().root.content_scale_mode = Window.CONTENT_SCALE_MODE_CANVAS_ITEMS
 	get_tree().root.content_scale_aspect = Window.CONTENT_SCALE_ASPECT_EXPAND
 
@@ -396,31 +395,8 @@ func _init_input_actions() -> void:
 	final_hellforge_dive = action_hellforge_dive if InputMap.has_action(action_hellforge_dive) else "hellforge_dive"
 	final_tyrant = action_tyrant if InputMap.has_action(action_tyrant) else "tyrant_transform"
 
-## Automatically detects a child Camera2D and sets its boundaries to the TileMap/TileMapLayer limits.
-func setup_camera_limits() -> void:
-	var camera = find_child("Camera2D", true, false) as Camera2D
-	if not camera:
-		return
-	
-	var tilemap = get_tree().get_first_node_in_group("TileMap")
-	if not tilemap:
-		var root_scene = get_tree().current_scene
-		if root_scene:
-			tilemap = root_scene.find_child("*TileMap*", true, false)
-			if not tilemap:
-				tilemap = root_scene.find_child("*TileMapLayer*", true, false)
-				
-	if tilemap:
-		var rect: Rect2i
-		if tilemap.has_method("get_used_rect"):
-			rect = tilemap.get_used_rect()
-		
-		if rect != Rect2i() and "tile_set" in tilemap and tilemap.tile_set:
-			var cell_size = tilemap.tile_set.tile_size
-			camera.limit_left = rect.position.x * cell_size.x
-			camera.limit_top = rect.position.y * cell_size.y
-			camera.limit_right = rect.end.x * cell_size.x
-			camera.limit_bottom = rect.end.y * cell_size.y
+
+
 
 ## Triggers a screen shake effect on the child Camera2D.
 func trigger_screen_shake(intensity: float = 8.0, duration: float = 0.25) -> void:

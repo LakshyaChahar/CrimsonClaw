@@ -41,6 +41,7 @@ func enter() -> void:
 	if min_required_bloodthirst > 0.0:
 		var is_tyrant_active = ("is_tyrant" in character and character.is_tyrant)
 		if not is_tyrant_active and "current_bloodthirst" in character and character.current_bloodthirst < min_required_bloodthirst:
+			push_warning("IgnisClawState: Insufficient bloodthirst! Required: " + str(min_required_bloodthirst) + ", Current: " + str(character.current_bloodthirst))
 			state_machine.change_state("idle" if character.is_grounded() else "fall")
 			return
 				
@@ -67,15 +68,19 @@ func enter() -> void:
 		var facing_dir = Vector2(character.facing_direction if character.facing_direction != 0 else 1.0, 0.0)
 		hitbox.rotation = facing_dir.angle()
 		
-	# Play attack animation
+	# Play attack or ignis_claw animation (with fallback)
 	if character.animation_manager:
-		character.animation_manager.play_anim("attack", 2)
 		var sprite = character.animation_manager.sprite
+		var anim_to_play = "ignis_claw"
+		if sprite and sprite.sprite_frames and not sprite.sprite_frames.has_animation("ignis_claw"):
+			anim_to_play = "attack"
+
+		character.animation_manager.play_anim(anim_to_play, 2)
 		if sprite:
-			if sprite.sprite_frames and sprite.sprite_frames.has_animation("attack"):
-				var frames = sprite.sprite_frames.get_frame_count("attack")
-				var fps = sprite.sprite_frames.get_animation_speed("attack")
-				if fps > 0:
+			if sprite.sprite_frames and sprite.sprite_frames.has_animation(anim_to_play):
+				var frames = sprite.sprite_frames.get_frame_count(anim_to_play)
+				var fps = sprite.sprite_frames.get_animation_speed(anim_to_play)
+				if fps > 0 and frames > 0:
 					var anim_len = float(frames) / fps
 					sprite.speed_scale = anim_len / attack_duration
 					
@@ -124,8 +129,8 @@ func _on_frame_changed() -> void:
 	if not sprite or not hitbox_shape:
 		return
 		
-	if sprite.animation == "attack":
-		if sprite.sprite_frames and sprite.sprite_frames.has_animation("attack") and sprite.sprite_frames.get_frame_count("attack") <= 2:
+	if sprite.animation == "attack" or sprite.animation == "ignis_claw":
+		if sprite.sprite_frames and sprite.sprite_frames.has_animation(sprite.animation) and sprite.sprite_frames.get_frame_count(sprite.animation) <= 2:
 			hitbox_shape.set_deferred("disabled", false)
 		elif sprite.frame in active_frames:
 			hitbox_shape.set_deferred("disabled", false)
