@@ -61,6 +61,7 @@ func enter() -> void:
 	if min_required_bloodthirst > 0.0:
 		var is_tyrant_active = ("is_tyrant" in character and character.is_tyrant)
 		if not is_tyrant_active and "current_bloodthirst" in character and character.current_bloodthirst < min_required_bloodthirst:
+			push_warning("HellforgeDiveState: Insufficient bloodthirst! Required: " + str(min_required_bloodthirst) + ", Current: " + str(character.current_bloodthirst))
 			state_machine.change_state("idle" if character.is_grounded() else "fall")
 			return
 
@@ -169,8 +170,15 @@ func _play_phase_animation(anim_name: String, fallback_anim: String) -> void:
 	var sprite = character.animation_manager.sprite
 	var chosen_anim = anim_name
 	if sprite and sprite.sprite_frames:
-		if not sprite.sprite_frames.has_animation(anim_name):
-			chosen_anim = fallback_anim
+		var has_primary = sprite.sprite_frames.has_animation(anim_name) and sprite.sprite_frames.get_frame_count(anim_name) > 0
+		if not has_primary:
+			var has_fallback = sprite.sprite_frames.has_animation(fallback_anim) and sprite.sprite_frames.get_frame_count(fallback_anim) > 0
+			if has_fallback:
+				chosen_anim = fallback_anim
+			elif sprite.sprite_frames.has_animation("attack") and sprite.sprite_frames.get_frame_count("attack") > 0:
+				chosen_anim = "attack"
+			elif sprite.sprite_frames.has_animation("idle") and sprite.sprite_frames.get_frame_count("idle") > 0:
+				chosen_anim = "idle"
 
 	character.animation_manager.play_anim(chosen_anim, 2)
 

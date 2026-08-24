@@ -4,6 +4,7 @@ class_name IdleState
 func enter() -> void:
 	if character.animation_manager:
 		character.animation_manager.play_anim("idle", 0)
+	character.reset_jumps()
 	
 	# Stop horizontal movement completely or apply heavy friction
 	character.velocity.x = move_toward(character.velocity.x, 0.0, character.friction * 0.1)
