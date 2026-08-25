@@ -7,17 +7,13 @@ func enter() -> void:
 	character.wants_dash = false
 	character.wants_skill = false
 	
-	# Play the stun or hurt animation if it exists
-	if character.animation_manager and character.animation_manager.sprite:
+	# Play stun animation if it exists, or trigger hurt animation/fallback
+	if character and character.animation_manager and character.animation_manager.sprite:
 		var sprite_frames = character.animation_manager.sprite.sprite_frames
-		if sprite_frames:
-			if sprite_frames.has_animation("stun"):
-				character.animation_manager.play_anim("stun", 80, true)
-			elif sprite_frames.has_animation("hurt"):
-				character.animation_manager.play_anim("hurt", 80, true)
-			else:
-				# Fallback if no specific stun or hurt animation is defined yet
-				character.animation_manager.play_anim("idle", 80, true)
+		if sprite_frames and sprite_frames.has_animation("stun"):
+			character.animation_manager.play_anim("stun", 80, true)
+		elif character.has_method("_play_hurt_reaction"):
+			character._play_hurt_reaction()
 
 func physics_update(delta: float) -> void:
 	# Apply gravity while stunned in case we are in mid-air

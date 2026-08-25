@@ -160,6 +160,23 @@ animations = [{
 "loop": true,
 "name": &"walk",
 "speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jjfp3")
+}],
+"loop": false,
+"name": &"hurt",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jjfp3")
+}],
+"loop": false,
+"name": &"stun",
+"speed": 5.0
+}]
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0fwr3"]

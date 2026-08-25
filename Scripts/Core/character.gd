@@ -134,6 +134,10 @@ func heal(amount: float) -> void:
 	if old_health != current_health:
 		health_changed.emit(old_health, current_health)
 
+var _hurt_tween: Tween = null
+var _original_sprite_scale: Vector2 = Vector2.ONE
+var _has_saved_sprite_scale: bool = false
+
 ## Deals damage to the character, clamping at 0 and triggering death if health reaches 0
 func take_damage(amount: float) -> void:
 	if is_dead or amount <= 0.0:
@@ -142,13 +146,13 @@ func take_damage(amount: float) -> void:
 	current_health = max(current_health - amount, 0.0)
 	print("[Combat] ", name, " took ", amount, " damage. Health: ", current_health, "/", max_health)
 	
-	_play_hit_flash()
-	
 	if old_health != current_health:
 		health_changed.emit(old_health, current_health)
 		
 	if current_health <= 0.0:
 		die()
+	else:
+		_play_hurt_reaction()
 
 func get_base_modulate() -> Color:
 	var burn_comp = find_child("BurnComponent") as BurnComponent
@@ -156,22 +160,87 @@ func get_base_modulate() -> Color:
 		return Color(1.0, 0.45, 0.1) # Fire Orange tint
 	return Color.WHITE
 
-func _play_hit_flash() -> void:
+## Plays hurt animation if available, or applies fallback visual impact (hit flash, squish, micro-shake)
+func _play_hurt_reaction() -> void:
+	if is_dead:
+		return
+
+	var played_anim = false
 	if animation_manager and animation_manager.sprite:
 		var sprite = animation_manager.sprite
-		sprite.modulate = Color(1.0, 0.25, 0.25, 1.0) # Flash Red
-		var tween = create_tween()
-		if tween:
-			tween.tween_property(sprite, "modulate", get_base_modulate(), 0.15)
+		var sprite_frames = sprite.sprite_frames
+		if sprite_frames:
+			if sprite_frames.has_animation("hurt"):
+				animation_manager.play_anim("hurt", 85, true)
+				played_anim = true
+			elif sprite_frames.has_animation("hit"):
+				animation_manager.play_anim("hit", 85, true)
+				played_anim = true
+			elif sprite_frames.has_animation("take_hit"):
+				animation_manager.play_anim("take_hit", 85, true)
+				played_anim = true
+
+	# Fallback if no specific "hurt", "hit", or "take_hit" animation exists:
+	if not played_anim:
+		_play_fallback_hurt_impact()
+
+func _play_fallback_hurt_impact() -> void:
+	if not animation_manager or not animation_manager.sprite:
+		return
+		
+	var sprite = animation_manager.sprite
+	
+	# Save base scale magnitude once
+	if not _has_saved_sprite_scale:
+		_original_sprite_scale = Vector2(abs(sprite.scale.x), abs(sprite.scale.y))
+		_has_saved_sprite_scale = true
+
+	if _hurt_tween and _hurt_tween.is_valid():
+		_hurt_tween.kill()
+
+	# 1. Red Hit Flash
+	sprite.modulate = Color(1.0, 0.25, 0.25, 1.0)
+	
+	# 2. Squish & Stretch micro-bounce
+	var target_x = _original_sprite_scale.x * (1.18 if sprite.scale.x >= 0 else -1.18)
+	var target_y = _original_sprite_scale.y * 0.82
+	var normal_scale = Vector2(
+		_original_sprite_scale.x if sprite.scale.x >= 0 else -_original_sprite_scale.x,
+		_original_sprite_scale.y if sprite.scale.y >= 0 else -_original_sprite_scale.y
+	)
+	
+	sprite.scale = Vector2(target_x, target_y)
+
+	_hurt_tween = create_tween().set_parallel(true)
+	_hurt_tween.tween_property(sprite, "modulate", get_base_modulate(), 0.18)
+	_hurt_tween.tween_property(sprite, "scale", normal_scale, 0.16).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+
+func _play_hit_flash() -> void:
+	_play_hurt_reaction()
 
 ## Handles death logic and triggers death state if configured
 func die() -> void:
 	is_dead = true
+	velocity = Vector2.ZERO # Halt physical movement immediately on lethal hit
 	died.emit()
+	
+	_trigger_death_hitstop(0.08) # 0.08s hitstop pause on lethal hit
+	
 	if state_machine:
 		# If a death state is registered, transition to it
 		if state_machine.states.has("dead"):
 			state_machine.change_state("dead")
+
+## Triggers a brief hitstop (frame freeze pause) for visual impact on lethal hits
+func _trigger_death_hitstop(duration: float = 0.08) -> void:
+	if animation_manager and animation_manager.sprite:
+		var sprite = animation_manager.sprite
+		var prev_speed = sprite.speed_scale
+		sprite.speed_scale = 0.0
+		if is_inside_tree():
+			await get_tree().create_timer(duration, false, true).timeout
+		if is_instance_valid(sprite):
+			sprite.speed_scale = prev_speed
 
 ## Stuns the character for a specific duration and transitions to the stun state if defined
 func stun(duration: float) -> void:

@@ -60,43 +60,43 @@ region = Rect2(192, 0, 96, 96)
 atlas = ExtResource("4_fd7sw")
 region = Rect2(0, 0, 96, 96)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_7dcmg"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_nr3lb"]
 atlas = ExtResource("4_fd7sw")
 region = Rect2(0, 0, 96, 96)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_mt20e"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_u5nyj"]
 atlas = ExtResource("4_fd7sw")
 region = Rect2(96, 0, 96, 96)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_50st8"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_7dcmg"]
 atlas = ExtResource("4_fd7sw")
 region = Rect2(192, 0, 96, 96)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_1ee1x"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_mt20e"]
 atlas = ExtResource("4_fd7sw")
 region = Rect2(288, 0, 96, 96)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_wl017"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_50st8"]
 atlas = ExtResource("4_fd7sw")
 region = Rect2(384, 0, 96, 96)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_sajyx"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_1ee1x"]
 atlas = ExtResource("4_fd7sw")
 region = Rect2(480, 0, 96, 96)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_fme60"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_wl017"]
 atlas = ExtResource("4_fd7sw")
 region = Rect2(576, 0, 96, 96)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_fb3ol"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_sajyx"]
 atlas = ExtResource("4_fd7sw")
 region = Rect2(672, 0, 96, 96)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_t4n6s"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_fme60"]
 atlas = ExtResource("4_fd7sw")
 region = Rect2(768, 0, 96, 96)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_qy61i"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_fb3ol"]
 atlas = ExtResource("4_fd7sw")
 region = Rect2(864, 0, 96, 96)
 
@@ -190,7 +190,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"attack",
-"speed": 5.0
+"speed": 30.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -198,6 +198,20 @@ animations = [{
 }],
 "loop": false,
 "name": &"dash",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o25qk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bvxs1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d82u1")
+}],
+"loop": false,
+"name": &"die",
 "speed": 5.0
 }, {
 "frames": [{
@@ -230,9 +244,40 @@ animations = [{
 }],
 "loop": false,
 "name": &"hellforge_rise",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fd7sw")
+}],
+"loop": false,
+"name": &"hurt",
 "speed": 5.0
 }, {
 "frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fd7sw")
+}],
+"loop": false,
+"name": &"ignis_claw",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fd7sw")
+}],
+"loop": false,
+"name": &"stun",
+"speed": 5.0
+}
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nr3lb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u5nyj")
+}, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_7dcmg")
 }, {
@@ -256,16 +301,10 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_fb3ol")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_t4n6s")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_qy61i")
 }],
 "loop": true,
 "name": &"idle",
-"speed": 5.0
+"speed": 30.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -288,7 +327,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"ignis_claw",
-"speed": 8.0
+"speed": 30.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -296,7 +335,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"jump",
-"speed": 5.0
+"speed": 30.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -349,7 +388,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"walk",
-"speed": 5.0
+"speed": 30.0
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_sword"]
@@ -414,7 +453,7 @@ drag_bottom_margin = 0.0
 position = Vector2(-3, -48)
 scale = Vector2(1.9800618, 2.0260415)
 sprite_frames = SubResource("SpriteFrames_1")
-animation = &"hellforge_rise"
+animation = &"idle"
 
 [node name="CharacterAnimationManager" type="Node" parent="." unique_id=1083209188 node_paths=PackedStringArray("sprite")]
 script = ExtResource("2_anim_mgr")

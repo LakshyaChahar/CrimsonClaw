@@ -151,6 +151,35 @@ func _initialize() -> void:
 		return
 	print("SUCCESS: Transitioned to HellforgeDive")
 
+	# 12. Test Death and Respawn
+	print("Testing transition: Death -> Respawn")
+	sm.change_state("idle")
+	player.die()
+	player._physics_process(0.016)
+	sm._physics_process(0.016)
+	
+	if sm.current_state.name.to_lower() != "dead":
+		print("FAILED: State did not transition to Dead, got: ", sm.current_state.name)
+		quit(1)
+		return
+	print("SUCCESS: Transitioned to Dead state. Collision mask: ", player.collision_mask)
+	if player.collision_mask != 1:
+		print("FAILED: Expected collision_mask to be 1 to prevent falling through world, got: ", player.collision_mask)
+		quit(1)
+		return
+		
+	# Trigger respawn
+	player.respawn()
+	if sm.current_state.name.to_lower() != "idle":
+		print("FAILED: State did not transition back to Idle after respawn, got: ", sm.current_state.name)
+		quit(1)
+		return
+	if player.current_health != player.max_health:
+		print("FAILED: Health was not restored upon respawn")
+		quit(1)
+		return
+	print("SUCCESS: Respawned cleanly to Idle with full health!")
+
 	print("--- All Tests Passed Successfully! ---")
 	quit(0)
 

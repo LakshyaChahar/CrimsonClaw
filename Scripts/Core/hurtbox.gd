@@ -62,9 +62,8 @@ func receive_hit(damage: float, knockback: Vector2, stun_duration: float, attack
 			entity.call_deferred("add_child", burn_comp)
 		burn_comp.apply_burn(fire_dps, fire_duration)
 		
-	# Apply knockback/stun if the entity is a Character and we can manipulate its velocity
-	if entity is Character:
-		# Apply knockback directly to character velocity if desired, or handle it via signal in a state
+	# Apply knockback/stun if the entity is a Character, alive, and we can manipulate its velocity
+	if entity is Character and not entity.is_dead:
 		if knockback != Vector2.ZERO:
 			entity.velocity = knockback
 		if stun_duration > 0.0 and entity.has_method("stun"):

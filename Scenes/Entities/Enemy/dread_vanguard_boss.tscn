@@ -1,6 +1,6 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://bnw5nxwhwelnl"]
 
-[ext_resource type="Script" path="res://Scripts/Entities/Enemy/dread_vanguard_boss.gd" id="1_dread_boss"]
+[ext_resource type="Script" uid="uid://do7pi1l1fgrhs" path="res://Scripts/Entities/Enemy/dread_vanguard_boss.gd" id="1_dread_boss"]
 [ext_resource type="Script" uid="uid://o574iqi28cq3" path="res://Scripts/Core/character_animation_manager.gd" id="2_anim_mgr"]
 [ext_resource type="Texture2D" uid="uid://b37yxtl7l4nty" path="res://Scenes/Entities/Assets/Ghoul/ATTACK.png" id="2_mygee"]
 [ext_resource type="Script" uid="uid://ch643o6echy12" path="res://Scripts/Core/character_state_machine.gd" id="3_state_mc"]
@@ -11,8 +11,8 @@
 [ext_resource type="Script" uid="uid://1nmwna68cnsy" path="res://Scripts/Entities/Enemy/States/enemy_dead_state.gd" id="7_dead"]
 [ext_resource type="Script" uid="uid://cks5b8uy7k5xl" path="res://Scripts/Core/hitbox.gd" id="8_hitbox"]
 [ext_resource type="Script" uid="uid://bohxydkawxl6a" path="res://Scripts/Core/hurtbox.gd" id="9_hurtbox"]
-[ext_resource type="Script" path="res://Scripts/Entities/Enemy/States/dread_vanguard_slam_state.gd" id="10_slam"]
-[ext_resource type="Script" path="res://Scripts/Entities/Enemy/States/dread_vanguard_charge_state.gd" id="11_charge"]
+[ext_resource type="Script" uid="uid://b63pbby0rnqu" path="res://Scripts/Entities/Enemy/States/dread_vanguard_slam_state.gd" id="10_slam"]
+[ext_resource type="Script" uid="uid://ccvemmh7fbv5f" path="res://Scripts/Entities/Enemy/States/dread_vanguard_charge_state.gd" id="11_charge"]
 [ext_resource type="Script" uid="uid://csc3uyoxphj5b" path="res://Scripts/Entities/Player/States/stun_state.gd" id="12_stun"]
 [ext_resource type="PackedScene" path="res://Scenes/Entities/Enemy/ground_shockwave.tscn" id="13_wave_scene"]
 
@@ -74,6 +74,30 @@ animations = [{
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_001")
+}],
+"loop": false,
+"name": &"charge",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_001")
+}],
+"loop": false,
+"name": &"die",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_001")
+}],
+"loop": false,
+"name": &"hurt",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_001")
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_002")
@@ -86,6 +110,22 @@ animations = [{
 }],
 "loop": true,
 "name": &"idle",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_001")
+}],
+"loop": false,
+"name": &"slam",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_001")
+}],
+"loop": false,
+"name": &"stun",
 "speed": 6.0
 }, {
 "frames": [{
@@ -109,79 +149,68 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_dread_hit"]
 radius = 26.0
 
-[node name="DreadVanguardBoss" type="CharacterBody2D" groups=["Enemies"]]
+[node name="DreadVanguardBoss" type="CharacterBody2D" unique_id=1279477968 groups=["Enemies"]]
 z_index = 2
 collision_layer = 8
-collision_mask = 1
 script = ExtResource("1_dread_boss")
-max_shield_health = 80.0
-current_shield_health = 80.0
-shield_damage_reduction = 0.85
-stun_on_shield_break_duration = 3.0
-slam_cooldown = 5.0
-charge_cooldown = 7.0
-shockwave_speed = 450.0
-charge_speed = 500.0
-slam_damage = 18.0
-charge_damage = 20.0
 shockwave_scene = ExtResource("13_wave_scene")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1433670394]
 position = Vector2(0, -21)
 shape = SubResource("CapsuleShape2D_dread")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1161047412]
 modulate = Color(0.85, 0.7, 0.25, 1)
 position = Vector2(0, -21)
 sprite_frames = SubResource("SpriteFrames_dread")
-animation = &"idle"
+animation = &"hurt"
 
-[node name="CharacterAnimationManager" type="Node" parent="." node_paths=PackedStringArray("sprite")]
+[node name="CharacterAnimationManager" type="Node" parent="." unique_id=1442195694 node_paths=PackedStringArray("sprite")]
 script = ExtResource("2_anim_mgr")
 sprite = NodePath("../AnimatedSprite2D")
 
-[node name="CharacterStateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+[node name="CharacterStateMachine" type="Node" parent="." unique_id=1484375455 node_paths=PackedStringArray("initial_state")]
 script = ExtResource("3_state_mc")
 initial_state = NodePath("Idle")
 
-[node name="Idle" type="Node" parent="CharacterStateMachine"]
+[node name="Idle" type="Node" parent="CharacterStateMachine" unique_id=269858045]
 script = ExtResource("4_idle")
 
-[node name="Walk" type="Node" parent="CharacterStateMachine"]
+[node name="Walk" type="Node" parent="CharacterStateMachine" unique_id=68569230]
 script = ExtResource("5_walk")
 
-[node name="Attack" type="Node" parent="CharacterStateMachine"]
+[node name="Attack" type="Node" parent="CharacterStateMachine" unique_id=1033477077]
 script = ExtResource("6_attack")
 
-[node name="Dead" type="Node" parent="CharacterStateMachine"]
+[node name="Dead" type="Node" parent="CharacterStateMachine" unique_id=1216592344]
 script = ExtResource("7_dead")
 
-[node name="Stun" type="Node" parent="CharacterStateMachine"]
+[node name="Stun" type="Node" parent="CharacterStateMachine" unique_id=470007502]
 script = ExtResource("12_stun")
 
-[node name="Slam" type="Node" parent="CharacterStateMachine"]
+[node name="Slam" type="Node" parent="CharacterStateMachine" unique_id=974294304]
 script = ExtResource("10_slam")
 
-[node name="Charge" type="Node" parent="CharacterStateMachine"]
+[node name="Charge" type="Node" parent="CharacterStateMachine" unique_id=903265944]
 script = ExtResource("11_charge")
 
-[node name="Hitbox" type="Area2D" parent="."]
+[node name="Hitbox" type="Area2D" parent="." unique_id=581428614]
 collision_layer = 16
 collision_mask = 2
 script = ExtResource("8_hitbox")
 damage = 18.0
 knockback_force = 120.0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=422933247]
 position = Vector2(0, -21)
 shape = SubResource("CircleShape2D_dread_hit")
 disabled = true
 
-[node name="Hurtbox" type="Area2D" parent="."]
+[node name="Hurtbox" type="Area2D" parent="." unique_id=577698375]
 collision_layer = 8
 collision_mask = 0
 script = ExtResource("9_hurtbox")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=274285350]
 position = Vector2(0, -21)
 shape = SubResource("CapsuleShape2D_dread")

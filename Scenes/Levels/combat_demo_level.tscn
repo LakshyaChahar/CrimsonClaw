@@ -16,6 +16,7 @@
 size = Vector2(3467, 40)
 
 [node name="CombatDemoLevel" type="Node2D" unique_id=987654321]
+position = Vector2(423, 167)
 
 [node name="SubBossCoordinator" type="Node" parent="." unique_id=999888777]
 script = ExtResource("11_coord")
@@ -53,7 +54,7 @@ max_health = 300.0
 position = Vector2(196, 141)
 
 [node name="Stalkerghoul" parent="." unique_id=1282923343 instance=ExtResource("6_b62ms")]
-position = Vector2(-614, 70)
+position = Vector2(-999, 104)
 ambush_damage = 45.0
 ambush_lunge_speed = 850.0
 
