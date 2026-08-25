@@ -9,8 +9,9 @@ func enter() -> void:
 	despawn_timer = despawn_time
 	character.velocity.x = 0.0
 	
+	# Disable combat layer (0) but keep world floor mask (1) so enemy rests on floor!
 	character.collision_layer = 0
-	character.collision_mask = 0
+	character.collision_mask = 1
 	
 	var hurtbox = character.find_child("Hurtbox")
 	if hurtbox:
@@ -35,6 +36,7 @@ func enter() -> void:
 				character.animation_manager.play_anim("idle", 100, true)
 
 func physics_update(delta: float) -> void:
+	character.velocity.x = move_toward(character.velocity.x, 0.0, delta * 3000.0)
 	character.apply_gravity(delta)
 	character.move_and_slide()
 	
