@@ -29,6 +29,12 @@ var wants_tyrant: bool = false
 var jump_buffer_timer: float = 0.0
 @export var jump_buffer_time: float = 0.1
 
+@export_group("Spawn & Respawn System")
+## Respawn position where the player returns upon death
+@export var spawn_position: Vector2 = Vector2.ZERO
+## Y-coordinate boundary below which falling into a pit triggers player death
+@export var pit_death_y: float = 1200.0
+
 @export_group("Bloodthirst System")
 @export var max_bloodthirst: float = 100.0
 @export var current_bloodthirst: float = 100.0
@@ -123,6 +129,8 @@ var is_tyrant: bool = false:
 func _ready() -> void:
 	super._ready()
 	add_to_group("Player")
+	if spawn_position == Vector2.ZERO:
+		spawn_position = global_position
 	_init_input_actions()
 	_sync_attack_properties()
 	
@@ -366,6 +374,49 @@ func _process(delta: float) -> void:
 	# Toggle Fullscreen with F11
 	if Input.is_key_pressed(KEY_F11):
 		_toggle_fullscreen()
+
+func _physics_process(delta: float) -> void:
+	super._physics_process(delta)
+	if not is_dead and global_position.y > pit_death_y:
+		die()
+
+## Respawns the player at spawn_position with restored health and bloodthirst
+func respawn() -> void:
+	is_dead = false
+	current_health = max_health
+	health_changed.emit(0.0, current_health)
+	
+	current_bloodthirst = max_bloodthirst
+	bloodthirst_changed.emit(0.0, current_bloodthirst)
+	
+	# Restore collision layer (Player layer 2) and mask (World 1 + Breakable/Trap 8)
+	collision_layer = 2
+	collision_mask = 9
+	
+	# Re-enable Hurtbox
+	var hurtbox = find_child("Hurtbox")
+	if hurtbox:
+		for child in hurtbox.get_children():
+			if child is CollisionShape2D:
+				child.set_deferred("disabled", false)
+				
+	# Reset sprite modulate tint
+	if animation_manager and animation_manager.sprite:
+		animation_manager.sprite.modulate = Color.WHITE
+		
+	# Move to spawn position and reset velocity
+	global_position = spawn_position
+	velocity = Vector2.ZERO
+	
+	# Deactivate Tyrant mode if active
+	if is_tyrant:
+		deactivate_tyrant_mode()
+		
+	print("[Combat] Player respawned at ", spawn_position)
+	
+	# Transition back to idle state
+	if state_machine:
+		state_machine.change_state("idle")
 
 func consume_jump_buffer() -> void:
 	jump_buffer_timer = 0.0

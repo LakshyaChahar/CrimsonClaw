@@ -202,6 +202,14 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_wvg4d")
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y8une")
+}],
+"loop": false,
+"name": &"die",
+"speed": 5.0
 }],
 "loop": false,
 "name": &"attack",

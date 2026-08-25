@@ -66,6 +66,46 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_uvddn")
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_avogl")
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_avogl")
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_avogl")
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_avogl")
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_avogl")
+}],
+"loop": false,
+"name": &"stun",
+"speed": 5.0
+}],
+"loop": false,
+"name": &"slam",
+"speed": 5.0
+}],
+"loop": false,
+"name": &"hurt",
+"speed": 5.0
+}],
+"loop": false,
+"name": &"die",
+"speed": 5.0
+}],
+"loop": false,
+"name": &"charge",
+"speed": 5.0
 }],
 "loop": false,
 "name": &"attack",
