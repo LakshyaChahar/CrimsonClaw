@@ -230,7 +230,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"hellforge_rise",
-"speed": 5.0
+"speed": 20.0
 }, {
 "frames": [{
 "duration": 1.0,
