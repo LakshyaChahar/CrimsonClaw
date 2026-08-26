@@ -1,6 +1,10 @@
 [gd_scene format=3 uid="uid://c32dpqo5xfaok"]
 
 [ext_resource type="Script" uid="uid://li3dvvikphrk" path="res://Scripts/Core/Autoloads/sfx_manager.gd" id="1_sfx"]
+[ext_resource type="AudioStream" uid="uid://ck4pklopeaw5j" path="res://Assets/SFX/enemy_movement.wav" id="2_la2dx"]
 
 [node name="SFXManager" type="Node" unique_id=827018702]
 script = ExtResource("1_sfx")
+sounds = Dictionary[String, AudioStream]({
+"movement": ExtResource("2_la2dx")
+})
