@@ -1,6 +1,6 @@
 [gd_scene format=3]
 
-[ext_resource type="Script" path="res://Scripts/Entities/Enemy/lobbed_projectile.gd" id="1_proj"]
+[ext_resource type="Script" path="res://Scripts/Entities/Projectiles/witch_projectile.gd" id="1_proj_script"]
 [ext_resource type="Texture2D" uid="uid://b4cvq57jcko2h" path="res://Assets/Spritesheets/Evil Wizard 3/Sprites/Projectile/Moving.png" id="2_mov_tex"]
 [ext_resource type="Texture2D" path="res://Assets/Spritesheets/Evil Wizard 3/Sprites/Projectile/Explode.png" id="3_exp_tex"]
 
@@ -48,7 +48,7 @@ region = Rect2(250, 0, 50, 50)
 atlas = ExtResource("3_exp_tex")
 region = Rect2(300, 0, 50, 50)
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_lobbed"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_proj"]
 animations = [{
 "frames": [{
 "duration": 1.0,
@@ -95,28 +95,17 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_proj"]
-radius = 12.0
+radius = 8.0
 
-[node name="LobbedProjectile" type="Area2D" unique_id=771122334]
+[node name="WitchProjectile" type="Area2D"]
 collision_layer = 16
-collision_mask = 2
-script = ExtResource("1_proj")
-damage = 15.0
-knockback_force = 120.0
-stun_duration = 0.2
+collision_mask = 3
+script = ExtResource("1_proj_script")
 
-[node name="ShadowSprite2D" type="Polygon2D" parent="." unique_id=771122335]
-color = Color(0, 0, 0, 0.4)
-polygon = PackedVector2Array(-8, 0, -5, -3, 0, -4, 5, -3, 8, 0, 5, 3, 0, 4, -5, 3)
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=771122336]
-sprite_frames = SubResource("SpriteFrames_lobbed")
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_proj")
 animation = &"moving"
 autoplay = "moving"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=771122337]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_proj")
-
-[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=771122338]
-
-[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
