@@ -18,7 +18,7 @@
 [ext_resource type="Texture2D" uid="uid://nsf2hpvq8a2h" path="res://Assets/Assets/Gothicvania/Environments/Day-Platformer/preview-day-platformer.png" id="13_au6x5"]
 [ext_resource type="Texture2D" uid="uid://d2tjgly3p5ts1" path="res://Assets/Assets/Gothicvania/Environments/treasure-hoard-platform/PNG/ground.png" id="14_caex0"]
 [ext_resource type="Texture2D" uid="uid://bcqxddd0cqnea" path="res://Assets/Assets/Gothicvania/Environments/Rocky-Tileset/PNG/preview-rocky-tileset.png" id="15_up3g5"]
-[ext_resource type="Texture2D" uid="uid://bkcrmjmx7a560" path="res://Assets/Assets/Gothicvania/Environments/Mountain Dusk/Old Version/layers/parallax-mountain-bg.png" id="16_tgl7m"]
+[ext_resource type="Texture2D" uid="uid://bkcrmjmx7a560" path="res://Old Version/layers/parallax-mountain-bg.png" id="16_tgl7m"]
 [ext_resource type="Texture2D" uid="uid://cbirrcqdjltyw" path="res://Assets/Assets/Gothicvania/Environments/lava-background/PNG/middle-rocks.png" id="17_640bf"]
 [ext_resource type="Texture2D" uid="uid://cwjn6rcd6j7br" path="res://Assets/Assets/Gothicvania/Environments/Mountain Dusk/Version C/preview.png" id="17_l083d"]
 [ext_resource type="Texture2D" uid="uid://dlvhtldmsscel" path="res://Assets/Assets/Gothicvania/Environments/Modular-tileset/modular-tileset-PREVIEW-HD.png" id="18_wfg8w"]
