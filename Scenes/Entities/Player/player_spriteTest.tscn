@@ -450,7 +450,7 @@ collision_mask = 9
 script = ExtResource("1_pxnb0")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=810423284]
-position = Vector2(7, -11)
+position = Vector2(0, -27)
 shape = SubResource("CapsuleShape2D_1")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=2045404950]
@@ -462,8 +462,8 @@ drag_right_margin = 0.0
 drag_bottom_margin = 0.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=19559982]
-position = Vector2(-3, -48)
-scale = Vector2(1.9800618, 2.0260415)
+position = Vector2(-3, -52)
+scale = Vector2(1.7009684, 1.7786458)
 sprite_frames = SubResource("SpriteFrames_1")
 animation = &"dash"
 
