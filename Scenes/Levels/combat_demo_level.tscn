@@ -5,11 +5,11 @@
 [ext_resource type="PackedScene" uid="uid://coe2cgirmntry" path="res://Scenes/Entities/Traps/arrow_trap.tscn" id="6_arrow"]
 [ext_resource type="PackedScene" uid="uid://dy6f7wyuq08p2" path="res://Scenes/Entities/Enemy/Stalkerghoul.tscn" id="6_b62ms"]
 [ext_resource type="PackedScene" uid="uid://cc2a6kluxes7" path="res://Scenes/Entities/Enemy/enemy.tscn" id="6_ctats"]
-[ext_resource type="PackedScene" uid="uid://jiqs5mkwrmsd" path="res://Scenes/Entities/Player/player.tscn" id="7_11doo"]
 [ext_resource type="PackedScene" uid="uid://b8ya3k2ranged" path="res://Scenes/Entities/Enemy/ranged_enemy.tscn" id="7_b62ms"]
 [ext_resource type="PackedScene" path="res://Scenes/Entities/Enemy/veil_walker_boss.tscn" id="8_veil"]
 [ext_resource type="PackedScene" path="res://Scenes/Entities/Enemy/pyro_archon_boss.tscn" id="9_pyro"]
 [ext_resource type="PackedScene" path="res://Scenes/Entities/Enemy/dread_vanguard_boss.tscn" id="10_dread"]
+[ext_resource type="PackedScene" uid="uid://cm1t3b37lel3n" path="res://Scenes/Entities/Player/player_spriteTest.tscn" id="11_3vkxv"]
 [ext_resource type="Script" uid="uid://q4vlj5kjqoe" path="res://Scripts/Core/sub_boss_coordinator.gd" id="11_coord"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_floor"]
@@ -60,14 +60,6 @@ ambush_lunge_speed = 850.0
 [node name="RangedEnemy" parent="." unique_id=771122339 instance=ExtResource("7_b62ms")]
 position = Vector2(-376, 121)
 
-[node name="Player" parent="." unique_id=1658174949 instance=ExtResource("7_11doo")]
-position = Vector2(-722, 140)
-melee_stun_duration = 0.3
-hellforge_impact_damage = 50.0
-hellforge_knockback_force = 650.0
-hellforge_fire_dps = 15.0
-hellforge_min_required_bloodthirst = 50.0
-
 [node name="DreadVanguardBoss" parent="." unique_id=100526397 instance=ExtResource("10_dread")]
 position = Vector2(1174, 157)
 
@@ -79,3 +71,7 @@ position = Vector2(1471, 134)
 
 [node name="Enemy3" parent="." unique_id=1305916607 instance=ExtResource("6_ctats")]
 position = Vector2(158, 140)
+
+[node name="Player" parent="." unique_id=1658174949 instance=ExtResource("11_3vkxv")]
+position = Vector2(-919, 159)
+hellforge_rise_force = 600.0

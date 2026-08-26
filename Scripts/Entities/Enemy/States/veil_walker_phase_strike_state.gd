@@ -100,7 +100,7 @@ func enter() -> void:
 	character.velocity.x = 0.0
 
 	if character.animation_manager:
-		character.animation_manager.play_anim("attack", 2)
+		character.animation_manager.play_anim("phase_strike", 2)
 
 func physics_update(delta: float) -> void:
 	phase_timer += delta
