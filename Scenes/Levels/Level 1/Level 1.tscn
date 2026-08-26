@@ -7428,7 +7428,7 @@ tile_map_data = PackedByteArray("AABKAAAAAAAIABsAAABLAAAAAAAIABsAAABMAAAAAAAIABs
 tile_set = ExtResource("1_vhtmg")
 
 [node name="Player" parent="." unique_id=1658174949 instance=ExtResource("29_uxij4")]
-position = Vector2(2898, -1115)
+position = Vector2(195, 116)
 jump_force = -480.0
 
 [node name="SawTrap" parent="." unique_id=1537352391 instance=ExtResource("30_oheo7")]
