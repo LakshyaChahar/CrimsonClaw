@@ -16,6 +16,8 @@ signal invincibility_ended()
 ## Multiplier for incoming damage (useful for defenses, weak points, etc.).
 @export var damage_multiplier: float = 1.0
 
+@export var blood_effects: PackedScene = preload("uid://bbwpve26jxjx7")
+
 # Reference to the collision shape of the hurtbox
 @onready var collision_shape: CollisionShape2D = find_child("CollisionShape2D")
 
@@ -51,7 +53,15 @@ func receive_hit(damage: float, knockback: Vector2, stun_duration: float, attack
 
 	# If the entity is a Character, apply the final damage
 	if entity and entity.has_method("take_damage"):
+		var spawn_pos = entity.global_position
 		entity.take_damage(final_damage)
+		print("Damage taken")
+		var blood = blood_effects.instantiate()
+		get_tree().current_scene.add_child(blood)
+		blood.global_position = spawn_pos
+		blood.restart()
+		blood.finished.connect(func(): blood.queue_free())
+		
 		
 	# Apply fire status if enabled
 	if inflicts_fire and entity:

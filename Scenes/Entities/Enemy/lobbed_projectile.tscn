@@ -1,6 +1,6 @@
-[gd_scene format=3 uid="uid://b0x93k2lobbed"]
+[gd_scene format=3 uid="uid://b0ya3k2lobbed"]
 
-[ext_resource type="Script" path="res://Scripts/Entities/Enemy/lobbed_projectile.gd" id="1_proj"]
+[ext_resource type="Script" uid="uid://crp464jls7nlw" path="res://Scripts/Entities/Enemy/lobbed_projectile.gd" id="1_proj"]
 [ext_resource type="Texture2D" uid="uid://bamx4xkcylbg3" path="res://Assets/traps/Arrow.png" id="2_texture"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_proj"]
@@ -12,7 +12,6 @@ collision_mask = 2
 script = ExtResource("1_proj")
 damage = 15.0
 knockback_force = 120.0
-stun_duration = 0.2
 
 [node name="ShadowSprite2D" type="Polygon2D" parent="." unique_id=771122335]
 color = Color(0, 0, 0, 0.4)
@@ -22,6 +21,7 @@ polygon = PackedVector2Array(-8, 0, -5, -3, 0, -4, 5, -3, 8, 0, 5, 3, 0, 4, -5, 
 texture = ExtResource("2_texture")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=771122337]
+position = Vector2(-6, 0)
 shape = SubResource("CircleShape2D_proj")
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=771122338]

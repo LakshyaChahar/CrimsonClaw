@@ -1,8 +1,9 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://cqv2yal5oh765"]
 
-[ext_resource type="Script" path="res://Scripts/Entities/Enemy/dread_vanguard_boss.gd" id="1_dread_boss"]
+[ext_resource type="Script" uid="uid://do7pi1l1fgrhs" path="res://Scripts/Entities/Enemy/dread_vanguard_boss.gd" id="1_dread_boss"]
 [ext_resource type="Script" uid="uid://o574iqi28cq3" path="res://Scripts/Core/character_animation_manager.gd" id="2_anim_mgr"]
 [ext_resource type="Texture2D" uid="uid://b37yxtl7l4nty" path="res://Scenes/Entities/Assets/Ghoul/ATTACK.png" id="2_mygee"]
+[ext_resource type="Shader" uid="uid://dcrg2hdm32nhj" path="res://scripts/Entities/Enemy/Shaders/ash_particles.gdshader" id="3_0wel7"]
 [ext_resource type="Script" uid="uid://ch643o6echy12" path="res://Scripts/Core/character_state_machine.gd" id="3_state_mc"]
 [ext_resource type="Script" uid="uid://hasrwey3fali" path="res://Scripts/Entities/Enemy/States/enemy_idle_state.gd" id="4_idle"]
 [ext_resource type="Texture2D" uid="uid://gt7bv4b00joy" path="res://Scenes/Entities/Assets/Ghoul/IDLE.png" id="4_w65vx"]
@@ -11,14 +12,26 @@
 [ext_resource type="Script" uid="uid://1nmwna68cnsy" path="res://Scripts/Entities/Enemy/States/enemy_dead_state.gd" id="7_dead"]
 [ext_resource type="Script" uid="uid://cks5b8uy7k5xl" path="res://Scripts/Core/hitbox.gd" id="8_hitbox"]
 [ext_resource type="Script" uid="uid://bohxydkawxl6a" path="res://Scripts/Core/hurtbox.gd" id="9_hurtbox"]
-[ext_resource type="Script" path="res://Scripts/Entities/Enemy/States/dread_vanguard_slam_state.gd" id="10_slam"]
-[ext_resource type="Script" path="res://Scripts/Entities/Enemy/States/dread_vanguard_charge_state.gd" id="11_charge"]
+[ext_resource type="Script" uid="uid://b63pbby0rnqu" path="res://Scripts/Entities/Enemy/States/dread_vanguard_slam_state.gd" id="10_slam"]
+[ext_resource type="Script" uid="uid://ccvemmh7fbv5f" path="res://Scripts/Entities/Enemy/States/dread_vanguard_charge_state.gd" id="11_charge"]
 [ext_resource type="Script" uid="uid://csc3uyoxphj5b" path="res://Scripts/Entities/Player/States/stun_state.gd" id="12_stun"]
 [ext_resource type="PackedScene" path="res://Scenes/Entities/Enemy/ground_shockwave.tscn" id="13_wave_scene"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_dread"]
-radius = 16.0
-height = 42.0
+radius = 24.0
+height = 52.0
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_of2al"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_of2al"]
+noise = SubResource("FastNoiseLite_of2al")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_npoue"]
+resource_local_to_scene = true
+shader = ExtResource("3_0wel7")
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_of2al")
+shader_parameter/dissolve_amount = -0.10000000149012
+shader_parameter/burn_color = Color(0.8, 0.1, 0.1, 1)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_avogl"]
 atlas = ExtResource("2_mygee")
@@ -66,46 +79,6 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_uvddn")
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_avogl")
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_avogl")
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_avogl")
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_avogl")
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_avogl")
-}],
-"loop": false,
-"name": &"stun",
-"speed": 5.0
-}],
-"loop": false,
-"name": &"slam",
-"speed": 5.0
-}],
-"loop": false,
-"name": &"hurt",
-"speed": 5.0
-}],
-"loop": false,
-"name": &"die",
-"speed": 5.0
-}],
-"loop": false,
-"name": &"charge",
-"speed": 5.0
 }],
 "loop": false,
 "name": &"attack",
@@ -149,79 +122,86 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_dread_hit"]
 radius = 26.0
 
-[node name="DreadVanguardBoss" type="CharacterBody2D" groups=["Enemies"]]
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_e50uc"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(26.93, 1.07, 1)
+gravity = Vector3(0, -100, 0)
+scale_min = 5.0
+scale_max = 10.0
+color = Color(0.5019608, 0, 0, 0.45490196)
+
+[node name="DreadVanguardBoss" type="CharacterBody2D" unique_id=1991202787 groups=["Enemies"]]
 z_index = 2
 collision_layer = 8
-collision_mask = 1
 script = ExtResource("1_dread_boss")
-max_shield_health = 80.0
-current_shield_health = 80.0
-shield_damage_reduction = 0.85
-stun_on_shield_break_duration = 3.0
-slam_cooldown = 5.0
-charge_cooldown = 7.0
-shockwave_speed = 450.0
-charge_speed = 500.0
-slam_damage = 18.0
-charge_damage = 20.0
 shockwave_scene = ExtResource("13_wave_scene")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=528026490]
 position = Vector2(0, -21)
 shape = SubResource("CapsuleShape2D_dread")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=591600337]
 modulate = Color(0.85, 0.7, 0.25, 1)
+material = SubResource("ShaderMaterial_npoue")
 position = Vector2(0, -21)
 sprite_frames = SubResource("SpriteFrames_dread")
 animation = &"idle"
 
-[node name="CharacterAnimationManager" type="Node" parent="." node_paths=PackedStringArray("sprite")]
+[node name="CharacterAnimationManager" type="Node" parent="." unique_id=839106316 node_paths=PackedStringArray("sprite")]
 script = ExtResource("2_anim_mgr")
 sprite = NodePath("../AnimatedSprite2D")
 
-[node name="CharacterStateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+[node name="CharacterStateMachine" type="Node" parent="." unique_id=246238953 node_paths=PackedStringArray("initial_state")]
 script = ExtResource("3_state_mc")
 initial_state = NodePath("Idle")
 
-[node name="Idle" type="Node" parent="CharacterStateMachine"]
+[node name="Idle" type="Node" parent="CharacterStateMachine" unique_id=1972871394]
 script = ExtResource("4_idle")
 
-[node name="Walk" type="Node" parent="CharacterStateMachine"]
+[node name="Walk" type="Node" parent="CharacterStateMachine" unique_id=1451088225]
 script = ExtResource("5_walk")
 
-[node name="Attack" type="Node" parent="CharacterStateMachine"]
+[node name="Attack" type="Node" parent="CharacterStateMachine" unique_id=27600986]
 script = ExtResource("6_attack")
 
-[node name="Dead" type="Node" parent="CharacterStateMachine"]
+[node name="Dead" type="Node" parent="CharacterStateMachine" unique_id=714111341]
 script = ExtResource("7_dead")
 
-[node name="Stun" type="Node" parent="CharacterStateMachine"]
+[node name="Stun" type="Node" parent="CharacterStateMachine" unique_id=2044134349]
 script = ExtResource("12_stun")
 
-[node name="Slam" type="Node" parent="CharacterStateMachine"]
+[node name="Slam" type="Node" parent="CharacterStateMachine" unique_id=1846741987]
 script = ExtResource("10_slam")
 
-[node name="Charge" type="Node" parent="CharacterStateMachine"]
+[node name="Charge" type="Node" parent="CharacterStateMachine" unique_id=2120632681]
 script = ExtResource("11_charge")
 
-[node name="Hitbox" type="Area2D" parent="."]
+[node name="Hitbox" type="Area2D" parent="." unique_id=612091948]
 collision_layer = 16
 collision_mask = 2
 script = ExtResource("8_hitbox")
 damage = 18.0
 knockback_force = 120.0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=1931416757]
 position = Vector2(0, -21)
 shape = SubResource("CircleShape2D_dread_hit")
 disabled = true
 
-[node name="Hurtbox" type="Area2D" parent="."]
+[node name="Hurtbox" type="Area2D" parent="." unique_id=379933396]
 collision_layer = 8
 collision_mask = 0
 script = ExtResource("9_hurtbox")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
-position = Vector2(0, -21)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=1890329177]
+position = Vector2(-7, -18)
 shape = SubResource("CapsuleShape2D_dread")
+
+[node name="AshParticles" type="GPUParticles2D" parent="." unique_id=612831532]
+emitting = false
+lifetime = 1.35
+one_shot = true
+explosiveness = 0.47
+randomness = 1.0
+process_material = SubResource("ParticleProcessMaterial_e50uc")
