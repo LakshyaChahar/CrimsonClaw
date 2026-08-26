@@ -39,6 +39,11 @@ var dash_cooldown_timer: float = 0.0
 @export_group("Stun Parameters")
 @export var stun_multiplier: float = 1.0
 
+@export_group("Audio Parameters")
+@export var move_sfx_name: String = ""
+@export var hurt_sfx_name: String = "enemy_hurt"
+@export var die_sfx_name: String = "enemy_death"
+
 
 # --- Child Node References ---
 var animation_manager: CharacterAnimationManager
