@@ -197,4 +197,3 @@ func stun(duration: float) -> void:
 	stun_timer = max(stun_timer, final_duration)
 	if state_machine and state_machine.states.has("stun"):
 		state_machine.change_state("stun")
-

@@ -103,7 +103,6 @@ collision_mask = 2
 script = ExtResource("1_proj")
 damage = 15.0
 knockback_force = 120.0
-stun_duration = 0.2
 
 [node name="ShadowSprite2D" type="Polygon2D" parent="." unique_id=771122335]
 color = Color(0, 0, 0, 0.4)
@@ -115,6 +114,7 @@ animation = &"moving"
 autoplay = "moving"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=771122337]
+position = Vector2(-6, 0)
 shape = SubResource("CircleShape2D_proj")
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=771122338]

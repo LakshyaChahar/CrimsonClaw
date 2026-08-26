@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://b7bqmijn7m85" path="res://Scripts/Entities/Enemy/enemy.gd" id="1_enemy"]
 [ext_resource type="Script" uid="uid://o574iqi28cq3" path="res://Scripts/Core/character_animation_manager.gd" id="2_anim_mgr"]
 [ext_resource type="Texture2D" uid="uid://dwhegl1o0s1ko" path="res://Scenes/Entities/Assets/Wild Zombie/Attack_2.png" id="2_f3bx6"]
+[ext_resource type="Shader" uid="uid://dcrg2hdm32nhj" path="res://scripts/Entities/Enemy/Shaders/ash_particles.gdshader" id="2_of2al"]
 [ext_resource type="Texture2D" uid="uid://bit62235p5a6r" path="res://Scenes/Entities/Assets/Wild Zombie/Dead.png" id="3_pe2f4"]
 [ext_resource type="Script" uid="uid://ch643o6echy12" path="res://Scripts/Core/character_state_machine.gd" id="3_state_mc"]
 [ext_resource type="Script" uid="uid://hasrwey3fali" path="res://Scripts/Entities/Enemy/States/enemy_idle_state.gd" id="4_idle"]
@@ -18,7 +19,19 @@
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1"]
 radius = 8.0
-height = 24.0
+height = 82.0
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_of2al"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_of2al"]
+noise = SubResource("FastNoiseLite_of2al")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_npoue"]
+resource_local_to_scene = true
+shader = ExtResource("2_of2al")
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_of2al")
+shader_parameter/dissolve_amount = -0.10000000149012
+shader_parameter/burn_color = Color(0.8, 0.1, 0.1, 1)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_yri0w"]
 atlas = ExtResource("2_f3bx6")
@@ -272,6 +285,15 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_0fwr3"]
 radius = 43.931767
 
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_yri0w"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(26.93, 1.07, 1)
+gravity = Vector3(0, -100, 0)
+scale_min = 5.0
+scale_max = 10.0
+color = Color(0.5019608, 0, 0, 0.45490196)
+
 [node name="Enemy" type="CharacterBody2D" unique_id=1481718111]
 collision_layer = 8
 collision_mask = 3
@@ -281,10 +303,11 @@ script = ExtResource("1_enemy")
 shape = SubResource("CapsuleShape2D_1")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=264250259]
+material = SubResource("ShaderMaterial_npoue")
 position = Vector2(1.1920929e-07, -30.000004)
 scale = Vector2(1.8072917, 1.734375)
 sprite_frames = SubResource("SpriteFrames_1")
-animation = &"attack"
+animation = &"die"
 
 [node name="CharacterAnimationManager" type="Node" parent="." unique_id=1859292065 node_paths=PackedStringArray("sprite")]
 script = ExtResource("2_anim_mgr")
@@ -325,4 +348,13 @@ collision_mask = 0
 script = ExtResource("9_hurtbox")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=586747509]
+position = Vector2(8, 14)
 shape = SubResource("CapsuleShape2D_1")
+
+[node name="AshParticles" type="GPUParticles2D" parent="." unique_id=1486940257]
+emitting = false
+lifetime = 1.35
+one_shot = true
+explosiveness = 0.47
+randomness = 1.0
+process_material = SubResource("ParticleProcessMaterial_yri0w")

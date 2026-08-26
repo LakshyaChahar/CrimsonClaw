@@ -46,4 +46,3 @@ func physics_update(delta: float) -> void:
 	if character.wants_skill:
 		state_machine.change_state("skill")
 		return
-

@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://dy6f7wyuq08p2"]
 
-[ext_resource type="Script" uid="uid://b7bqmijn7m85" path="res://Scripts/Entities/Enemy/enemy.gd" id="1_enemy_base"]
-[ext_resource type="Script" path="res://Scripts/Entities/Enemy/stalker_ghoul.gd" id="1_enemy"]
+[ext_resource type="Script" uid="uid://coq2b1fmf26x3" path="res://Scripts/Entities/Enemy/stalker_ghoul.gd" id="1_enemy"]
 [ext_resource type="Script" uid="uid://o574iqi28cq3" path="res://Scripts/Core/character_animation_manager.gd" id="2_anim_mgr"]
 [ext_resource type="Texture2D" uid="uid://b37yxtl7l4nty" path="res://Scenes/Entities/Assets/Ghoul/ATTACK.png" id="2_mygee"]
+[ext_resource type="Shader" uid="uid://dcrg2hdm32nhj" path="res://scripts/Entities/Enemy/Shaders/ash_particles.gdshader" id="2_w65vx"]
 [ext_resource type="Texture2D" uid="uid://lntgfpktu4vu" path="res://Scenes/Entities/Assets/Ghoul/DEATH.png" id="3_lai3l"]
 [ext_resource type="Script" uid="uid://ch643o6echy12" path="res://Scripts/Core/character_state_machine.gd" id="3_state_mc"]
 [ext_resource type="Script" uid="uid://hasrwey3fali" path="res://Scripts/Entities/Enemy/States/enemy_idle_state.gd" id="4_idle"]
@@ -21,6 +21,18 @@
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1"]
 radius = 8.0
 height = 24.0
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_of2al"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_of2al"]
+noise = SubResource("FastNoiseLite_of2al")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_npoue"]
+resource_local_to_scene = true
+shader = ExtResource("2_w65vx")
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_of2al")
+shader_parameter/dissolve_amount = -0.10000000149012
+shader_parameter/burn_color = Color(0.8, 0.1, 0.1, 1)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_avogl"]
 atlas = ExtResource("2_mygee")
@@ -256,6 +268,15 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_0fwr3"]
 radius = 16.0
 
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_lai3l"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(26.93, 1.07, 1)
+gravity = Vector3(0, -100, 0)
+scale_min = 5.0
+scale_max = 10.0
+color = Color(0.5019608, 0, 0, 0.45490196)
+
 [node name="Stalkerghoul" type="CharacterBody2D" unique_id=1282923343]
 collision_layer = 8
 collision_mask = 3
@@ -267,6 +288,7 @@ is_stealth = true
 shape = SubResource("CapsuleShape2D_1")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1128877175]
+material = SubResource("ShaderMaterial_npoue")
 sprite_frames = SubResource("SpriteFrames_1")
 animation = &"walk"
 
@@ -295,7 +317,6 @@ script = ExtResource("12_stun")
 
 [node name="Ambush" type="Node" parent="CharacterStateMachine" unique_id=537801492]
 script = ExtResource("11_ambush")
-lunge_speed = 700.0
 
 [node name="Hitbox" type="Area2D" parent="." unique_id=1121732304]
 collision_layer = 16
@@ -316,3 +337,11 @@ script = ExtResource("9_hurtbox")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=1709409329]
 shape = SubResource("CapsuleShape2D_1")
+
+[node name="AshParticles" type="GPUParticles2D" parent="." unique_id=367507243]
+emitting = false
+lifetime = 1.35
+one_shot = true
+explosiveness = 0.47
+randomness = 1.0
+process_material = SubResource("ParticleProcessMaterial_lai3l")

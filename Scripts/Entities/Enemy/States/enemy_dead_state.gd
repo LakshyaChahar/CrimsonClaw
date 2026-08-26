@@ -26,7 +26,8 @@ func enter() -> void:
 				child.set_deferred("disabled", true)
 	
 	if character.animation_manager and character.animation_manager.sprite:
-		var sprite_frames = character.animation_manager.sprite.sprite_frames
+		var sprite = character.animation_manager.sprite
+		var sprite_frames = sprite.sprite_frames
 		if sprite_frames:
 			if sprite_frames.has_animation("die"):
 				character.animation_manager.play_anim("die", 100, true)
@@ -34,6 +35,14 @@ func enter() -> void:
 				character.animation_manager.play_anim("death", 100, true)
 			else:
 				character.animation_manager.play_anim("idle", 100, true)
+				
+		var ash_particles = character.find_child("AshParticles", true, false) as GPUParticles2D
+		if ash_particles:
+			ash_particles.emitting = true
+
+		if sprite.material:
+			var tween = create_tween()
+			tween.tween_property(sprite.material, "shader_parameter/dissolve_amount", 1.0, despawn_time)
 
 func physics_update(delta: float) -> void:
 	character.velocity.x = move_toward(character.velocity.x, 0.0, delta * 3000.0)
