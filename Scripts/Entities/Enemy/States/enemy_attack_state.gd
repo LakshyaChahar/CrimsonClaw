@@ -12,7 +12,7 @@ var hitbox: Hitbox = null
 
 func enter() -> void:
 	timer = 0.0
-	character.velocity.x = 0.0
+	character.velocity = Vector2.ZERO
 	
 	var enemy = character as Enemy
 	if enemy and enemy.target:

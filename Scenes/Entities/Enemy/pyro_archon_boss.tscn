@@ -2,13 +2,18 @@
 
 [ext_resource type="Script" uid="uid://b5u17v2g4xto" path="res://Scripts/Entities/Enemy/pyro_archon_boss.gd" id="1_pyro_boss"]
 [ext_resource type="Script" uid="uid://o574iqi28cq3" path="res://Scripts/Core/character_animation_manager.gd" id="2_anim_mgr"]
-[ext_resource type="Texture2D" uid="uid://b37yxtl7l4nty" path="res://Scenes/Entities/Assets/Ghoul/ATTACK.png" id="2_mygee"]
+[ext_resource type="Texture2D" uid="uid://dwhegl1o0s1ko" path="res://Scenes/Entities/Assets/Wild Zombie/Attack_2.png" id="2_mygee"]
+[ext_resource type="Texture2D" path="res://Scenes/Entities/Assets/Wild Zombie/Attack_3.png" id="3_snipe_tex"]
+[ext_resource type="Texture2D" uid="uid://b37yxtl7l4nty" path="res://Scenes/Entities/Assets/Ghoul/ATTACK.png" id="2_mygee_ghoul"]
 [ext_resource type="Shader" uid="uid://dcrg2hdm32nhj" path="res://scripts/Entities/Enemy/Shaders/ash_particles.gdshader" id="3_0ivdf"]
 [ext_resource type="Script" uid="uid://ch643o6echy12" path="res://Scripts/Core/character_state_machine.gd" id="3_state_mc"]
+[ext_resource type="Texture2D" uid="uid://bit62235p5a6r" path="res://Scenes/Entities/Assets/Wild Zombie/Dead.png" id="4_dead_tex"]
 [ext_resource type="Script" uid="uid://hasrwey3fali" path="res://Scripts/Entities/Enemy/States/enemy_idle_state.gd" id="4_idle"]
-[ext_resource type="Texture2D" uid="uid://gt7bv4b00joy" path="res://Scenes/Entities/Assets/Ghoul/IDLE.png" id="4_w65vx"]
+[ext_resource type="Texture2D" uid="uid://cap0hwaipnyjv" path="res://Scenes/Entities/Assets/Wild Zombie/Idle.png" id="4_w65vx"]
+[ext_resource type="Texture2D" path="res://Scenes/Entities/Assets/Wild Zombie/Hurt.png" id="5_hurt_tex"]
 [ext_resource type="Script" uid="uid://bsnyo0jm4b8um" path="res://Scripts/Entities/Enemy/States/enemy_walk_state.gd" id="5_walk"]
 [ext_resource type="Script" uid="uid://bvy2egwkpybek" path="res://Scripts/Entities/Enemy/States/enemy_attack_state.gd" id="6_attack"]
+[ext_resource type="Texture2D" uid="uid://bb7jt845p3rov" path="res://Scenes/Entities/Assets/Wild Zombie/Walk.png" id="6_walk_tex"]
 [ext_resource type="Script" uid="uid://1nmwna68cnsy" path="res://Scripts/Entities/Enemy/States/enemy_dead_state.gd" id="7_dead"]
 [ext_resource type="Script" uid="uid://cks5b8uy7k5xl" path="res://Scripts/Core/hitbox.gd" id="8_hitbox"]
 [ext_resource type="Script" uid="uid://bohxydkawxl6a" path="res://Scripts/Core/hurtbox.gd" id="9_hurtbox"]
@@ -32,90 +37,212 @@ shader_parameter/noise_texture = SubResource("NoiseTexture2D_of2al")
 shader_parameter/dissolve_amount = -0.10000000149012
 shader_parameter/burn_color = Color(0.8, 0.1, 0.1, 1)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_avogl"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_atk0"]
 atlas = ExtResource("2_mygee")
-region = Rect2(0, 0, 79, 69)
+region = Rect2(0, 0, 96, 96)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_l268d"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_atk1"]
 atlas = ExtResource("2_mygee")
-region = Rect2(79, 0, 79, 69)
+region = Rect2(96, 0, 96, 96)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_2dv7q"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_atk2"]
 atlas = ExtResource("2_mygee")
-region = Rect2(158, 0, 79, 69)
+region = Rect2(192, 0, 96, 96)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_uvddn"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_atk3"]
 atlas = ExtResource("2_mygee")
-region = Rect2(237, 0, 79, 69)
+region = Rect2(288, 0, 96, 96)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_001"]
-atlas = ExtResource("4_w65vx")
-region = Rect2(0, 0, 79, 69)
+[sub_resource type="AtlasTexture" id="AtlasTexture_snp0"]
+atlas = ExtResource("3_snipe_tex")
+region = Rect2(0, 0, 96, 96)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_002"]
-atlas = ExtResource("4_w65vx")
-region = Rect2(79, 0, 79, 69)
+[sub_resource type="AtlasTexture" id="AtlasTexture_snp1"]
+atlas = ExtResource("3_snipe_tex")
+region = Rect2(96, 0, 96, 96)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_003"]
-atlas = ExtResource("4_w65vx")
-region = Rect2(158, 0, 79, 69)
+[sub_resource type="AtlasTexture" id="AtlasTexture_snp2"]
+atlas = ExtResource("3_snipe_tex")
+region = Rect2(192, 0, 96, 96)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_004"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_snp3"]
+atlas = ExtResource("3_snipe_tex")
+region = Rect2(288, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_die0"]
+atlas = ExtResource("4_dead_tex")
+region = Rect2(0, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_die1"]
+atlas = ExtResource("4_dead_tex")
+region = Rect2(96, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_die2"]
+atlas = ExtResource("4_dead_tex")
+region = Rect2(192, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_die3"]
+atlas = ExtResource("4_dead_tex")
+region = Rect2(288, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_die4"]
+atlas = ExtResource("4_dead_tex")
+region = Rect2(384, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hrt0"]
+atlas = ExtResource("5_hurt_tex")
+region = Rect2(0, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hrt1"]
+atlas = ExtResource("5_hurt_tex")
+region = Rect2(96, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_idl0"]
 atlas = ExtResource("4_w65vx")
-region = Rect2(237, 0, 79, 69)
+region = Rect2(0, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_idl1"]
+atlas = ExtResource("4_w65vx")
+region = Rect2(96, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_idl2"]
+atlas = ExtResource("4_w65vx")
+region = Rect2(192, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_idl3"]
+atlas = ExtResource("4_w65vx")
+region = Rect2(288, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wlk0"]
+atlas = ExtResource("6_walk_tex")
+region = Rect2(0, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wlk1"]
+atlas = ExtResource("6_walk_tex")
+region = Rect2(96, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wlk2"]
+atlas = ExtResource("6_walk_tex")
+region = Rect2(192, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wlk3"]
+atlas = ExtResource("6_walk_tex")
+region = Rect2(288, 0, 96, 96)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_pyro"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_avogl")
+"texture": SubResource("AtlasTexture_atk0")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_l268d")
+"texture": SubResource("AtlasTexture_atk1")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_2dv7q")
+"texture": SubResource("AtlasTexture_atk2")
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_uvddn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_atk3")
 }],
 "loop": false,
 "name": &"attack",
-"speed": 6.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_001")
+"texture": SubResource("AtlasTexture_die0")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_002")
+"texture": SubResource("AtlasTexture_die1")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_003")
+"texture": SubResource("AtlasTexture_die2")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_004")
+"texture": SubResource("AtlasTexture_die3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_die4")
+}],
+"loop": false,
+"name": &"die",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hrt0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hrt1")
+}],
+"loop": false,
+"name": &"hurt",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_idl0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_idl1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_idl2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_idl3")
 }],
 "loop": true,
 "name": &"idle",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_snp0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_snp1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_snp2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_snp3")
+}],
+"loop": false,
+"name": &"snipe",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hrt0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hrt1")
+}],
+"loop": true,
+"name": &"stun",
 "speed": 6.0
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_001")
+"texture": SubResource("AtlasTexture_wlk0")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_002")
+"texture": SubResource("AtlasTexture_wlk1")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_003")
+"texture": SubResource("AtlasTexture_wlk2")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_004")
+"texture": SubResource("AtlasTexture_wlk3")
 }],
 "loop": true,
 "name": &"walk",
-"speed": 6.0
+"speed": 10.0
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_pyro_hit"]

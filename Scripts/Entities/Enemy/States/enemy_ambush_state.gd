@@ -6,7 +6,7 @@ class_name EnemyAmbushState
 @export var hitbox_enable_time: float = 0.0
 @export var hitbox_disable_time: float = 0.5
 
-@export var ambush_animation: String = "attack"
+@export var ambush_animation: String = "ambush"
 
 var ambush_damage: float = 25.0
 var timer: float = 0.0
