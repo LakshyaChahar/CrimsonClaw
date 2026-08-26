@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://xkaxdunarf8d" path="res://Scenes/Entities/Assets/Ghoul/FLYING.png" id="5_btbb3"]
 [ext_resource type="Script" uid="uid://bsnyo0jm4b8um" path="res://Scripts/Entities/Enemy/States/enemy_walk_state.gd" id="5_walk"]
 [ext_resource type="Script" uid="uid://bvy2egwkpybek" path="res://Scripts/Entities/Enemy/States/enemy_attack_state.gd" id="6_attack"]
+[ext_resource type="Texture2D" path="res://Scenes/Entities/Assets/Ghoul/HURT.png" id="6_ghoul_hurt"]
 [ext_resource type="Script" uid="uid://1nmwna68cnsy" path="res://Scripts/Entities/Enemy/States/enemy_dead_state.gd" id="7_dead"]
 [ext_resource type="Script" uid="uid://cks5b8uy7k5xl" path="res://Scripts/Core/hitbox.gd" id="8_hitbox"]
 [ext_resource type="Script" uid="uid://bohxydkawxl6a" path="res://Scripts/Core/hurtbox.gd" id="9_hurtbox"]
@@ -113,8 +114,33 @@ region = Rect2(158, 0, 79, 69)
 atlas = ExtResource("5_btbb3")
 region = Rect2(237, 0, 79, 69)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_hrt0"]
+atlas = ExtResource("6_ghoul_hurt")
+region = Rect2(0, 0, 79, 69)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hrt1"]
+atlas = ExtResource("6_ghoul_hurt")
+region = Rect2(79, 0, 79, 69)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_1"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ggdqf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_msrva")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_unvkv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cwtwr")
+}],
+"loop": false,
+"name": &"ambush",
+"speed": 14.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_avogl")
@@ -142,7 +168,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"attack",
-"speed": 5.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -168,7 +194,18 @@ animations = [{
 }],
 "loop": false,
 "name": &"die",
-"speed": 5.0
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hrt0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hrt1")
+}],
+"loop": false,
+"name": &"hurt",
+"speed": 10.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -185,7 +222,18 @@ animations = [{
 }],
 "loop": true,
 "name": &"idle",
-"speed": 5.0
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hrt0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hrt1")
+}],
+"loop": true,
+"name": &"stun",
+"speed": 6.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -202,7 +250,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"walk",
-"speed": 5.0
+"speed": 10.0
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0fwr3"]

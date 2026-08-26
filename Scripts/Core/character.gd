@@ -142,7 +142,7 @@ func take_damage(amount: float) -> void:
 	current_health = max(current_health - amount, 0.0)
 	print("[Combat] ", name, " took ", amount, " damage. Health: ", current_health, "/", max_health)
 	
-	_play_hit_flash()
+	_play_hurt_reaction()
 	
 	if old_health != current_health:
 		health_changed.emit(old_health, current_health)
@@ -156,13 +156,22 @@ func get_base_modulate() -> Color:
 		return Color(1.0, 0.45, 0.1) # Fire Orange tint
 	return Color.WHITE
 
-func _play_hit_flash() -> void:
-	if animation_manager and animation_manager.sprite:
-		var sprite = animation_manager.sprite
-		sprite.modulate = Color(1.0, 0.25, 0.25, 1.0) # Flash Red
-		var tween = create_tween()
-		if tween:
-			tween.tween_property(sprite, "modulate", get_base_modulate(), 0.15)
+## Plays hurt animation if available, or falls back to hit flash tint
+func _play_hurt_reaction() -> void:
+	if not animation_manager or not animation_manager.sprite:
+		return
+		
+	var sprite = animation_manager.sprite
+	if sprite.sprite_frames:
+		if sprite.sprite_frames.has_animation("hurt"):
+			animation_manager.play_anim("hurt", 100, true)
+		elif sprite.sprite_frames.has_animation("stun"):
+			animation_manager.play_anim("stun", 100, true)
+
+	sprite.modulate = Color(1.0, 0.25, 0.25, 1.0)
+	var tween = create_tween()
+	if tween:
+		tween.tween_property(sprite, "modulate", get_base_modulate(), 0.15)
 
 ## Handles death logic and triggers death state if configured
 func die() -> void:
