@@ -187,30 +187,6 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_xmq2d")
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_o25qk")
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_o25qk")
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_o25qk")
-}],
-"loop": false,
-"name": &"die",
-"speed": 5.0
-}],
-"loop": false,
-"name": &"hurt",
-"speed": 5.0
-}],
-"loop": false,
-"name": &"stun",
-"speed": 5.0
 }],
 "loop": false,
 "name": &"attack",
