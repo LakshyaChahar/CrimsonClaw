@@ -558,7 +558,7 @@ script = ExtResource("19_37j3j")
 invincibility_duration = 0.4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=261566379]
-position = Vector2(0, -21)
+position = Vector2(0, -38)
 shape = SubResource("CapsuleShape2D_1")
 
 [node name="HUD" type="CanvasLayer" parent="." unique_id=191024357]
