@@ -18,6 +18,7 @@ size = Vector2(3467, 40)
 
 [node name="SubBossCoordinator" type="Node" parent="." unique_id=999888777]
 script = ExtResource("11_coord")
+max_simultaneous_special_attacks = 2
 
 [node name="Floor" type="StaticBody2D" parent="." unique_id=123456789]
 position = Vector2(0, 200)
