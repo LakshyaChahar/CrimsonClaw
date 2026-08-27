@@ -7,9 +7,11 @@
 [ext_resource type="PackedScene" uid="uid://cc2a6kluxes7" path="res://Scenes/Entities/Enemy/enemy.tscn" id="6_ctats"]
 [ext_resource type="PackedScene" uid="uid://b8ya3k2ranged" path="res://Scenes/Entities/Enemy/ranged_enemy.tscn" id="7_b62ms"]
 [ext_resource type="PackedScene" uid="uid://oky4prx3678a" path="res://Scenes/Entities/Enemy/Sorceress.tscn" id="10_1cu4p"]
-[ext_resource type="PackedScene" uid="uid://dbuqmsv7wfye0" path="res://Scenes/Entities/Enemy/dread_vanguard_boss.tscn" id="10_dread"]
+[ext_resource type="PackedScene" uid="uid://cqv2yal5oh765" path="res://Scenes/Entities/Enemy/dread_vanguard_boss.tscn" id="10_dread"]
 [ext_resource type="PackedScene" uid="uid://cm1t3b37lel3n" path="res://Scenes/Entities/Player/player_spriteTest.tscn" id="11_3vkxv"]
 [ext_resource type="Script" uid="uid://q4vlj5kjqoe" path="res://Scripts/Core/sub_boss_coordinator.gd" id="11_coord"]
+[ext_resource type="PackedScene" uid="uid://c4f0b13hm2toh" path="res://Scenes/Entities/Enemy/veil_walker_boss.tscn" id="11_xxwll"]
+[ext_resource type="PackedScene" uid="uid://d2ciunjfjxgry" path="res://Scenes/Entities/Enemy/pyro_archon_boss.tscn" id="12_3t6kx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_floor"]
 size = Vector2(3467, 40)
@@ -18,6 +20,7 @@ size = Vector2(3467, 40)
 
 [node name="SubBossCoordinator" type="Node" parent="." unique_id=999888777]
 script = ExtResource("11_coord")
+max_simultaneous_special_attacks = 2
 
 [node name="Floor" type="StaticBody2D" parent="." unique_id=123456789]
 position = Vector2(0, 200)
@@ -72,3 +75,9 @@ hellforge_rise_force = 600.0
 [node name="Sorceress" parent="." unique_id=98412001 instance=ExtResource("10_1cu4p")]
 position = Vector2(-1329, 142)
 number_of_bats = 5
+
+[node name="VeilWalkerBoss" parent="." unique_id=175719164 instance=ExtResource("11_xxwll")]
+position = Vector2(1489, 90)
+
+[node name="PyroArchonBoss" parent="." unique_id=3761819 instance=ExtResource("12_3t6kx")]
+position = Vector2(1057, 61)
