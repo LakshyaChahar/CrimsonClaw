@@ -27,6 +27,11 @@ var target: Node2D = null
 var attack_cooldown_timer: float = 0.0
 var is_revealed: bool = true
 var _original_collision_layer: int = 2
+var is_burning: bool = false
+var current_fire_dps: float = 0.0
+var burn_timer: float = 0.0
+var sprite_node: CanvasItem = null
+var burn_material: ShaderMaterial = null
 
 func _init() -> void:
 	move_speed = 100.0
@@ -66,6 +71,29 @@ func _setup_floating_health_bar() -> void:
 		
 		add_child(bar)
 
+func apply_burn(dps: float, duration: float) -> void:
+	if is_dead:
+		return
+		
+	current_fire_dps = dps
+	burn_timer = max(burn_timer, duration) 
+	
+	if not is_burning:
+		is_burning = true
+		_setup_burn_shader()
+		
+func _setup_burn_shader() -> void:
+	sprite_node = find_child("AnimatedSprite2D", true, false) as CanvasItem
+	if not sprite_node:
+		sprite_node = find_child("Sprite2D", true, false) as CanvasItem
+		
+	if sprite_node:
+		var shader = load("res://Scripts/Entities/Enemy/Shaders/enemy_shader.gdshader") as Shader
+		if shader:
+			burn_material = ShaderMaterial.new()
+			burn_material.shader = shader
+			sprite_node.material = burn_material
+
 func _physics_process(delta: float) -> void:
 	super._physics_process(delta)
 	
@@ -85,7 +113,33 @@ func _physics_process(delta: float) -> void:
 					reveal_enemy()
 			else:
 				reveal_enemy()
+	if is_burning and not is_dead:
+		burn_timer -= delta
+		
+		# Drive the shader burning effect dynamically
+		if burn_material:
+			burn_material.set_shader_parameter("burn_intensity", 1.0)
+		
+		# Apply smooth continuous damage (dps * delta)
+		current_health -= (current_fire_dps * delta) 
+		health_changed.emit(current_health + (current_fire_dps * delta), current_health)
+		
+		if current_health <= 0:
+			die()
+			
+		if burn_timer <= 0.0:
+			extinguish_fire()
 
+func extinguish_fire(_immediate: bool = false) -> void:
+	is_burning = false
+	
+	if burn_material and sprite_node:
+		burn_material.set_shader_parameter("burn_intensity", 0.0)
+		sprite_node.material = null
+		burn_material = null
+		
+	sprite_node = null
+	
 # Sets visibility, collision layers, and toggles Hitbox/Hurtbox monitoring
 func set_stealth_mode(enabled: bool) -> void:
 	visible = not enabled

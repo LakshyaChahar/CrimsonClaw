@@ -1,0 +1,67 @@
+[gd_scene format=3 uid="uid://c4q3a5b7fkte4"]
+
+[ext_resource type="Texture2D" uid="uid://bolubinytukmq" path="res://Assets/fire.png" id="1_a44u2"]
+[ext_resource type="Texture2D" uid="uid://dwto3dw2t2ia3" path="res://Assets/smoke.png" id="2_kddwg"]
+
+[sub_resource type="Gradient" id="Gradient_y35ty"]
+colors = PackedColorArray(1, 0, 0, 1, 0.98039216, 1, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_bwu8c"]
+gradient = SubResource("Gradient_y35ty")
+
+[sub_resource type="Curve" id="Curve_3sicn"]
+_data = [Vector2(0, 0.49888146), 0.0, 0.0, 0, 0, Vector2(0.3172043, 0.68680096), -0.35040617, -0.35040617, 0, 0, Vector2(0.62903225, 0.4362417), 0.10624016, 0.10624016, 0, 0, Vector2(1, 0.24832225), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_ix6le"]
+curve = SubResource("Curve_3sicn")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_20xcu"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(27.41, 1, 1)
+angle_min = -14.9999895
+angle_max = 15.0000105
+gravity = Vector3(0, -98, 0)
+scale_min = 0.0
+scale_max = 0.12
+scale_curve = SubResource("CurveTexture_ix6le")
+scale_over_velocity_max = 635.19
+color = Color(0.9647059, 0.11372549, 0, 1)
+color_ramp = SubResource("GradientTexture1D_bwu8c")
+hue_variation_min = -0.14000002
+hue_variation_max = 0.13999997
+
+[sub_resource type="Curve" id="Curve_j8fc7"]
+_limits = [0.0, 0.1, 0.0, 1.0]
+_data = [Vector2(0.02150537, 0.0060402676), 0.0, 0.0, 0, 0, Vector2(0.32795697, 0.010514535), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_4js5v"]
+curve = SubResource("Curve_j8fc7")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_3g2yu"]
+lifetime_randomness = 0.28
+particle_flag_disable_z = true
+emission_shape_offset = Vector3(0, -41.255, 0)
+emission_shape = 1
+emission_sphere_radius = 13.68
+gravity = Vector3(0, -98, 0)
+scale_curve = SubResource("CurveTexture_4js5v")
+color = Color(0, 0, 0, 0.13725491)
+turbulence_enabled = true
+
+[node name="flame" type="GPUParticles2D" unique_id=1404850279]
+modulate = Color(1, 1, 1, 0.6862745)
+self_modulate = Color(1, 1, 1, 0.49019608)
+amount = 750
+texture = ExtResource("1_a44u2")
+preprocess = 1.5
+randomness = 1.0
+process_material = SubResource("ParticleProcessMaterial_20xcu")
+
+[node name="smoke" type="GPUParticles2D" parent="." unique_id=1593304257]
+amount = 100
+texture = ExtResource("2_kddwg")
+lifetime = 2.0
+process_material = SubResource("ParticleProcessMaterial_3g2yu")
