@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://cu8uvy258626l"
+path="res://.godot/imported/Hellish_Torture_Loop.wav-207ab84fb7d982e0c35a7017c05c1016.sample"
+
+[deps]
+
+source_file="res://Assets/SFX/Sound effects/Era of Vampires/Era of Vampires/Hellish_Torture_Loop.wav"
+dest_files=["res://.godot/imported/Hellish_Torture_Loop.wav-207ab84fb7d982e0c35a7017c05c1016.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://cgd573uxm1d3s"
+path="res://.godot/imported/Witherwood_Loop.wav-bd88d5eab393e71b2b12e8c8c3f5f629.sample"
+
+[deps]
+
+source_file="res://Assets/SFX/Sound effects/Era of Vampires/Era of Vampires/Witherwood_Loop.wav"
+dest_files=["res://.godot/imported/Witherwood_Loop.wav-bd88d5eab393e71b2b12e8c8c3f5f629.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://babjncbh4c2mf"
+path="res://.godot/imported/Souls_Below_Loop.wav-b89c77badd47fb2ca999784256ebae27.sample"
+
+[deps]
+
+source_file="res://Assets/SFX/Sound effects/Era of Vampires/Era of Vampires/Souls_Below_Loop.wav"
+dest_files=["res://.godot/imported/Souls_Below_Loop.wav-b89c77badd47fb2ca999784256ebae27.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://dlt7wcwj5ft68"
+path="res://.godot/imported/The_Summoning_Loop.wav-7ac82284ab84e65b6d9569254f8d267d.sample"
+
+[deps]
+
+source_file="res://Assets/SFX/Sound effects/Era of Vampires/Era of Vampires/The_Summoning_Loop.wav"
+dest_files=["res://.godot/imported/The_Summoning_Loop.wav-7ac82284ab84e65b6d9569254f8d267d.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://b8g1g3dam2f6q"
+path="res://.godot/imported/Dead_Village_Loop.wav-fee6c701fb932c73e6a1b3c840c20423.sample"
+
+[deps]
+
+source_file="res://Assets/SFX/Sound effects/Era of Vampires/Era of Vampires/Dead_Village_Loop.wav"
+dest_files=["res://.godot/imported/Dead_Village_Loop.wav-fee6c701fb932c73e6a1b3c840c20423.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

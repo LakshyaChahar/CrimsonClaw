@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://dk4gln51n37xj"
+path="res://.godot/imported/Tortured_Heart_Loop_Bass.wav-653213aa335192a2d280a9ae7dfad811.sample"
+
+[deps]
+
+source_file="res://Assets/SFX/Sound effects/Era of Vampires/Era of Vampires/Tortured_Heart_Loop_Bass.wav"
+dest_files=["res://.godot/imported/Tortured_Heart_Loop_Bass.wav-653213aa335192a2d280a9ae7dfad811.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

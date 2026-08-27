@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://c67q4yxa2d11h"
+path="res://.godot/imported/hellforge_dive.wav-440deb34579497c6c2a6c02207c67c55.sample"
+
+[deps]
+
+source_file="res://Assets/SFX/Sound effects/hellforge_dive.wav"
+dest_files=["res://.godot/imported/hellforge_dive.wav-440deb34579497c6c2a6c02207c67c55.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2
