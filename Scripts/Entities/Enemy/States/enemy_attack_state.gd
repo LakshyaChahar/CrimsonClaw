@@ -16,14 +16,17 @@ func enter() -> void:
 	
 	var enemy = character as Enemy
 	if enemy and enemy.target:
-		var dir_to_target = sign(enemy.target.global_position.x - enemy.global_position.x)
-		if dir_to_target != 0:
-			character.facing_direction = int(dir_to_target)
-			if character.animation_manager and character.animation_manager.sprite:
-				character.animation_manager.sprite.flip_h = (character.facing_direction == -1)
+		var diff_x = enemy.target.global_position.x - enemy.global_position.x
+		var dir_to_target = sign(diff_x) if diff_x != 0 else character.facing_direction
+		character.facing_direction = int(dir_to_target)
+		character.update_sprite_facing()
 
 	hitbox = character.find_child("Hitbox")
 	if hitbox:
+		if enemy:
+			hitbox.damage = enemy.contact_damage
+			hitbox.knockback_force = enemy.attack_knockback_force
+			hitbox.stun_duration = enemy.attack_stun_duration
 		for child in hitbox.get_children():
 			if child is CollisionShape2D:
 				hitbox_shape = child

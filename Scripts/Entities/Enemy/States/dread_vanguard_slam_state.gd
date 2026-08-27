@@ -67,7 +67,7 @@ func _perform_slam_impact() -> void:
 
 	_cleanup_warning_telegraph()
 
-	var boss = character as DreadVanguardBoss
+	var _boss = character as DreadVanguardBoss
 	var slam_pos = character.global_position + Vector2(character.facing_direction * 15, 0)
 
 	# 1. Spawn Radial Circular Blast Shockwave expanding outward

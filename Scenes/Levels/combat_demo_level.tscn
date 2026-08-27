@@ -1,15 +1,14 @@
 [gd_scene format=3 uid="uid://c8m7k3cap1x0q"]
 
 [ext_resource type="PackedScene" uid="uid://cku1aeds5crdb" path="res://Scenes/Entities/Traps/saw_trap.tscn" id="4_saw"]
-[ext_resource type="PackedScene" uid="uid://dm7q55brlfsy" path="res://Scenes/Entities/Traps/ceiling_trap.tscn" id="5_ceiling"]
 [ext_resource type="PackedScene" uid="uid://coe2cgirmntry" path="res://Scenes/Entities/Traps/arrow_trap.tscn" id="6_arrow"]
 [ext_resource type="PackedScene" uid="uid://dy6f7wyuq08p2" path="res://Scenes/Entities/Enemy/Stalkerghoul.tscn" id="6_b62ms"]
-[ext_resource type="PackedScene" uid="uid://b8ya3k2ranged" path="res://Scenes/Entities/Enemy/ranged_enemy.tscn" id="7_b62ms"]
-[ext_resource type="PackedScene" uid="uid://cqv2yal5oh765" path="res://Scenes/Entities/Enemy/dread_vanguard_boss.tscn" id="10_dread"]
+[ext_resource type="PackedScene" uid="uid://cc2a6kluxes7" path="res://Scenes/Entities/Enemy/enemy.tscn" id="8_11doo"]
+[ext_resource type="PackedScene" uid="uid://cqv2yal5oh765" path="res://Scenes/Entities/Enemy/dread_vanguard_boss.tscn" id="9_es6fr"]
+[ext_resource type="PackedScene" uid="uid://c4f0b13hm2toh" path="res://Scenes/Entities/Enemy/veil_walker_boss.tscn" id="10_1cu4p"]
 [ext_resource type="PackedScene" uid="uid://7im83yx7a238" path="res://Scenes/Entities/Enemy/ranged_enemy_sprite.tscn" id="11_3t6kx"]
 [ext_resource type="PackedScene" uid="uid://cm1t3b37lel3n" path="res://Scenes/Entities/Player/player_spriteTest.tscn" id="11_3vkxv"]
 [ext_resource type="Script" uid="uid://q4vlj5kjqoe" path="res://Scripts/Core/sub_boss_coordinator.gd" id="11_coord"]
-[ext_resource type="PackedScene" uid="uid://c4f0b13hm2toh" path="res://Scenes/Entities/Enemy/veil_walker_boss.tscn" id="11_xxwll"]
 [ext_resource type="PackedScene" uid="uid://d2ciunjfjxgry" path="res://Scenes/Entities/Enemy/pyro_archon_boss.tscn" id="12_3t6kx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_floor"]
@@ -40,35 +39,36 @@ polygon = PackedVector2Array(-1500, -20, 1500, -20, 1500, 20, -1500, 20)
 [node name="SawTrap" parent="Traps" unique_id=100000005 instance=ExtResource("4_saw")]
 position = Vector2(450, 175)
 
-[node name="CeilingTrap" parent="Traps" unique_id=100000006 instance=ExtResource("5_ceiling")]
-position = Vector2(-456, 130)
-
 [node name="ArrowTrap" parent="Traps" unique_id=100000007 instance=ExtResource("6_arrow")]
 position = Vector2(650, 150)
 
 [node name="Stalkerghoul" parent="." unique_id=1282923343 instance=ExtResource("6_b62ms")]
-position = Vector2(-145, 64)
+position = Vector2(-134, 85)
 ambush_damage = 45.0
 ambush_lunge_speed = 850.0
 
-[node name="RangedEnemy" parent="." unique_id=771122339 instance=ExtResource("7_b62ms")]
-position = Vector2(-668, 145)
-
-[node name="DreadVanguardBoss" parent="." unique_id=100526397 instance=ExtResource("10_dread")]
-position = Vector2(1174, 157)
-
 [node name="Player" parent="." unique_id=1658174949 instance=ExtResource("11_3vkxv")]
-position = Vector2(-919, 159)
+position = Vector2(19, 218)
+current_bloodthirst = 0.0
 hellforge_rise_force = 600.0
-
-[node name="VeilWalkerBoss" parent="." unique_id=175719164 instance=ExtResource("11_xxwll")]
-position = Vector2(1489, 90)
-
-[node name="PyroArchonBoss" parent="." unique_id=3761819 instance=ExtResource("12_3t6kx")]
-position = Vector2(1057, 61)
 
 [node name="RangedEnemy2" parent="." unique_id=312810328 instance=ExtResource("11_3t6kx")]
 position = Vector2(-1317, 191)
 
 [node name="RangedEnemy3" parent="." unique_id=1505774920 instance=ExtResource("11_3t6kx")]
 position = Vector2(-1396, 180)
+
+[node name="PyroArchonBoss" parent="." unique_id=3761819 instance=ExtResource("12_3t6kx")]
+position = Vector2(1361, 170)
+
+[node name="Enemy" parent="." unique_id=1481718111 instance=ExtResource("8_11doo")]
+position = Vector2(-770, 147)
+
+[node name="Enemy2" parent="." unique_id=1759273219 instance=ExtResource("8_11doo")]
+position = Vector2(-711, 161)
+
+[node name="DreadVanguardBoss" parent="." unique_id=507606381 instance=ExtResource("9_es6fr")]
+position = Vector2(1184, 175)
+
+[node name="VeilWalkerBoss" parent="." unique_id=175719164 instance=ExtResource("10_1cu4p")]
+position = Vector2(1456, 153)

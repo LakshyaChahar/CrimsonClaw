@@ -25,8 +25,8 @@
 [ext_resource type="Script" uid="uid://bohxydkawxl6a" path="res://Scripts/Core/hurtbox.gd" id="19_37j3j"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1"]
-radius = 12.0
-height = 48.0
+radius = 21.0
+height = 86.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_xfmp2"]
 atlas = ExtResource("2_cpd13")
@@ -457,7 +457,7 @@ collision_mask = 9
 script = ExtResource("1_pxnb0")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=810423284]
-position = Vector2(0, -27)
+position = Vector2(3, -43)
 shape = SubResource("CapsuleShape2D_1")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=2045404950]
@@ -558,7 +558,7 @@ script = ExtResource("19_37j3j")
 invincibility_duration = 0.4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=261566379]
-position = Vector2(0, -21)
+position = Vector2(2, -42)
 shape = SubResource("CapsuleShape2D_1")
 
 [node name="HUD" type="CanvasLayer" parent="." unique_id=191024357]
