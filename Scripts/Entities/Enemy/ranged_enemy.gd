@@ -33,7 +33,7 @@ func fire_projectile() -> void:
 	if not target or not projectile_scene:
 		return
 		
-	var spawn_pos: Vector2 = muzzle.global_position if muzzle else (global_position + Vector2(facing_direction * 16, -12))
+	var spawn_pos: Vector2 = (global_position + Vector2(facing_direction * abs(muzzle.position.x), muzzle.position.y)) if muzzle else (global_position + Vector2(facing_direction * 16, -30))
 	var target_pos: Vector2 = target.global_position
 	
 	# 1. Instantiate the projectile scene dynamically

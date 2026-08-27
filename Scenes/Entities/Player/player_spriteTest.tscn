@@ -28,29 +28,33 @@
 radius = 12.0
 height = 48.0
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_fndxr"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_xfmp2"]
 atlas = ExtResource("2_cpd13")
 region = Rect2(0, 0, 128, 64)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_xfmp2"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_eryrr"]
 atlas = ExtResource("2_cpd13")
 region = Rect2(128, 0, 128, 64)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_eryrr"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_pp4e2"]
 atlas = ExtResource("2_cpd13")
 region = Rect2(256, 0, 128, 64)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_pp4e2"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_a4lfk"]
 atlas = ExtResource("2_cpd13")
 region = Rect2(384, 0, 128, 64)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_a4lfk"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_58a1m"]
 atlas = ExtResource("2_cpd13")
 region = Rect2(512, 0, 128, 64)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_58a1m"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_g5ugu"]
 atlas = ExtResource("2_cpd13")
 region = Rect2(640, 0, 128, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rq2s0"]
+atlas = ExtResource("2_cpd13")
+region = Rect2(768, 0, 128, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_f7gth"]
 atlas = ExtResource("3_xfmp2")
@@ -216,9 +220,6 @@ region = Rect2(128, 192, 128, 64)
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_fndxr")
-}, {
-"duration": 1.0,
 "texture": SubResource("AtlasTexture_xfmp2")
 }, {
 "duration": 1.0,
@@ -232,10 +233,16 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_58a1m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g5ugu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rq2s0")
 }],
 "loop": false,
 "name": &"attack",
-"speed": 20.0
+"speed": 10.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -465,7 +472,7 @@ drag_bottom_margin = 0.0
 position = Vector2(-3, -52)
 scale = Vector2(1.7009684, 1.7786458)
 sprite_frames = SubResource("SpriteFrames_1")
-animation = &"dash"
+animation = &"attack"
 
 [node name="CharacterAnimationManager" type="Node" parent="." unique_id=1083209188 node_paths=PackedStringArray("sprite")]
 script = ExtResource("5_xfmp2")
