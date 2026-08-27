@@ -284,6 +284,29 @@ func _spawn_tyrant_ghost_afterimage() -> void:
 	var tween = ghost.create_tween()
 	tween.tween_property(ghost, "modulate:a", 0.0, 0.25)
 	tween.tween_callback(ghost.queue_free)
+	
+func spawn_dash_afterimage() -> void:
+	var sprite = find_child("AnimatedSprite2D") as AnimatedSprite2D
+	if not sprite:
+		return
+
+	var ghost = Sprite2D.new()
+	var current_texture = sprite.sprite_frames.get_frame_texture(sprite.animation, sprite.frame)
+	ghost.texture = current_texture
+	ghost.global_position = sprite.global_position
+	ghost.scale = sprite.global_scale
+	ghost.rotation = sprite.global_rotation
+	ghost.flip_h = sprite.flip_h
+	
+	ghost.modulate = Color(0.8, 0.1, 0.1, 0.6) 
+	ghost.z_index = sprite.z_index - 1
+
+	get_parent().add_child(ghost)
+
+	var tween = ghost.create_tween()
+
+	tween.tween_property(ghost, "modulate:a", 0.0, 0.3)
+	tween.tween_callback(ghost.queue_free)
 
 func _apply_tyrant_sprite_glow(enable: bool) -> void:
 	var sprite = find_child("AnimatedSprite2D") as AnimatedSprite2D
