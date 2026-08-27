@@ -536,7 +536,7 @@ position = Vector2(-6, -2)
 shape = SubResource("CapsuleShape2D_1")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1585599354]
-modulate = Color(0.8, 0.4, 1, 1)
+modulate = Color(1, 1, 1, 1)
 material = SubResource("ShaderMaterial_npoue")
 position = Vector2(-6.9999995, -12.999998)
 scale = Vector2(1.6839622, 2.0394735)
@@ -571,8 +571,8 @@ script = ExtResource("11_phase_strike")
 
 [node name="TargetLaser" type="Line2D" parent="." unique_id=1584156621]
 visible = false
-width = 4.0
-default_color = Color(1, 0.15, 0.15, 0.8)
+width = 2.0
+default_color = Color(1, 0.2, 0.35, 0.95)
 
 [node name="Hitbox" type="Area2D" parent="." unique_id=89245860]
 collision_layer = 16

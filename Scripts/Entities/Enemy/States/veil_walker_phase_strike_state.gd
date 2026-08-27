@@ -50,7 +50,7 @@ func enter() -> void:
 		telegraph_line_width = boss.telegraph_line_width
 
 	SubBossCoordinator.request_attack(character)
-	_spawn_overhead_warning(telegraph_duration, Color(0.85, 0.25, 1.0, 0.95))
+	_spawn_overhead_warning(telegraph_duration, Color(1.0, 0.2, 0.35, 0.9))
 
 	current_phase = Phase.RISE_TELEGRAPH
 	phase_timer = 0.0
@@ -116,10 +116,10 @@ func physics_update(delta: float) -> void:
 			if boss and boss.target:
 				var target_torso = boss.target.global_position + Vector2(0, -21)
 				var time_left = telegraph_duration - phase_timer
-				var lock_threshold = 0.30
+				var lock_threshold = 0.12 # Tighter tracking window so slight movement doesn't cause complete miss!
 
 				if time_left > lock_threshold:
-					# Phase 1: Tracking player
+					# Phase 1: Dynamic tracking towards current player position
 					strike_direction = (target_torso - (character.global_position + Vector2(0, -18))).normalized()
 					if target_reticle:
 						target_reticle.global_position = target_torso
@@ -127,7 +127,7 @@ func physics_update(delta: float) -> void:
 					var end_pos = target_laser.to_local(target_torso)
 					target_laser.points = PackedVector2Array([start_pos, end_pos])
 				else:
-					# Phase 2: FREEZE aiming in place so player can dodge!
+					# Phase 2: Lock aiming line for final 0.12s
 					var start_pos = Vector2.ZERO
 					var end_pos = target_laser.to_local(character.global_position + Vector2(0, -18) + strike_direction * 400.0)
 					target_laser.points = PackedVector2Array([start_pos, end_pos])
@@ -141,15 +141,15 @@ func physics_update(delta: float) -> void:
 					var reticle_scale = lerp(2.0, 0.8, progress)
 					target_reticle.scale = Vector2(reticle_scale, reticle_scale)
 
-				# Rapid flash line when AIM IS LOCKED - DODGE NOW!
+				# Rapid flash line when AIM IS LOCKED
 				if time_left <= lock_threshold:
 					if not is_aim_locked:
 						is_aim_locked = true
 						_trigger_aim_lock_event()
 
 					var flash = (sin(phase_timer * 40.0) + 1.0) * 0.5
-					target_laser.default_color = lerp(Color(0.85, 0.2, 1.0, 1.0), Color.WHITE, flash)
-					target_laser.width = lerp(6.0, 14.0, flash * 0.5)
+					target_laser.default_color = lerp(Color(1.0, 0.2, 0.35, 1.0), Color.WHITE, flash)
+					target_laser.width = lerp(4.0, 8.0, flash * 0.5)
 				else:
 					target_laser.default_color = telegraph_line_color
 					target_laser.width = telegraph_line_width
@@ -161,12 +161,13 @@ func physics_update(delta: float) -> void:
 				_start_strike()
 
 		Phase.STRIKE:
-			prev_position = character.global_position + Vector2(0, -18)
+			var frame_start_pos = character.global_position + Vector2(0, -18)
 			character.velocity = strike_direction * strike_speed
 			character.move_and_slide()
+			var frame_end_pos = character.global_position + Vector2(0, -18)
 
 			# 100% Guaranteed Hit Check (Direct Overlap + Swept Trajectory Check)
-			_check_strike_hits()
+			_check_strike_hits(frame_start_pos, frame_end_pos)
 
 			# Spawn Ghost Afterimages along dash trail
 			ghost_spawn_timer += delta
@@ -191,9 +192,11 @@ func _start_strike() -> void:
 	prev_position = character.global_position + Vector2(0, -18)
 	hit_targets.clear()
 
-	# Enable Hitbox shape safely via set_deferred for the strike pass
+	# Enable Hitbox shape directly for the strike pass
+	if hitbox:
+		hitbox.monitoring = true
 	if hitbox_shape:
-		hitbox_shape.set_deferred("disabled", false)
+		hitbox_shape.disabled = false
 
 	if target_laser:
 		target_laser.visible = false
@@ -205,31 +208,40 @@ func _start_strike() -> void:
 		character.input_direction.x = sign(strike_direction.x)
 		character.update_facing_direction()
 
-func _check_strike_hits() -> void:
-	if not hitbox:
+func _check_strike_hits(segment_start: Vector2, segment_end: Vector2) -> void:
+	var boss = character as Enemy
+	if not boss or not boss.target:
 		return
 		
-	# 1. Direct Overlap Check
-	var overlapping = hitbox.get_overlapping_areas()
-	for area in overlapping:
-		if area is Hurtbox and not hit_targets.has(area):
-			_apply_hit_to_hurtbox(area as Hurtbox)
+	var hurtbox = boss.target.find_child("Hurtbox") as Hurtbox
+	if not hurtbox:
+		hurtbox = boss.target.get_node_or_null("Hurtbox") as Hurtbox
 
-	# 2. Swept Trajectory Line Check (Guarantees hits even if dash tunnels past target)
-	var boss = character as Enemy
-	if boss and boss.target:
-		var hurtbox = boss.target.find_child("Hurtbox") as Hurtbox
-		if hurtbox and not hit_targets.has(hurtbox):
-			var player_torso = boss.target.global_position + Vector2(0, -21)
-			var current_pos = character.global_position + Vector2(0, -18)
-			
-			# Calculate closest point on boss's movement segment during this frame
-			var closest_point = Geometry2D.get_closest_point_to_segment(player_torso, prev_position, current_pos)
-			var dist = closest_point.distance_to(player_torso)
-			
-			# If the dash trajectory passed within 45 pixels of the player torso, register hit!
-			if dist <= 45.0:
-				_apply_hit_to_hurtbox(hurtbox)
+	# 1. Direct Overlap Check via Hitbox
+	if hitbox:
+		var overlapping = hitbox.get_overlapping_areas()
+		for area in overlapping:
+			if area is Hurtbox and not hit_targets.has(area):
+				_apply_hit_to_hurtbox(area as Hurtbox)
+
+	# 2. Multi-point Swept Trajectory Check (Torso, Feet, Head)
+	if hurtbox and not hit_targets.has(hurtbox):
+		var target_body = boss.target
+		var points_to_check = [
+			target_body.global_position + Vector2(0, -21), # Torso
+			target_body.global_position,                  # Feet
+			target_body.global_position + Vector2(0, -42)  # Head
+		]
+		
+		var hit_registered = false
+		for pt in points_to_check:
+			var closest_point = Geometry2D.get_closest_point_to_segment(pt, segment_start, segment_end)
+			if closest_point.distance_to(pt) <= 85.0: # Generous 85px hit radius matching visual dash width
+				hit_registered = true
+				break
+				
+		if hit_registered:
+			_apply_hit_to_hurtbox(hurtbox)
 
 func _apply_hit_to_hurtbox(hurtbox: Hurtbox) -> void:
 	var victim = hurtbox.owner if hurtbox.owner else hurtbox.get_parent()
@@ -238,6 +250,8 @@ func _apply_hit_to_hurtbox(hurtbox: Hurtbox) -> void:
 		var kb_dir = strike_direction
 		if kb_dir == Vector2.ZERO:
 			kb_dir = Vector2.RIGHT
+			
+		# Call receive_hit on hurtbox which correctly dispatches damage, knockback, and signals!
 		hurtbox.receive_hit(strike_damage, kb_dir * strike_knockback_force, strike_stun_duration, character, false, 0.0, 0.0)
 
 func _start_recovery() -> void:
@@ -333,7 +347,7 @@ func _setup_particle_emitter() -> void:
 		particle_emitter.initial_velocity_max = 80.0
 		particle_emitter.scale_amount_min = 2.0
 		particle_emitter.scale_amount_max = 4.0
-		particle_emitter.color = Color(0.9, 0.15, 0.45, 0.8)
+		particle_emitter.color = Color(1.0, 0.25, 0.35, 0.8)
 		character.add_child(particle_emitter)
 
 func _spawn_ghost_afterimage() -> void:
@@ -361,7 +375,7 @@ func _spawn_ghost_afterimage() -> void:
 	ghost.global_rotation = sprite.global_rotation
 	ghost.flip_h = sprite.flip_h
 	ghost.flip_v = sprite.flip_v
-	ghost.modulate = Color(0.8, 0.2, 1.0, 0.6) # Translucent shadow violet
+	ghost.modulate = Color(1.0, 0.25, 0.3, 0.5) # Clean crimson shadow ghost
 	
 	var parent_z = character.z_index if "z_index" in character else 2
 	ghost.z_index = max(1, parent_z - 1)
@@ -388,8 +402,10 @@ func _trigger_aim_lock_event() -> void:
 	if target_laser:
 		target_laser.width = 16.0
 
-# Helper Node class to draw a glowing target lock circle procedurally
+# Helper Node class to draw a sleek precision target lock-on sight procedurally
 class ReticleDrawer extends Node2D:
+	var reticle_color: Color = Color(1.0, 0.25, 0.35, 0.95)
+
 	func _ready() -> void:
 		z_index = 15
 
@@ -399,10 +415,27 @@ class ReticleDrawer extends Node2D:
 	func _draw() -> void:
 		if not visible:
 			return
-		# Draw outer pulsing warning circle
-		draw_arc(Vector2.ZERO, 16.0, 0, TAU, 32, Color(1.0, 0.2, 0.2, 0.8), 2.0)
-		# Draw inner crosshair ticks
-		draw_line(Vector2(-12, 0), Vector2(-4, 0), Color.WHITE, 2.0)
-		draw_line(Vector2(4, 0), Vector2(12, 0), Color.WHITE, 2.0)
-		draw_line(Vector2(0, -12), Vector2(0, -4), Color.WHITE, 2.0)
-		draw_line(Vector2(0, 4), Vector2(0, 12), Color.WHITE, 2.0)
+			
+		var sz = 12.0
+		var b_len = 4.0
+		var c = reticle_color
+		var w = 1.5
+		
+		# Top-Left Bracket
+		draw_line(Vector2(-sz, -sz), Vector2(-sz + b_len, -sz), c, w)
+		draw_line(Vector2(-sz, -sz), Vector2(-sz, -sz + b_len), c, w)
+		
+		# Top-Right Bracket
+		draw_line(Vector2(sz, -sz), Vector2(sz - b_len, -sz), c, w)
+		draw_line(Vector2(sz, -sz), Vector2(sz, -sz + b_len), c, w)
+		
+		# Bottom-Left Bracket
+		draw_line(Vector2(-sz, sz), Vector2(-sz + b_len, sz), c, w)
+		draw_line(Vector2(-sz, sz), Vector2(-sz, sz - b_len), c, w)
+		
+		# Bottom-Right Bracket
+		draw_line(Vector2(sz, sz), Vector2(sz - b_len, sz), c, w)
+		draw_line(Vector2(sz, sz), Vector2(sz, sz - b_len), c, w)
+		
+		# Center precision point
+		draw_circle(Vector2.ZERO, 1.2, Color.WHITE)

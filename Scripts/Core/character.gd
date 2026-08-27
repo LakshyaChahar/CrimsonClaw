@@ -36,7 +36,12 @@ var dash_cooldown_timer: float = 0.0
 
 @export_group("Health System")
 @export var max_health: float = 100.0
-@export var current_health: float = 100.0
+@export var current_health: float = 100.0:
+	set(val):
+		var old_health = current_health
+		current_health = clamp(val, 0.0, max_health)
+		if is_inside_tree() and old_health != current_health:
+			health_changed.emit(old_health, current_health)
 @export var health_regen_rate: float = 1.0 # Health regenerated per second
 @export var is_dead: bool = false
 
@@ -147,23 +152,16 @@ func consume_jump_buffer() -> void:
 func heal(amount: float) -> void:
 	if is_dead:
 		return
-	var old_health = current_health
-	current_health = min(current_health + amount, max_health)
-	if old_health != current_health:
-		health_changed.emit(old_health, current_health)
+	current_health += amount
 
 ## Deals damage to the character, clamping at 0 and triggering death if health reaches 0
 func take_damage(amount: float) -> void:
 	if is_dead or amount <= 0.0:
 		return
-	var old_health = current_health
-	current_health = max(current_health - amount, 0.0)
+	current_health -= amount
 	print("[Combat] ", name, " took ", amount, " damage. Health: ", current_health, "/", max_health)
 	
 	_play_hurt_reaction()
-	
-	if old_health != current_health:
-		health_changed.emit(old_health, current_health)
 		
 	if current_health <= 0.0:
 		die()

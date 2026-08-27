@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://b8x7yav63n8la"]
+
+[ext_resource type="Shader" path="res://Shaders/PostProcess/post_process_overlay.gdshader" id="1_shader"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_overlay"]
+shader = ExtResource("1_shader")
+shader_parameter/vignette_intensity = 0.35
+shader_parameter/vignette_opacity = 0.28
+shader_parameter/vignette_color = Color(0.02, 0.01, 0.04, 1)
+shader_parameter/aberration_amount = 0.8
+shader_parameter/saturation = 1.08
+shader_parameter/contrast = 1.02
+shader_parameter/brightness = 0.05
+shader_parameter/tint_color = Color(1, 0.98, 0.96, 1)
+shader_parameter/grain_amount = 0.01
+
+[node name="PostProcessOverlay" type="CanvasLayer"]
+layer = 100
+
+[node name="OverlayRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_overlay")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2

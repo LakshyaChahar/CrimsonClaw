@@ -207,3 +207,32 @@ func _find_target() -> void:
 		var player_node = root_node.find_child("Player", true, false)
 		if player_node is Node2D:
 			target = player_node
+
+## Calculates perpendicular outer horizontal distance between enemy collision shape and target collision shape
+func get_outer_distance_to_target() -> float:
+	if not target:
+		return 999999.0
+		
+	var my_center_x: float = global_position.x
+	var my_radius: float = 16.0
+	var my_shape = find_child("CollisionShape2D", false, false) as CollisionShape2D
+	if my_shape and my_shape.shape:
+		my_center_x = my_shape.global_position.x
+		if my_shape.shape is CapsuleShape2D or my_shape.shape is CircleShape2D:
+			my_radius = my_shape.shape.radius * abs(global_transform.get_scale().x)
+		elif my_shape.shape is RectangleShape2D:
+			my_radius = (my_shape.shape.size.x * 0.5) * abs(global_transform.get_scale().x)
+
+	var target_center_x: float = target.global_position.x
+	var target_radius: float = 16.0
+	var target_shape = target.find_child("CollisionShape2D", false, false) as CollisionShape2D
+	if target_shape and target_shape.shape:
+		target_center_x = target_shape.global_position.x
+		if target_shape.shape is CapsuleShape2D or target_shape.shape is CircleShape2D:
+			target_radius = target_shape.shape.radius * abs(target.global_transform.get_scale().x)
+		elif target_shape.shape is RectangleShape2D:
+			target_radius = (target_shape.shape.size.x * 0.5) * abs(target.global_transform.get_scale().x)
+
+	var center_dist_x = abs(my_center_x - target_center_x)
+	return max(0.0, center_dist_x - (my_radius + target_radius))
+

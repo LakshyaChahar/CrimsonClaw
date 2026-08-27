@@ -32,8 +32,8 @@ func setup(start_pos: Vector2, move_direction: float, custom_speed: float = -1.0
 	# Native node scaling: Flips the entire visual node perfectly when moving left
 	scale.x = direction
 
-	knockback_force = 450.0
-	knockback_direction = Vector2(direction, -0.8).normalized()
+	knockback_force = 520.0
+	knockback_direction = Vector2(direction * 0.6, -1.0).normalized()
 
 func _physics_process(delta: float) -> void:
 	var step = direction * speed * delta

@@ -4,8 +4,8 @@ class_name DreadVanguardSlamState
 
 enum Phase { RISE_TELEGRAPH, SLAM_IMPACT, RECOVERY }
 
-@export var telegraph_duration: float = 1.0
-@export var recovery_duration: float = 0.5
+@export var telegraph_duration: float = 0.45
+@export var recovery_duration: float = 0.45
 @export var shockwave_speed: float = 450.0
 @export var shockwave_damage: float = 30.0
 

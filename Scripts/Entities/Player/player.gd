@@ -123,8 +123,8 @@ var is_tyrant: bool = false:
 ## Camera shake duration on impact.
 @export var hellforge_shake_duration: float = 0.25
 
-@onready var health_bar: ProgressBar = $HUD/VBoxContainer/HealthBar
-@onready var bloodthirst_bar: ProgressBar = $HUD/VBoxContainer/BloodthirstBar
+@onready var health_bar: TextureProgressBar = $HUD/VBoxContainer/HealthBar
+@onready var bloodthirst_bar: TextureProgressBar = $HUD/VBoxContainer/BloodthirstBar
 
 func _ready() -> void:
 	super._ready()

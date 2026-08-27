@@ -49,17 +49,17 @@ func _on_body_entered(body: Node2D) -> void:
 		return
 	hit_targets.append(body)
 
-	var push_dir = (body.global_position - global_position).normalized()
-	if push_dir == Vector2.ZERO:
-		push_dir = Vector2.UP
+	var diff = body.global_position - global_position
+	var dir_x = sign(diff.x) if diff.x != 0 else 1.0
+	var push_dir = Vector2(dir_x * 0.55, -0.95).normalized()
 
 	var hurtbox = body.find_child("Hurtbox", true, false) as Hurtbox
 	if hurtbox:
-		hurtbox.receive_hit(damage, push_dir * knockback_force, 0.4, self)
+		hurtbox.receive_hit(damage, push_dir * 500.0, 0.4, self)
 	elif body.has_method("take_damage"):
 		body.take_damage(damage)
 		if body is Character:
-			(body as Character).velocity += push_dir * knockback_force
+			(body as Character).velocity += push_dir * 500.0
 			(body as Character).stun(0.4)
 
 func _draw() -> void:

@@ -41,8 +41,10 @@ func physics_update(delta: float) -> void:
 				return
 
 	var allows_basic_attack = not ("disable_basic_attack" in enemy and enemy.disable_basic_attack) and not (enemy is PyroArchonBoss)
+	var outer_dist = enemy.get_outer_distance_to_target() if enemy.has_method("get_outer_distance_to_target") else 999999.0
+	var is_in_attack_range = allows_basic_attack and enemy.attack_range > 0.0 and (dist <= enemy.attack_range or outer_dist <= 5.0)
 
-	if allows_basic_attack and enemy.attack_range > 0.0 and dist <= enemy.attack_range and enemy.attack_cooldown_timer <= 0.0:
+	if is_in_attack_range and enemy.attack_cooldown_timer <= 0.0:
 		if enemy.is_visible_in_screen():
 			state_machine.change_state("attack")
 			return
@@ -58,7 +60,9 @@ func physics_update(delta: float) -> void:
 	elif enemy is PyroArchonBoss:
 		desired_stop_range = 280.0
 
-	if desired_stop_range > 0.0 and dist <= desired_stop_range:
+	var should_stop = (desired_stop_range > 0.0 and dist <= desired_stop_range) or is_in_attack_range
+
+	if should_stop:
 		character.input_direction.x = 0.0
 		character.facing_direction = int(dir_to_player)
 		character.update_facing_direction()
