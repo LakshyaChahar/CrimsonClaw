@@ -230,7 +230,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"hellforge_rise",
-"speed": 20.0
+"speed": 60.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -415,6 +415,7 @@ position = Vector2(-3, -48)
 scale = Vector2(1.9800618, 2.0260415)
 sprite_frames = SubResource("SpriteFrames_1")
 animation = &"attack"
+
 
 [node name="CharacterAnimationManager" type="Node" parent="." unique_id=1083209188 node_paths=PackedStringArray("sprite")]
 script = ExtResource("2_anim_mgr")
