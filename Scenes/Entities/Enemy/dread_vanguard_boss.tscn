@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://do7pi1l1fgrhs" path="res://Scripts/Entities/Enemy/dread_vanguard_boss.gd" id="1_dread_boss"]
 [ext_resource type="Script" uid="uid://o574iqi28cq3" path="res://Scripts/Core/character_animation_manager.gd" id="2_anim_mgr"]
-[ext_resource type="Texture2D" uid="uid://b37yxtl7l4nty" path="res://Scenes/Entities/Assets/Ghoul/ATTACK.png" id="2_mygee"]
 [ext_resource type="Shader" uid="uid://dcrg2hdm32nhj" path="res://Scripts/Entities/Enemy/Shaders/ash_particles.gdshader" id="3_0wel7"]
 [ext_resource type="Texture2D" uid="uid://bwbv2mu003icm" path="res://Assets/Spritesheets/Golem_1/Orange/White_Swoosh_VFX/Golem_1_idle.png" id="3_nty73"]
 [ext_resource type="Script" uid="uid://ch643o6echy12" path="res://Scripts/Core/character_state_machine.gd" id="3_state_mc"]
@@ -19,7 +18,7 @@
 [ext_resource type="Script" uid="uid://b63pbby0rnqu" path="res://Scripts/Entities/Enemy/States/dread_vanguard_slam_state.gd" id="10_slam"]
 [ext_resource type="Script" uid="uid://ccvemmh7fbv5f" path="res://Scripts/Entities/Enemy/States/dread_vanguard_charge_state.gd" id="11_charge"]
 [ext_resource type="Script" uid="uid://csc3uyoxphj5b" path="res://Scripts/Entities/Player/States/stun_state.gd" id="12_stun"]
-[ext_resource type="PackedScene" path="res://Scenes/Entities/Enemy/ground_shockwave.tscn" id="13_wave_scene"]
+[ext_resource type="PackedScene" uid="uid://poilxqk4qusm" path="res://Scenes/Entities/Enemy/ground_shockwave.tscn" id="13_wave_scene"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_dread"]
 radius = 35.0
@@ -519,7 +518,7 @@ script = ExtResource("1_dread_boss")
 shockwave_scene = ExtResource("13_wave_scene")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1278870127]
-position = Vector2(9, -30)
+position = Vector2(8, -32)
 shape = SubResource("CapsuleShape2D_dread")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1075680993]

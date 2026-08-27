@@ -48,6 +48,10 @@ enum Phase { RISE, FALL, IMPACT }
 ## Camera shake duration on ground impact.
 @export var shake_duration: float = 0.25
 
+@export_group("Shockwave Projectile")
+## Scene for the traveling ground shockwave projectile.
+@export var shockwave_scene: PackedScene 
+
 var current_phase: Phase = Phase.RISE
 var rise_timer: float = 0.0
 var impact_timer: float = 0.0
@@ -127,6 +131,35 @@ func _trigger_impact() -> void:
 	# Trigger camera shake effect
 	if character.has_method("trigger_screen_shake"):
 		character.trigger_screen_shake(shake_intensity, shake_duration)
+		
+	# Spawn the dual traveling projectiles
+	_spawn_dual_shockwaves()
+
+func _spawn_dual_shockwaves() -> void:
+	if not shockwave_scene:
+		push_warning("HellforgeDiveState: No shockwave_scene assigned!")
+		return
+		
+	# Extract collision layers from the player's hitbox so the projectile only hits enemies
+	var reference_hitbox = character.find_child(hitbox_node_name) as Hitbox
+	var c_layer = reference_hitbox.collision_layer if reference_hitbox else 0
+	var c_mask = reference_hitbox.collision_mask if reference_hitbox else 0
+	
+	# Spawn Left Shockwave (-1.0 direction)
+	var wave_left = shockwave_scene.instantiate() as GroundShockwave
+	wave_left.owner = character # Assigns player as owner to prevent self-damage
+	wave_left.collision_layer = c_layer
+	wave_left.collision_mask = c_mask
+	character.get_parent().add_child(wave_left)
+	wave_left.setup(character.global_position + Vector2(-15, 0), -1.0, -1.0, impact_damage)
+	
+	# Spawn Right Shockwave (1.0 direction)
+	var wave_right = shockwave_scene.instantiate() as GroundShockwave
+	wave_right.owner = character # Assigns player as owner to prevent self-damage
+	wave_right.collision_layer = c_layer
+	wave_right.collision_mask = c_mask
+	character.get_parent().add_child(wave_right)
+	wave_right.setup(character.global_position + Vector2(15, 0), 1.0, -1.0, impact_damage)
 
 func _finish_dive() -> void:
 	if hitbox_shape:

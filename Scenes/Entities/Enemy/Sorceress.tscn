@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cgbb1bl8kqajr" path="res://Scripts/Entities/Enemy/sorceress.gd" id="1_sorc"]
 [ext_resource type="PackedScene" uid="uid://c10ncodlkqio4" path="res://Scenes/Entities/Enemy/Bat.tscn" id="2_bat_scene"]
+[ext_resource type="Shader" uid="uid://dcrg2hdm32nhj" path="res://Scripts/Entities/Enemy/Shaders/ash_particles.gdshader" id="3_3y8hq"]
 [ext_resource type="Texture2D" uid="uid://c0fc6ss6vg5it" path="res://Assets/Spritesheets/Evil Wizard 3/Sprites/Attack.png" id="3_8sjxi"]
 [ext_resource type="Script" uid="uid://o574iqi28cq3" path="res://Scripts/Core/character_animation_manager.gd" id="4_anim_mgr"]
 [ext_resource type="Texture2D" uid="uid://bpv0twtkcdub4" path="res://Assets/Spritesheets/Evil Wizard 3/Sprites/Death.png" id="4_wf01x"]
@@ -20,6 +21,18 @@
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_sorc"]
 radius = 13.0
 height = 50.0
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_of2al"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_of2al"]
+noise = SubResource("FastNoiseLite_of2al")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_npoue"]
+resource_local_to_scene = true
+shader = ExtResource("3_3y8hq")
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_of2al")
+shader_parameter/dissolve_amount = -0.10000000149012
+shader_parameter/burn_color = Color(0.8, 0.1, 0.1, 1)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_by36x"]
 atlas = ExtResource("3_8sjxi")
@@ -428,6 +441,15 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_sorc_hitbox"]
 radius = 16.0
 
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_by36x"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(26.93, 1.07, 1)
+gravity = Vector3(0, -100, 0)
+scale_min = 5.0
+scale_max = 10.0
+color = Color(0.5019608, 0, 0, 0.45490196)
+
 [node name="Sorceress" type="CharacterBody2D" unique_id=98412001]
 collision_layer = 8
 collision_mask = 3
@@ -439,6 +461,7 @@ position = Vector2(0, -6)
 shape = SubResource("CapsuleShape2D_sorc")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=98412003]
+material = SubResource("ShaderMaterial_npoue")
 position = Vector2(2, -7)
 scale = Vector2(1.2714286, 1.2642857)
 sprite_frames = SubResource("SpriteFrames_sorc")
@@ -488,3 +511,11 @@ script = ExtResource("12_hurtbox")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=98412015]
 position = Vector2(-1, -6)
 shape = SubResource("CapsuleShape2D_sorc")
+
+[node name="AshParticles" type="GPUParticles2D" parent="." unique_id=741327557]
+emitting = false
+lifetime = 1.35
+one_shot = true
+explosiveness = 0.47
+randomness = 1.0
+process_material = SubResource("ParticleProcessMaterial_by36x")
