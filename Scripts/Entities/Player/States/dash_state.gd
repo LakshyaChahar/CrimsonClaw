@@ -21,8 +21,11 @@ class_name DashState
 var dash_timer: float = 0.0
 var saved_collision_layer: int = 2
 var saved_collision_mask: int = 9
+var dash_ghost_timer: float = 0.0
+@export var dash_ghost_interval: float = 0.04
 
 func enter() -> void:
+	dash_ghost_timer = 0.0
 	character.wants_dash = false
 	if "dash_buffer_timer" in character:
 		character.dash_buffer_timer = 0.0
@@ -61,6 +64,10 @@ func enter() -> void:
 	character.velocity = character.dash_direction * dash_speed
 	dash_timer = dash_duration
 
+	# Spawn initial afterimage ghost on dash start
+	if character.has_method("spawn_dash_afterimage"):
+		character.spawn_dash_afterimage()
+
 func exit() -> void:
 	character.is_dashing = false
 	character.wants_dash = false
@@ -96,6 +103,13 @@ func exit() -> void:
 func physics_update(delta: float) -> void:
 	dash_timer -= delta
 	character.velocity.y = 0.0 # Maintain level horizontal dash
+
+	dash_ghost_timer += delta
+	if dash_ghost_timer >= dash_ghost_interval:
+		dash_ghost_timer = 0.0
+		if character.has_method("spawn_dash_afterimage"):
+			character.spawn_dash_afterimage()
+			
 	character.move_and_slide()
 	
 	if dash_timer <= 0.0:

@@ -39,6 +39,11 @@ var dash_cooldown_timer: float = 0.0
 @export_group("Stun Parameters")
 @export var stun_multiplier: float = 1.0
 
+@export_group("Audio Parameters")
+@export var move_sfx_name: String = ""
+@export var hurt_sfx_name: String = "enemy_hurt"
+@export var die_sfx_name: String = "enemy_death"
+
 
 # --- Child Node References ---
 var animation_manager: CharacterAnimationManager
@@ -192,4 +197,3 @@ func stun(duration: float) -> void:
 	stun_timer = max(stun_timer, final_duration)
 	if state_machine and state_machine.states.has("stun"):
 		state_machine.change_state("stun")
-

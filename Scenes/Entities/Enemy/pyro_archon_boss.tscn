@@ -1,9 +1,11 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://d2ciunjfjxgry"]
 
-[ext_resource type="Script" path="res://Scripts/Entities/Enemy/pyro_archon_boss.gd" id="1_pyro_boss"]
+[ext_resource type="Script" uid="uid://b5u17v2g4xto" path="res://Scripts/Entities/Enemy/pyro_archon_boss.gd" id="1_pyro_boss"]
 [ext_resource type="Script" uid="uid://o574iqi28cq3" path="res://Scripts/Core/character_animation_manager.gd" id="2_anim_mgr"]
 [ext_resource type="Texture2D" uid="uid://dwhegl1o0s1ko" path="res://Scenes/Entities/Assets/Wild Zombie/Attack_2.png" id="2_mygee"]
 [ext_resource type="Texture2D" path="res://Scenes/Entities/Assets/Wild Zombie/Attack_3.png" id="3_snipe_tex"]
+[ext_resource type="Texture2D" uid="uid://b37yxtl7l4nty" path="res://Scenes/Entities/Assets/Ghoul/ATTACK.png" id="2_mygee_ghoul"]
+[ext_resource type="Shader" uid="uid://dcrg2hdm32nhj" path="res://Scripts/Entities/Enemy/Shaders/ash_particles.gdshader" id="3_0ivdf"]
 [ext_resource type="Script" uid="uid://ch643o6echy12" path="res://Scripts/Core/character_state_machine.gd" id="3_state_mc"]
 [ext_resource type="Texture2D" uid="uid://bit62235p5a6r" path="res://Scenes/Entities/Assets/Wild Zombie/Dead.png" id="4_dead_tex"]
 [ext_resource type="Script" uid="uid://hasrwey3fali" path="res://Scripts/Entities/Enemy/States/enemy_idle_state.gd" id="4_idle"]
@@ -15,13 +17,25 @@
 [ext_resource type="Script" uid="uid://1nmwna68cnsy" path="res://Scripts/Entities/Enemy/States/enemy_dead_state.gd" id="7_dead"]
 [ext_resource type="Script" uid="uid://cks5b8uy7k5xl" path="res://Scripts/Core/hitbox.gd" id="8_hitbox"]
 [ext_resource type="Script" uid="uid://bohxydkawxl6a" path="res://Scripts/Core/hurtbox.gd" id="9_hurtbox"]
-[ext_resource type="Script" path="res://Scripts/Entities/Enemy/States/pyro_archon_snipe_state.gd" id="10_snipe_state"]
+[ext_resource type="Script" uid="uid://dy3rboe537lq7" path="res://Scripts/Entities/Enemy/States/pyro_archon_snipe_state.gd" id="10_snipe_state"]
 [ext_resource type="Script" uid="uid://csc3uyoxphj5b" path="res://Scripts/Entities/Player/States/stun_state.gd" id="11_stun"]
 [ext_resource type="PackedScene" path="res://Scenes/Entities/Enemy/sniper_beam_projectile.tscn" id="12_sniper_scene"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1"]
-radius = 12.0
-height = 36.0
+radius = 22.0
+height = 46.0
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_of2al"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_of2al"]
+noise = SubResource("FastNoiseLite_of2al")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_npoue"]
+resource_local_to_scene = true
+shader = ExtResource("3_0ivdf")
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_of2al")
+shader_parameter/dissolve_amount = -0.10000000149012
+shader_parameter/burn_color = Color(0.8, 0.1, 0.1, 1)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_atk0"]
 atlas = ExtResource("2_mygee")
@@ -231,75 +245,85 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_pyro_hit"]
 radius = 22.0
 
-[node name="PyroArchonBoss" type="CharacterBody2D" groups=["Enemies"]]
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_2cehh"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(26.93, 1.07, 1)
+gravity = Vector3(0, -100, 0)
+scale_min = 5.0
+scale_max = 10.0
+color = Color(0.5019608, 0, 0, 0.45490196)
+
+[node name="PyroArchonBoss" type="CharacterBody2D" unique_id=3761819 groups=["Enemies"]]
 z_index = 2
 collision_layer = 8
-collision_mask = 1
 script = ExtResource("1_pyro_boss")
-snipe_cooldown = 5.5
-telegraph_duration = 1.2
-recovery_duration = 2.2
-projectile_speed = 1200.0
-projectile_damage = 20.0
-min_teleport_distance = 180.0
-max_teleport_distance = 400.0
 projectile_scene = ExtResource("12_sniper_scene")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -18)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=755653428]
+position = Vector2(-9, -15)
 shape = SubResource("CapsuleShape2D_1")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1315834187]
 modulate = Color(1, 0.45, 0.2, 1)
+material = SubResource("ShaderMaterial_npoue")
 position = Vector2(0, -21)
 sprite_frames = SubResource("SpriteFrames_pyro")
 animation = &"idle"
 
-[node name="CharacterAnimationManager" type="Node" parent="." node_paths=PackedStringArray("sprite")]
+[node name="CharacterAnimationManager" type="Node" parent="." unique_id=1251145639 node_paths=PackedStringArray("sprite")]
 script = ExtResource("2_anim_mgr")
 sprite = NodePath("../AnimatedSprite2D")
 
-[node name="CharacterStateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+[node name="CharacterStateMachine" type="Node" parent="." unique_id=860922504 node_paths=PackedStringArray("initial_state")]
 script = ExtResource("3_state_mc")
 initial_state = NodePath("Idle")
 
-[node name="Idle" type="Node" parent="CharacterStateMachine"]
+[node name="Idle" type="Node" parent="CharacterStateMachine" unique_id=2080471820]
 script = ExtResource("4_idle")
 
-[node name="Walk" type="Node" parent="CharacterStateMachine"]
+[node name="Walk" type="Node" parent="CharacterStateMachine" unique_id=501705301]
 script = ExtResource("5_walk")
 
-[node name="Attack" type="Node" parent="CharacterStateMachine"]
+[node name="Attack" type="Node" parent="CharacterStateMachine" unique_id=1920649154]
 script = ExtResource("6_attack")
 
-[node name="Dead" type="Node" parent="CharacterStateMachine"]
+[node name="Dead" type="Node" parent="CharacterStateMachine" unique_id=546679107]
 script = ExtResource("7_dead")
 
-[node name="Stun" type="Node" parent="CharacterStateMachine"]
+[node name="Stun" type="Node" parent="CharacterStateMachine" unique_id=114352508]
 script = ExtResource("11_stun")
 
-[node name="Snipe" type="Node" parent="CharacterStateMachine"]
+[node name="Snipe" type="Node" parent="CharacterStateMachine" unique_id=1227546354]
 script = ExtResource("10_snipe_state")
 
-[node name="Hitbox" type="Area2D" parent="."]
+[node name="Hitbox" type="Area2D" parent="." unique_id=1977392635]
 collision_layer = 16
 collision_mask = 2
 script = ExtResource("8_hitbox")
 damage = 25.0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
-position = Vector2(0, -18)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=2020083091]
+position = Vector2(-8, -14)
 shape = SubResource("CircleShape2D_pyro_hit")
 disabled = true
 
-[node name="Hurtbox" type="Area2D" parent="."]
+[node name="Hurtbox" type="Area2D" parent="." unique_id=1265779439]
 collision_layer = 8
 collision_mask = 0
 script = ExtResource("9_hurtbox")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
-position = Vector2(0, -18)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=823664653]
+position = Vector2(-8, -15)
 shape = SubResource("CapsuleShape2D_1")
 
-[node name="Muzzle" type="Marker2D" parent="."]
+[node name="Muzzle" type="Marker2D" parent="." unique_id=1278001679]
 position = Vector2(16, -18)
+
+[node name="AshParticles" type="GPUParticles2D" parent="." unique_id=1860300511]
+emitting = false
+lifetime = 1.35
+one_shot = true
+explosiveness = 0.47
+randomness = 1.0
+process_material = SubResource("ParticleProcessMaterial_2cehh")

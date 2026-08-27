@@ -266,23 +266,67 @@ func _spawn_tyrant_transformation_burst() -> void:
 
 func _spawn_tyrant_ghost_afterimage() -> void:
 	var sprite = find_child("AnimatedSprite2D") as AnimatedSprite2D
-	if not sprite:
+	if not sprite or not sprite.sprite_frames:
+		return
+
+	var current_texture = sprite.sprite_frames.get_frame_texture(sprite.animation, sprite.frame)
+	if not current_texture:
 		return
 
 	var ghost = Sprite2D.new()
-	var current_texture = sprite.sprite_frames.get_frame_texture(sprite.animation, sprite.frame)
 	ghost.texture = current_texture
-	ghost.global_position = sprite.global_position
-	ghost.scale = sprite.global_scale
-	ghost.rotation = sprite.global_rotation
-	ghost.flip_h = sprite.flip_h
-	ghost.modulate = Color(1.2, 0.15, 0.25, 0.65)
-	ghost.z_index = sprite.z_index - 1
+	ghost.centered = sprite.centered
+	ghost.offset = sprite.offset
 
+	# Must add child to scene tree FIRST in Godot 4 before setting global_position
 	get_parent().add_child(ghost)
+
+	var ghost_x = sprite.global_position.x - (facing_direction * 12.0)
+	var ghost_y = sprite.global_position.y
+	ghost.global_position = Vector2(ghost_x, ghost_y)
+
+	ghost.global_scale = sprite.global_scale
+	ghost.global_rotation = sprite.global_rotation
+	ghost.flip_h = sprite.flip_h
+	ghost.flip_v = sprite.flip_v
+	ghost.modulate = Color(1.2, 0.15, 0.25, 0.65)
+	ghost.z_index = max(1, z_index - 1)
 
 	var tween = ghost.create_tween()
 	tween.tween_property(ghost, "modulate:a", 0.0, 0.25)
+	tween.tween_callback(ghost.queue_free)
+	
+func spawn_dash_afterimage() -> void:
+	var sprite = find_child("AnimatedSprite2D") as AnimatedSprite2D
+	if not sprite or not sprite.sprite_frames:
+		return
+
+	var current_texture = sprite.sprite_frames.get_frame_texture(sprite.animation, sprite.frame)
+	if not current_texture:
+		return
+
+	var ghost = Sprite2D.new()
+	ghost.texture = current_texture
+	ghost.centered = sprite.centered
+	ghost.offset = sprite.offset
+
+	# Must add child to scene tree FIRST in Godot 4 before setting global_position
+	get_parent().add_child(ghost)
+
+	# Position ghost at exact same Y level, slightly trailing behind the player X position
+	var ghost_x = sprite.global_position.x - (facing_direction * 14.0)
+	var ghost_y = sprite.global_position.y
+	ghost.global_position = Vector2(ghost_x, ghost_y)
+
+	ghost.global_scale = sprite.global_scale
+	ghost.global_rotation = sprite.global_rotation
+	ghost.flip_h = sprite.flip_h
+	ghost.flip_v = sprite.flip_v
+	ghost.modulate = Color(0.8, 0.1, 0.1, 0.6) 
+	ghost.z_index = max(1, z_index - 1)
+
+	var tween = ghost.create_tween()
+	tween.tween_property(ghost, "modulate:a", 0.0, 0.3)
 	tween.tween_callback(ghost.queue_free)
 
 func _apply_tyrant_sprite_glow(enable: bool) -> void:

@@ -92,20 +92,33 @@ func _spawn_transformation_burst() -> void:
 
 func _spawn_ghost_afterimage() -> void:
 	var sprite = character.find_child("AnimatedSprite2D") as AnimatedSprite2D
-	if not sprite:
+	if not sprite or not sprite.sprite_frames:
+		return
+
+	var current_texture = sprite.sprite_frames.get_frame_texture(sprite.animation, sprite.frame)
+	if not current_texture:
 		return
 
 	var ghost = Sprite2D.new()
-	var current_texture = sprite.sprite_frames.get_frame_texture(sprite.animation, sprite.frame)
 	ghost.texture = current_texture
-	ghost.global_position = sprite.global_position
-	ghost.scale = sprite.global_scale
-	ghost.rotation = sprite.global_rotation
-	ghost.flip_h = sprite.flip_h
-	ghost.modulate = Color(1.2, 0.15, 0.25, 0.65) # Deep glowing Crimson Tyrant clone
-	ghost.z_index = sprite.z_index - 1
+	ghost.centered = sprite.centered
+	ghost.offset = sprite.offset
 
 	character.get_parent().add_child(ghost)
+
+	var dir = character.facing_direction if "facing_direction" in character else 1
+	var ghost_x = sprite.global_position.x - (dir * 10.0)
+	var ghost_y = sprite.global_position.y
+	ghost.global_position = Vector2(ghost_x, ghost_y)
+
+	ghost.global_scale = sprite.global_scale
+	ghost.global_rotation = sprite.global_rotation
+	ghost.flip_h = sprite.flip_h
+	ghost.flip_v = sprite.flip_v
+	ghost.modulate = Color(1.2, 0.15, 0.25, 0.65) # Deep glowing Crimson Tyrant clone
+	
+	var parent_z = character.z_index if "z_index" in character else 2
+	ghost.z_index = max(1, parent_z - 1)
 
 	var tween = ghost.create_tween()
 	tween.tween_property(ghost, "modulate:a", 0.0, 0.25)

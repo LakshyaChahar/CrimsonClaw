@@ -68,4 +68,3 @@ func _on_area_entered(area: Area2D) -> void:
 func check_overlapping_hits() -> void:
 	for area in get_overlapping_areas():
 		_on_area_entered(area)
-
