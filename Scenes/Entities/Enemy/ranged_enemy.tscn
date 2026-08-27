@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://bit62235p5a6r" path="res://Scenes/Entities/Assets/Wild Zombie/Dead.png" id="5_dead_tex"]
 [ext_resource type="Texture2D" uid="uid://cap0hwaipnyjv" path="res://Scenes/Entities/Assets/Wild Zombie/Idle.png" id="6_idle_tex"]
 [ext_resource type="Texture2D" uid="uid://bb7jt845p3rov" path="res://Scenes/Entities/Assets/Wild Zombie/Walk.png" id="7_walk_tex"]
-[ext_resource type="Texture2D" path="res://Scenes/Entities/Assets/Wild Zombie/Hurt.png" id="8_hurt_tex"]
+[ext_resource type="Texture2D" uid="uid://cejkqfajnihyd" path="res://Scenes/Entities/Assets/Wild Zombie/Hurt.png" id="8_hurt_tex"]
 [ext_resource type="Script" uid="uid://ch643o6echy12" path="res://Scripts/Core/character_state_machine.gd" id="8_state_mc"]
 [ext_resource type="Script" uid="uid://hasrwey3fali" path="res://Scripts/Entities/Enemy/States/enemy_idle_state.gd" id="9_idle"]
 [ext_resource type="Script" uid="uid://bsnyo0jm4b8um" path="res://Scripts/Entities/Enemy/States/enemy_walk_state.gd" id="10_walk"]
@@ -229,7 +229,6 @@ position = Vector2(8, 2)
 shape = SubResource("CapsuleShape2D_1")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=771122341]
-modulate = Color(0.8, 0.4, 1, 1)
 material = SubResource("ShaderMaterial_npoue")
 position = Vector2(4.999999, -47)
 scale = Vector2(1.6171875, 1.5703125)
@@ -237,7 +236,7 @@ sprite_frames = SubResource("SpriteFrames_1")
 animation = &"die"
 
 [node name="Muzzle" type="Marker2D" parent="." unique_id=771122342]
-position = Vector2(16, -10)
+position = Vector2(16, -30)
 
 [node name="CharacterAnimationManager" type="Node" parent="." unique_id=771122343 node_paths=PackedStringArray("sprite")]
 script = ExtResource("3_anim_mgr")
