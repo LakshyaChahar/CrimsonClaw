@@ -110,8 +110,8 @@ func _enable_charge_hitbox(active: bool) -> void:
 	var hitbox = character.find_child("Hitbox") as Hitbox
 	if hitbox:
 		hitbox.damage = charge_damage
-		hitbox.knockback_force = 550.0
-		hitbox.knockback_direction = Vector2(charge_dir * 1.2, -0.6).normalized()
+		hitbox.knockback_force = 580.0
+		hitbox.knockback_direction = Vector2(charge_dir * 0.75, -1.05).normalized()
 		hitbox.stun_duration = 0.35
 		var col = hitbox.find_child("CollisionShape2D") as CollisionShape2D
 		if col:

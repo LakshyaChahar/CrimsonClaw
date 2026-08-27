@@ -110,6 +110,19 @@ func _fire_sniper_shot() -> void:
 	# Transition to recovery stand still
 	current_phase = Phase.RECOVERY_STAND_STILL
 
+func start_emergency_teleport() -> void:
+	var boss = character as PyroArchonBoss
+	if boss:
+		min_teleport_distance = boss.min_teleport_distance
+		max_teleport_distance = boss.max_teleport_distance
+		
+	current_phase = Phase.GROUND_TELEPORT
+	phase_timer = 0.0
+	character.velocity = Vector2.ZERO
+	if character.animation_manager:
+		character.animation_manager.play_anim("idle", 0)
+	_perform_ground_teleport()
+
 func _perform_ground_teleport() -> void:
 	current_phase = Phase.GROUND_TELEPORT
 	phase_timer = 0.0
