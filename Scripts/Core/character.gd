@@ -12,6 +12,10 @@ signal died()
 @export var friction: float = 1500.0
 @export var air_control: float = 0.75 # Multiplier for acceleration in the air
 
+@export_group("Sprite & Facing")
+## Set to true if the raw sprite sheet artwork is natively facing left by default
+@export var sprite_faces_left: bool = false
+
 @export_group("Jump Parameters")
 @export var jump_force: float = -420.0
 @export var max_jumps: int = 2
@@ -80,6 +84,8 @@ func _ready() -> void:
 	if not state_machine:
 		state_machine = find_child("*CharacterStateMachine*")
 
+	update_sprite_facing()
+
 func _physics_process(delta: float) -> void:
 	# Manage dash cooldown timer
 	if dash_cooldown_timer > 0.0:
@@ -115,7 +121,14 @@ func apply_horizontal_movement(delta: float, target_speed: float, accel: float, 
 func update_facing_direction() -> void:
 	if input_direction.x != 0.0:
 		facing_direction = sign(input_direction.x)
-		if animation_manager and animation_manager.sprite:
+	update_sprite_facing()
+
+## Updates the sprite's flip_h based on current facing_direction and sprite_faces_left setting
+func update_sprite_facing() -> void:
+	if animation_manager and animation_manager.sprite:
+		if sprite_faces_left:
+			animation_manager.sprite.flip_h = (facing_direction == 1)
+		else:
 			animation_manager.sprite.flip_h = (facing_direction == -1)
 
 ## Returns true if the character is physically on the floor or if the floor state is forced.

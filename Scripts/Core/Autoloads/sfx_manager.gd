@@ -1,5 +1,4 @@
 extends Node
-class_name SFXManager
 
 # Dictionary mapping sound names (String) to AudioStream resources (wav, ogg, mp3)
 # Format in inspector:

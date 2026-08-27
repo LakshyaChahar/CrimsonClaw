@@ -69,4 +69,6 @@ func _on_frame_changed() -> void:
 				
 			# Only play if a sound key is set for this character
 			if sfx != "":
-				SfxManager.play_2d(sfx, entity.global_position, 0.0, 1.0, step_pitch_randomness)
+				var sfx_mgr = get_node_or_null("/root/SfxManager")
+				if sfx_mgr and sfx_mgr.has_method("play_2d"):
+					sfx_mgr.play_2d(sfx, entity.global_position, 0.0, 1.0, step_pitch_randomness)

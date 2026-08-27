@@ -110,11 +110,25 @@ func _enable_charge_hitbox(active: bool) -> void:
 	var hitbox = character.find_child("Hitbox") as Hitbox
 	if hitbox:
 		hitbox.damage = charge_damage
-		hitbox.knockback_force = 140.0
-		hitbox.knockback_direction = Vector2(charge_dir, -0.2).normalized()
+		hitbox.knockback_force = 550.0
+		hitbox.knockback_direction = Vector2(charge_dir * 1.2, -0.6).normalized()
+		hitbox.stun_duration = 0.35
 		var col = hitbox.find_child("CollisionShape2D") as CollisionShape2D
 		if col:
 			col.set_deferred("disabled", not active)
+			
+		if hitbox.hit_registered.is_connected(_on_charge_hit):
+			hitbox.hit_registered.disconnect(_on_charge_hit)
+		if active:
+			hitbox.hit_registered.connect(_on_charge_hit)
+
+func _on_charge_hit(_hurtbox: Hurtbox) -> void:
+	if current_phase == Phase.CHARGE:
+		# Pause for a few impact frames (0.05s) then transition to recovery, stopping forward rush
+		character.get_tree().create_timer(0.05).timeout.connect(func():
+			if current_phase == Phase.CHARGE:
+				_start_recovery()
+		)
 
 func _spawn_charge_dust() -> void:
 	var dust = CPUParticles2D.new()

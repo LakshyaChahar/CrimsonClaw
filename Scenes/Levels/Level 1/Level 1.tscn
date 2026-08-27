@@ -7415,10 +7415,10 @@ sources/5 = SubResource("TileSetAtlasSource_qovcp")
 sources/6 = SubResource("TileSetAtlasSource_r0ih1")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_11tlt"]
-size = Vector2(76, 20)
+size = Vector2(2000, 100)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cp5ig"]
-size = Vector2(77, 61)
+size = Vector2(2000, 100)
 
 [node name="Level1" type="Node2D" unique_id=1796022972]
 position = Vector2(260, 55)

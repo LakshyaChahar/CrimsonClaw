@@ -19,8 +19,7 @@ func enter() -> void:
 		var dir_to_target = sign(sorceress.target.global_position.x - sorceress.global_position.x)
 		if dir_to_target != 0:
 			character.facing_direction = int(dir_to_target)
-			if character.animation_manager and character.animation_manager.sprite:
-				character.animation_manager.sprite.flip_h = (character.facing_direction == -1)
+			character.update_sprite_facing()
 
 	if character.animation_manager:
 		character.animation_manager.play_anim("attack", 2)
