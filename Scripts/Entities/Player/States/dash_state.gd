@@ -64,6 +64,10 @@ func enter() -> void:
 	character.velocity = character.dash_direction * dash_speed
 	dash_timer = dash_duration
 
+	# Spawn initial afterimage ghost on dash start
+	if character.has_method("spawn_dash_afterimage"):
+		character.spawn_dash_afterimage()
+
 func exit() -> void:
 	character.is_dashing = false
 	character.wants_dash = false
@@ -99,13 +103,14 @@ func exit() -> void:
 func physics_update(delta: float) -> void:
 	dash_timer -= delta
 	character.velocity.y = 0.0 # Maintain level horizontal dash
-	character.move_and_slide()
-	
+
 	dash_ghost_timer += delta
 	if dash_ghost_timer >= dash_ghost_interval:
 		dash_ghost_timer = 0.0
 		if character.has_method("spawn_dash_afterimage"):
 			character.spawn_dash_afterimage()
+			
+	character.move_and_slide()
 	
 	if dash_timer <= 0.0:
 		if character.is_grounded():
