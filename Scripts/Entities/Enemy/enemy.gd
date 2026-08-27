@@ -19,10 +19,17 @@ class_name Enemy
 @export var ambush_damage: float = 25.0
 @export var ambush_lunge_speed: float = 350.0
 
+@export_group("Status Effects")
+@export var on_fire_vfx_scene: PackedScene = preload("uid://c4q3a5b7fkte4")
+
 var target: Node2D = null
 var attack_cooldown_timer: float = 0.0
 var is_revealed: bool = true
 var _original_collision_layer: int = 2
+var is_burning: bool = false
+var current_fire_dps: float = 0.0
+var burn_timer: float = 0.0
+var fire_vfx_instance: GPUParticles2D = null
 
 func _init() -> void:
 	move_speed = 100.0
@@ -60,6 +67,35 @@ func _setup_floating_health_bar() -> void:
 		
 		add_child(bar)
 
+func apply_burn(dps: float, duration: float) -> void:
+	if is_dead:
+		return
+		
+	current_fire_dps = dps
+	burn_timer = max(burn_timer, duration) 
+	
+	if not is_burning:
+		is_burning = true
+		if on_fire_vfx_scene:
+			fire_vfx_instance = on_fire_vfx_scene.instantiate()
+			fire_vfx_instance.position = Vector2(0, 0)
+			
+			var mat = fire_vfx_instance.process_material.duplicate() as ParticleProcessMaterial
+			fire_vfx_instance.process_material = mat
+			
+			var col_node = find_child("CollisionShape2D", true, false) as CollisionShape2D
+			if col_node and col_node.shape:
+				var half_width: float = 10.0
+				
+				if col_node.shape is RectangleShape2D:
+					half_width = col_node.shape.size.x / 2.0
+				elif col_node.shape is CapsuleShape2D or col_node.shape is CircleShape2D:
+					half_width = col_node.shape.radius
+					
+				mat.emission_box_extents.x = half_width
+			
+			add_child(fire_vfx_instance)
+
 func _physics_process(delta: float) -> void:
 	super._physics_process(delta)
 	
@@ -79,6 +115,31 @@ func _physics_process(delta: float) -> void:
 					reveal_enemy()
 			else:
 				reveal_enemy()
+	if is_burning and not is_dead:
+		burn_timer -= delta
+		
+		# Apply smooth continuous damage (dps * delta)
+		current_health -= (current_fire_dps * delta) 
+		health_changed.emit(current_health + (current_fire_dps * delta), current_health)
+		
+		if current_health <= 0:
+			die()
+			
+		if burn_timer <= 0.0:
+			extinguish_fire()
+
+func extinguish_fire(immediate: bool = false) -> void:
+	is_burning = false
+	if is_instance_valid(fire_vfx_instance):
+		if immediate:
+			fire_vfx_instance.queue_free()
+		else:
+			fire_vfx_instance.emitting = false
+			get_tree().create_timer(0.6).timeout.connect(func():
+				if is_instance_valid(fire_vfx_instance):
+					fire_vfx_instance.queue_free()
+			)
+		fire_vfx_instance = null
 
 # Sets visibility, collision layers, and toggles Hitbox/Hurtbox monitoring
 func set_stealth_mode(enabled: bool) -> void:

@@ -33,10 +33,22 @@ func _ready() -> void:
 
 ## Handles taking a hit from a hitbox.
 func receive_hit(damage: float, knockback: Vector2, stun_duration: float, attacker: Node2D, inflicts_fire: bool = false, fire_dps: float = 0.0, fire_duration: float = 0.0) -> void:
-	if is_invincible:
-		return
-		
 	var entity = owner if owner else get_parent()
+	
+	# 1. Pass exactly ONE argument (damage) to match the base Character script
+	if entity.has_method("take_damage"):
+		entity.take_damage(damage)
+		
+	# 2. Handle the continuous fire DoT and VFX
+	if inflicts_fire and entity.has_method("apply_burn"):
+		entity.apply_burn(fire_dps, fire_duration)
+		
+	# 3. Handle Knockback and Stun
+	if entity.has_method("apply_knockback") and knockback != Vector2.ZERO:
+		entity.apply_knockback(knockback)
+		
+	if entity.has_method("apply_stun") and stun_duration > 0.0:
+		entity.apply_stun(stun_duration)
 		
 	# Ignore hit if the entity is currently dashing
 	if entity and "is_dashing" in entity and entity.is_dashing:

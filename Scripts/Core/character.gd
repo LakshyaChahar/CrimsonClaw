@@ -180,6 +180,8 @@ func _play_hurt_reaction() -> void:
 
 ## Handles death logic and triggers death state if configured
 func die() -> void:
+	if has_method("extinguish_fire"):
+		call("extinguish_fire", true)
 	is_dead = true
 	died.emit()
 	if state_machine:
