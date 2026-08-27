@@ -30,8 +30,14 @@ class_name PyroArchonBoss
 ## Color of the targeting laser & pyro effects
 @export var laser_color: Color = Color(1.0, 0.35, 0.05, 0.95)
 
+## Preferred standoff distance to keep away from player (pixels)
+@export var keep_distance: float = 280.0
+
 ## PackedScene of the Sniper Beam Projectile
 @export var projectile_scene: PackedScene
+
+## Disable standard basic melee attacks (Pyro Archon only uses Snipe & Teleport)
+@export var disable_basic_attack: bool = true
 
 var snipe_cooldown_timer: float = 0.0
 
@@ -42,8 +48,9 @@ func _ready() -> void:
 	current_health = 180.0
 	move_speed = 60.0
 	detection_range = 600.0
-	attack_range = 500.0
-	attack_cooldown = 3.5
+	attack_range = 0.0 # Disabled basic attack range
+	attack_cooldown = 999.0
+	disable_basic_attack = true
 	snipe_cooldown_timer = 1.0 # Start initial snipe after 1s
 
 func _physics_process(delta: float) -> void:

@@ -12,9 +12,10 @@ class_name SniperBeamProjectile
 ## Fire element damage over time
 @export var inflicts_burn: bool = false
 
-@onready var collision_shape: CollisionShape2D = $CollisionShape2D
-@onready var line_trail: Line2D = $LineTrail
-@onready var particles: CPUParticles2D = $EmberParticles
+@onready var collision_shape: CollisionShape2D = get_node_or_null("CollisionShape2D")
+@onready var anim_sprite: AnimatedSprite2D = get_node_or_null("AnimatedSprite2D")
+@onready var line_trail: Line2D = get_node_or_null("LineTrail")
+@onready var particles: CPUParticles2D = get_node_or_null("EmberParticles")
 
 var direction: Vector2 = Vector2.RIGHT
 var distance_traveled: float = 0.0
@@ -30,6 +31,9 @@ func _ready() -> void:
 	fire_duration = 0.0
 	hit_registered.connect(_on_hit_registered)
 	
+	if anim_sprite and anim_sprite.sprite_frames and anim_sprite.sprite_frames.has_animation("flying"):
+		anim_sprite.play("flying")
+		
 	# Auto cleanup timer
 	get_tree().create_timer(lifetime).timeout.connect(_on_lifetime_timeout)
 
@@ -59,7 +63,7 @@ func _physics_process(delta: float) -> void:
 	_update_line_trail()
 	
 	if distance_traveled >= max_distance:
-		queue_free()
+		_explode_and_free()
 
 func _update_line_trail() -> void:
 	if line_trail:
@@ -99,12 +103,33 @@ func _setup_ember_particles() -> void:
 		particles.emitting = true
 
 func _on_hit_registered(_hurtbox: Hurtbox) -> void:
-	# Spawn impact ember burst
-	_create_impact_burst()
-	queue_free()
+	_explode_and_free()
 
 func _on_lifetime_timeout() -> void:
-	queue_free()
+	if is_active:
+		_explode_and_free()
+
+func _explode_and_free() -> void:
+	if not is_active:
+		return
+	is_active = false
+	
+	# Disable collision shape so it doesn't hit again
+	if collision_shape:
+		collision_shape.set_deferred("disabled", true)
+		
+	if line_trail:
+		line_trail.visible = false
+	if particles:
+		particles.emitting = false
+		
+	_create_impact_burst()
+
+	if anim_sprite and anim_sprite.sprite_frames and anim_sprite.sprite_frames.has_animation("explode"):
+		anim_sprite.play("explode")
+		anim_sprite.animation_finished.connect(func(): queue_free(), CONNECT_ONE_SHOT)
+	else:
+		queue_free()
 
 func _create_impact_burst() -> void:
 	var burst = CPUParticles2D.new()
@@ -125,3 +150,4 @@ func _create_impact_burst() -> void:
 		get_parent().add_child(burst)
 		burst.emitting = true
 		get_tree().create_timer(0.35).timeout.connect(burst.queue_free)
+

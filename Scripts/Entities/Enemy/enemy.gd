@@ -4,10 +4,14 @@ class_name Enemy
 
 @export_group("Combat Stats")
 @export var contact_damage: float = 10.0
+## Horizontal knockback force applied to target when attacking (pixels/sec)
+@export var attack_knockback_force: float = 220.0
+## Duration of hit stagger/stun applied to target (seconds)
+@export var attack_stun_duration: float = 0.1
 
 @export_group("AI Settings")
 @export var detection_range: float = 300.0
-@export var attack_range: float = 40.0
+@export var attack_range: float = 55.0
 @export var attack_cooldown: float = 1.0
 
 @export_group("Stealth Settings")
@@ -35,10 +39,12 @@ func _ready() -> void:
 	_original_collision_layer = collision_layer
 	_find_target()
 	
-	# Automatically apply the exported contact damage to the Hitbox component
+	# Automatically apply exported combat stats to the Hitbox component
 	var hitbox = find_child("Hitbox") as Hitbox
 	if hitbox:
 		hitbox.damage = contact_damage
+		hitbox.knockback_force = attack_knockback_force
+		hitbox.stun_duration = attack_stun_duration
 	
 	if is_stealth:
 		is_revealed = false

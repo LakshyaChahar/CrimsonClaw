@@ -7668,7 +7668,7 @@ _data = {
 }
 
 [node name="Level1" type="Node2D" unique_id=1796022972]
-position = Vector2(260, 55)
+position = Vector2(8008, 686)
 
 [node name="Player2" parent="." unique_id=1658174949 instance=ExtResource("48_pgcvh")]
 position = Vector2(1867, -2421)
