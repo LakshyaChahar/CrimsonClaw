@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cjyrkqk5amwde" path="res://Scripts/Entities/Enemy/ranged_enemy.gd" id="1_renemy"]
 [ext_resource type="PackedScene" path="res://Scenes/Entities/Enemy/lobbed_projectile.tscn" id="2_proj_scene"]
-[ext_resource type="Shader" uid="uid://dcrg2hdm32nhj" path="res://scripts/Entities/Enemy/Shaders/ash_particles.gdshader" id="3_7pr6y"]
+[ext_resource type="Shader" uid="uid://dcrg2hdm32nhj" path="res://Scripts/Entities/Enemy/Shaders/ash_particles.gdshader" id="3_7pr6y"]
 [ext_resource type="Script" uid="uid://o574iqi28cq3" path="res://Scripts/Core/character_animation_manager.gd" id="3_anim_mgr"]
 [ext_resource type="Texture2D" uid="uid://dwhegl1o0s1ko" path="res://Scenes/Entities/Assets/Wild Zombie/Attack_2.png" id="4_attack_tex"]
 [ext_resource type="Texture2D" uid="uid://bit62235p5a6r" path="res://Scenes/Entities/Assets/Wild Zombie/Dead.png" id="5_dead_tex"]
