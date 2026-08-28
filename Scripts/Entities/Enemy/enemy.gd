@@ -235,4 +235,3 @@ func get_outer_distance_to_target() -> float:
 
 	var center_dist_x = abs(my_center_x - target_center_x)
 	return max(0.0, center_dist_x - (my_radius + target_radius))
-
