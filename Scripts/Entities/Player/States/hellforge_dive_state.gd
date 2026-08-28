@@ -35,8 +35,11 @@ enum Phase { RISE, FALL, IMPACT }
 ## Duration of the fire burn effect in seconds.
 @export var fire_duration: float = 4.0
 
+## Bloodthirst cost to execute Hellforge Dive skill.
+@export var bloodthirst_cost: float = 7.0
+
 ## Minimum required bloodthirst to execute skill.
-@export var min_required_bloodthirst: float = 60.0
+@export var min_required_bloodthirst: float = 7.0
 
 @export_group("Hitbox & Screen Shake")
 ## Name of the Hitbox Node in Scene Tree.
@@ -62,10 +65,11 @@ func enter() -> void:
 	if "wants_hellforge_dive" in character:
 		character.wants_hellforge_dive = false
 
-	if min_required_bloodthirst > 0.0:
-		var is_tyrant_active = ("is_tyrant" in character and character.is_tyrant)
-		if not is_tyrant_active and "current_bloodthirst" in character and character.current_bloodthirst < min_required_bloodthirst:
-			push_warning("HellforgeDiveState: Insufficient bloodthirst! Required: " + str(min_required_bloodthirst) + ", Current: " + str(character.current_bloodthirst))
+	# Deduct bloodthirst cost
+	var cost_to_check = bloodthirst_cost if bloodthirst_cost > 0.0 else min_required_bloodthirst
+	if cost_to_check > 0.0 and character.has_method("consume_bloodthirst"):
+		if not character.consume_bloodthirst(cost_to_check):
+			push_warning("HellforgeDiveState: Insufficient bloodthirst! Required: " + str(cost_to_check) + ", Current: " + str(character.current_bloodthirst if "current_bloodthirst" in character else 0.0))
 			state_machine.change_state("idle" if character.is_grounded() else "fall")
 			return
 

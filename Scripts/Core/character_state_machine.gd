@@ -8,6 +8,12 @@ signal state_changed(from_state: CharacterState, to_state: CharacterState)
 
 ## Reference to the currently active state.
 var current_state: CharacterState
+
+## Helper property to safely get the current state's lowercase name.
+var current_state_name: String:
+	get:
+		return current_state.name.to_lower() if current_state else ""
+
 ## Dictionary mapping state names (lowercase) to CharacterState nodes.
 var states: Dictionary = {}
 

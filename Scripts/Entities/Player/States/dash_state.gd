@@ -18,6 +18,9 @@ class_name DashState
 ## Minimum required bloodthirst to perform dash.
 @export var min_required_bloodthirst: float = 0.0
 
+## Bloodthirst gained immediately upon executing dash.
+@export var bloodthirst_gain: float = 10.0
+
 var dash_timer: float = 0.0
 var saved_collision_layer: int = 2
 var saved_collision_mask: int = 9
@@ -35,6 +38,10 @@ func enter() -> void:
 			character.is_dashing = false
 			state_machine.change_state("idle" if character.is_grounded() else "fall")
 			return
+
+	# Dash generates bloodthirst
+	if character.has_method("add_bloodthirst"):
+		character.add_bloodthirst(bloodthirst_gain)
 
 	character.is_dashing = true
 	character.can_dash = false
