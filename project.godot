@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Crimson Claw latest"
-run/main_scene="res://Scenes/Levels/combat_demo_level.tscn"
+run/main_scene="uid://vix4lfml8hyw"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 SfxManager="*res://Scenes/Core/Autoloads/sfx_manager.tscn"
 PostProcessOverlay="*res://Scenes/Core/post_process_overlay.tscn"
+PauseMenu="*res://PauseMenu.tscn"
 
 [display]
 

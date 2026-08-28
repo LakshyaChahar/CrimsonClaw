@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dp0g1jwshegvq" path="res://Scripts/Entities/Enemy/bat.gd" id="1_bat"]
 [ext_resource type="Texture2D" uid="uid://cs66738o72fpf" path="res://Scenes/Entities/Assets/Bat/bat_spritesheet.png" id="2_bat_tex"]
+[ext_resource type="Shader" uid="uid://dcrg2hdm32nhj" path="res://Scripts/Entities/Enemy/Shaders/ash_particles.gdshader" id="2_no8ma"]
 [ext_resource type="Texture2D" uid="uid://djakmkevx7rvp" path="res://Assets/Spritesheets/DarkFantasyEnemies_FREE/Bat/Bat with VFX/Bat-Attack1.png" id="2_q5whm"]
 [ext_resource type="Script" uid="uid://o574iqi28cq3" path="res://Scripts/Core/character_animation_manager.gd" id="3_anim_mgr"]
 [ext_resource type="Texture2D" uid="uid://baqfg4x05lngf" path="res://Assets/Spritesheets/DarkFantasyEnemies_FREE/Bat/Bat with VFX/Bat-Die.png" id="3_no8ma"]
@@ -20,6 +21,18 @@
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_bat"]
 radius = 8.0
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_of2al"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_of2al"]
+noise = SubResource("FastNoiseLite_of2al")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_npoue"]
+resource_local_to_scene = true
+shader = ExtResource("2_no8ma")
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_of2al")
+shader_parameter/dissolve_amount = -0.10000000149012
+shader_parameter/burn_color = Color(0.8, 0.1, 0.1, 1)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_u8vqn"]
 atlas = ExtResource("2_q5whm")
@@ -372,6 +385,15 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_hitbox"]
 radius = 12.0
 
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_no8ma"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(26.93, 1.07, 1)
+gravity = Vector3(0, -100, 0)
+scale_min = 5.0
+scale_max = 10.0
+color = Color(0.5019608, 0, 0, 0.45490196)
+
 [node name="Bat" type="CharacterBody2D" unique_id=98312001]
 collision_layer = 8
 collision_mask = 3
@@ -383,6 +405,7 @@ bat_health = 30.0
 shape = SubResource("CircleShape2D_bat")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=98312003]
+material = SubResource("ShaderMaterial_npoue")
 sprite_frames = SubResource("SpriteFrames_bat")
 animation = &"attack"
 autoplay = "walk"
@@ -428,3 +451,11 @@ script = ExtResource("12_hurtbox")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=98312015]
 shape = SubResource("CircleShape2D_bat")
+
+[node name="AshParticles" type="GPUParticles2D" parent="." unique_id=177922839]
+emitting = false
+lifetime = 1.35
+one_shot = true
+explosiveness = 0.47
+randomness = 1.0
+process_material = SubResource("ParticleProcessMaterial_no8ma")

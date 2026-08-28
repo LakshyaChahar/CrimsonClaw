@@ -421,6 +421,7 @@ script = ExtResource("1_enemy")
 detection_range = 350.0
 is_stealth = true
 detect_from_above = true
+ambush_damage = 60.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=118613801]
 position = Vector2(-3, -33)

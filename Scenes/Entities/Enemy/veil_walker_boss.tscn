@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://c4f0b13hm2toh"]
 
 [ext_resource type="Script" uid="uid://ca301xhou8q0" path="res://Scripts/Entities/Enemy/veil_walker_boss.gd" id="1_veil_boss"]
+[ext_resource type="Shader" uid="uid://dcrg2hdm32nhj" path="res://Scripts/Entities/Enemy/Shaders/ash_particles.gdshader" id="2_1uww6"]
 [ext_resource type="Script" uid="uid://o574iqi28cq3" path="res://Scripts/Core/character_animation_manager.gd" id="2_anim_mgr"]
-[ext_resource type="Shader" uid="uid://dcrg2hdm32nhj" path="res://Scripts/Entities/Enemy/Shaders/ash_particles.gdshader" id="2_cettf"]
 [ext_resource type="Texture2D" uid="uid://4fotfmkk431r" path="res://Assets/Spritesheets/Cultist Enemy Pack/SpriteSheet/Cultist-Assassin-SS.png" id="3_1uww6"]
 [ext_resource type="Script" uid="uid://ch643o6echy12" path="res://Scripts/Core/character_state_machine.gd" id="3_state_mc"]
 [ext_resource type="Texture2D" uid="uid://cjw8xj4eii8j7" path="res://Assets/Spritesheets/Cultist Enemy Pack/SpriteSheet/Cultist-Assassin-SS-noeffect.png" id="4_71cuu"]
@@ -26,7 +26,7 @@ noise = SubResource("FastNoiseLite_of2al")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_npoue"]
 resource_local_to_scene = true
-shader = ExtResource("2_cettf")
+shader = ExtResource("2_1uww6")
 shader_parameter/noise_texture = SubResource("NoiseTexture2D_of2al")
 shader_parameter/dissolve_amount = -0.10000000149012
 shader_parameter/burn_color = Color(0.8, 0.1, 0.1, 1)
@@ -536,7 +536,6 @@ position = Vector2(-6, -2)
 shape = SubResource("CapsuleShape2D_1")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1585599354]
-modulate = Color(1, 1, 1, 1)
 material = SubResource("ShaderMaterial_npoue")
 position = Vector2(-6.9999995, -12.999998)
 scale = Vector2(1.6839622, 2.0394735)
