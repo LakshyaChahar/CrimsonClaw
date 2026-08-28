@@ -17,8 +17,11 @@ class_name IgnisClawState
 ## Duration of stun applied on hit.
 @export var stun_duration: float = 0.3
 
+## Bloodthirst cost to execute Ignis Claw skill.
+@export var bloodthirst_cost: float = 6.0
+
 ## Minimum required bloodthirst to perform Ignis Claw skill.
-@export var min_required_bloodthirst: float = 20.0
+@export var min_required_bloodthirst: float = 6.0
 
 @export_group("State & Hitbox Settings")
 ## The exact name of the Hitbox Node in the Scene Tree.
@@ -38,10 +41,11 @@ func enter() -> void:
 	if "wants_ignis_claw" in character:
 		character.wants_ignis_claw = false
 
-	if min_required_bloodthirst > 0.0:
-		var is_tyrant_active = ("is_tyrant" in character and character.is_tyrant)
-		if not is_tyrant_active and "current_bloodthirst" in character and character.current_bloodthirst < min_required_bloodthirst:
-			push_warning("IgnisClawState: Insufficient bloodthirst! Required: " + str(min_required_bloodthirst) + ", Current: " + str(character.current_bloodthirst))
+	# Deduct bloodthirst cost
+	var cost_to_check = bloodthirst_cost if bloodthirst_cost > 0.0 else min_required_bloodthirst
+	if cost_to_check > 0.0 and character.has_method("consume_bloodthirst"):
+		if not character.consume_bloodthirst(cost_to_check):
+			push_warning("IgnisClawState: Insufficient bloodthirst! Required: " + str(cost_to_check) + ", Current: " + str(character.current_bloodthirst if "current_bloodthirst" in character else 0.0))
 			state_machine.change_state("idle" if character.is_grounded() else "fall")
 			return
 				

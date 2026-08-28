@@ -38,6 +38,8 @@ var jump_buffer_timer: float = 0.0
 @export_group("Bloodthirst System")
 @export var max_bloodthirst: float = 100.0
 @export var current_bloodthirst: float = 100.0
+## Bloodthirst gained immediately upon performing a dash.
+@export var dash_bloodthirst_gain: float = 10.0
 signal bloodthirst_changed(old_value: float, new_value: float)
 
 @export_group("Crimson Tyrant Transformation (Designer Panel)")
@@ -70,10 +72,12 @@ var is_tyrant: bool = false:
 @export var melee_stun_duration: float = 0.2
 ## Duration of the basic attack swing.
 @export var melee_attack_duration: float = 0.4
-## Minimum required bloodthirst to perform basic attack.
+## Minimum required bloodthirst to perform basic attack (0.0 = free).
 @export var melee_min_required_bloodthirst: float = 0.0
+## Bloodthirst cost consumed when performing basic attack (0.0 = free).
+@export var melee_bloodthirst_cost: float = 0.0
 ## Bloodthirst gained on hit with basic attack.
-@export var melee_bloodthirst_gain: float = 10.0
+@export var melee_bloodthirst_gain: float = 15.0
 
 @export_group("Ignis Claw Skill")
 ## Initial hit damage dealt when Ignis Claw strikes.
@@ -88,10 +92,12 @@ var is_tyrant: bool = false:
 @export var ignis_stun_duration: float = 0.3
 ## Duration of the Ignis Claw attack state.
 @export var ignis_attack_duration: float = 0.45
+## Bloodthirst cost to execute Ignis Claw skill.
+@export var ignis_bloodthirst_cost: float = 6.0
 ## Minimum required bloodthirst to perform Ignis Claw.
-@export var ignis_min_required_bloodthirst: float = 20.0
-## Bloodthirst gained on hit with Ignis Claw skill.
-@export var ignis_bloodthirst_gain: float = 15.0
+@export var ignis_min_required_bloodthirst: float = 6.0
+## Bloodthirst gained on hit with Ignis Claw skill (0.0 = non-basic attack).
+@export var ignis_bloodthirst_gain: float = 0.0
 
 @export_group("Hellforge Dive Skill")
 ## Upward force launching player into dive rise phase.
@@ -114,10 +120,12 @@ var is_tyrant: bool = false:
 @export var hellforge_fire_dps: float = 10.0
 ## Duration of fire burn effect in seconds.
 @export var hellforge_fire_duration: float = 4.0
+## Bloodthirst cost to execute Hellforge Dive skill.
+@export var hellforge_bloodthirst_cost: float = 7.0
 ## Minimum required bloodthirst to perform Hellforge Dive.
-@export var hellforge_min_required_bloodthirst: float = 60.0
-## Bloodthirst gained on hit with Hellforge Dive skill.
-@export var hellforge_bloodthirst_gain: float = 15.0
+@export var hellforge_min_required_bloodthirst: float = 7.0
+## Bloodthirst gained on hit with Hellforge Dive skill (0.0 = non-basic attack).
+@export var hellforge_bloodthirst_gain: float = 0.0
 ## Camera shake intensity on impact.
 @export var hellforge_shake_intensity: float = 8.0
 ## Camera shake duration on impact.
@@ -448,15 +456,16 @@ func respawn() -> void:
 	if animation_manager and animation_manager.sprite:
 		animation_manager.sprite.modulate = Color.WHITE
 		
-	# Move to spawn position and reset velocity
-	global_position = spawn_position
+	# Move to active checkpoint position or initial spawn position and reset velocity
+	var respawn_target = Checkpoint.get_best_respawn_position(global_position, spawn_position)
+	global_position = respawn_target
 	velocity = Vector2.ZERO
 	
 	# Deactivate Tyrant mode if active
 	if is_tyrant:
 		deactivate_tyrant_mode()
 		
-	print("[Combat] Player respawned at ", spawn_position)
+	print("[Combat] Player respawned at ", respawn_target)
 	
 	# Transition back to idle state
 	if state_machine:
@@ -516,6 +525,10 @@ func _sync_attack_properties() -> void:
 	var mult_kb = tyrant_knockback_multiplier if is_tyrant else 1.0
 	var mult_stun = tyrant_stun_multiplier if is_tyrant else 1.0
 
+	var dash_state = find_child("Dash", true, false) as DashState
+	if dash_state:
+		dash_state.bloodthirst_gain = dash_bloodthirst_gain
+
 	var melee_state = find_child("Skill", true, false) as MeleeAttackState
 	if melee_state:
 		melee_state.damage = melee_damage * mult_dmg
@@ -523,6 +536,8 @@ func _sync_attack_properties() -> void:
 		melee_state.stun_duration = melee_stun_duration * mult_stun
 		melee_state.attack_duration = melee_attack_duration
 		melee_state.min_required_bloodthirst = melee_min_required_bloodthirst
+		if "bloodthirst_cost" in melee_state:
+			melee_state.bloodthirst_cost = melee_bloodthirst_cost
 		
 	var ignis_state = find_child("IgnisClaw", true, false) as IgnisClawState
 	if ignis_state:
@@ -532,7 +547,9 @@ func _sync_attack_properties() -> void:
 		ignis_state.fire_dps = ignis_fire_dps * mult_dmg
 		ignis_state.stun_duration = ignis_stun_duration * mult_stun
 		ignis_state.attack_duration = ignis_attack_duration
-		ignis_state.min_required_bloodthirst = ignis_min_required_bloodthirst
+		ignis_state.min_required_bloodthirst = ignis_bloodthirst_cost
+		if "bloodthirst_cost" in ignis_state:
+			ignis_state.bloodthirst_cost = ignis_bloodthirst_cost
 		
 	var hellforge_state = find_child("HellforgeDive", true, false) as HellforgeDiveState
 	if hellforge_state:
@@ -546,7 +563,9 @@ func _sync_attack_properties() -> void:
 		hellforge_state.inflicts_fire = hellforge_inflicts_fire
 		hellforge_state.fire_dps = hellforge_fire_dps * mult_dmg
 		hellforge_state.fire_duration = hellforge_fire_duration
-		hellforge_state.min_required_bloodthirst = hellforge_min_required_bloodthirst
+		hellforge_state.min_required_bloodthirst = hellforge_bloodthirst_cost
+		if "bloodthirst_cost" in hellforge_state:
+			hellforge_state.bloodthirst_cost = hellforge_bloodthirst_cost
 		hellforge_state.shake_intensity = hellforge_shake_intensity
 		hellforge_state.shake_duration = hellforge_shake_duration
 

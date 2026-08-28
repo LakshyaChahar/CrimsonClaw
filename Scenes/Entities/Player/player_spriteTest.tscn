@@ -448,7 +448,8 @@ drag_bottom_margin = 0.0
 position = Vector2(-3, -52)
 scale = Vector2(1.7009684, 1.7786458)
 sprite_frames = SubResource("SpriteFrames_1")
-animation = &"attack"
+animation = &"idle"
+frame_progress = 0.9292939
 
 [node name="CharacterAnimationManager" type="Node" parent="." unique_id=1083209188 node_paths=PackedStringArray("sprite")]
 script = ExtResource("5_xfmp2")

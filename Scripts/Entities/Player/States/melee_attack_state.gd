@@ -11,8 +11,11 @@ class_name MeleeAttackState
 ## Stun duration applied to target on hit.
 @export var stun_duration: float = 0.2
 
-## Minimum required bloodthirst to perform basic attack.
+## Minimum required bloodthirst to perform basic attack (0.0 = free).
 @export var min_required_bloodthirst: float = 0.0
+
+## Bloodthirst cost to execute basic attack (0.0 = free).
+@export var bloodthirst_cost: float = 0.0
 
 @export_group("State & Hitbox Settings")
 ## The exact name of the Hitbox Node in the Scene Tree that this attack uses.
@@ -31,8 +34,9 @@ var hitbox_shape: CollisionShape2D = null
 func enter() -> void:
 	character.wants_skill = false # Reset input register early
 	
-	if min_required_bloodthirst > 0.0:
-		if "current_bloodthirst" in character and character.current_bloodthirst < min_required_bloodthirst:
+	var cost_to_check = bloodthirst_cost if bloodthirst_cost > 0.0 else min_required_bloodthirst
+	if cost_to_check > 0.0 and character.has_method("consume_bloodthirst"):
+		if not character.consume_bloodthirst(cost_to_check):
 			state_machine.change_state("idle" if character.is_grounded() else "fall")
 			return
 				
