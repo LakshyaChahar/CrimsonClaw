@@ -7667,7 +7667,7 @@ _data = {
 &"new_animation": SubResource("Animation_sw6hk")
 }
 
-[node name="Level1" type="Node2D" unique_id=1796022972]
+[node name="Level1" type="Node2D" unique_id=1796022972 groups=["pausable"]]
 position = Vector2(8008, 686)
 
 [node name="Player2" parent="." unique_id=1658174949 instance=ExtResource("48_pgcvh")]
