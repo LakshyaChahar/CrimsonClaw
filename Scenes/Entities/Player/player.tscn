@@ -19,6 +19,12 @@
 [ext_resource type="Script" uid="uid://d1cdxdfuiukti" path="res://Scripts/Entities/Player/States/ignis_claw_state.gd" id="14_ignis_claw"]
 [ext_resource type="Script" uid="uid://drtb3u0mpnjmx" path="res://Scripts/Entities/Player/States/hellforge_dive_state.gd" id="15_hellforge_dive"]
 [ext_resource type="Script" uid="uid://r25fb24w1f6t" path="res://Scripts/Entities/Player/States/crimson_tyrant_state.gd" id="16_tyrant"]
+[ext_resource type="Texture2D" path="res://Assets/UI/health_bar_under.png" id="17_hp_under"]
+[ext_resource type="Texture2D" path="res://Assets/UI/health_bar_over.png" id="18_hp_over"]
+[ext_resource type="Texture2D" path="res://Assets/UI/health_bar_progress.png" id="19_hp_prog"]
+[ext_resource type="Texture2D" path="res://Assets/UI/blood_bar_under.png" id="20_blood_under"]
+[ext_resource type="Texture2D" path="res://Assets/UI/blood_bar_over.png" id="21_blood_over"]
+[ext_resource type="Texture2D" path="res://Assets/UI/blood_bar_progress.png" id="22_blood_prog"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1"]
 radius = 12.0
@@ -397,6 +403,7 @@ z_index = 2
 collision_layer = 2
 collision_mask = 9
 script = ExtResource("1_player")
+ignis_damage = 5.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=810423284]
 position = Vector2(7, -11)
@@ -510,23 +517,23 @@ shape = SubResource("CapsuleShape2D_1")
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -166.0
+offset_left = -196.0
 offset_top = 16.0
 offset_right = -16.0
-offset_bottom = 54.0
+offset_bottom = 60.0
 grow_horizontal = 0
-theme_override_constants/separation = 6
+theme_override_constants/separation = 4
 
-[node name="HealthBar" type="ProgressBar" parent="HUD/VBoxContainer" unique_id=191024359]
-custom_minimum_size = Vector2(150, 14)
+[node name="HealthBar" type="TextureProgressBar" parent="HUD/VBoxContainer" unique_id=191024359]
 layout_mode = 2
-theme_override_styles/background = SubResource("StyleBoxFlat_bg")
-theme_override_styles/fill = SubResource("StyleBoxFlat_health")
 value = 100.0
+texture_under = ExtResource("17_hp_under")
+texture_over = ExtResource("18_hp_over")
+texture_progress = ExtResource("19_hp_prog")
 
-[node name="BloodthirstBar" type="ProgressBar" parent="HUD/VBoxContainer" unique_id=191024360]
-custom_minimum_size = Vector2(150, 8)
+[node name="BloodthirstBar" type="TextureProgressBar" parent="HUD/VBoxContainer" unique_id=191024360]
 layout_mode = 2
-theme_override_styles/background = SubResource("StyleBoxFlat_bg")
-theme_override_styles/fill = SubResource("StyleBoxFlat_blood")
-show_percentage = false
+value = 100.0
+texture_under = ExtResource("20_blood_under")
+texture_over = ExtResource("21_blood_over")
+texture_progress = ExtResource("22_blood_prog")

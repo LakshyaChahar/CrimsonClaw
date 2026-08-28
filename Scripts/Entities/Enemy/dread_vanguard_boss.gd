@@ -40,6 +40,8 @@ signal shield_broken()
 ## Scene of the Ground Shockwave Projectile
 @export var shockwave_scene: PackedScene
 
+@export var sprite_x_offset: float = 35.0
+
 var is_shield_broken: bool = false
 var is_shield_raised: bool = true
 var slam_cooldown_timer: float = 0.0
@@ -55,10 +57,16 @@ func _ready() -> void:
 	detection_range = 500.0
 	attack_range = 50.0
 	attack_cooldown = 2.0
+	attack_knockback_force = 480.0
 	
 	current_shield_health = max_shield_health
 	slam_cooldown_timer = 2.0
 	charge_cooldown_timer = 4.0
+
+func update_sprite_facing() -> void:
+	super.update_sprite_facing()
+	if animation_manager and animation_manager.sprite:
+		animation_manager.sprite.position.x = facing_direction * sprite_x_offset
 
 func _physics_process(delta: float) -> void:
 	super._physics_process(delta)

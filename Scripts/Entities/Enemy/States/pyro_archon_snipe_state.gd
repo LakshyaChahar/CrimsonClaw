@@ -12,46 +12,40 @@ enum Phase { TELEGRAPH, FIRE, RECOVERY_STAND_STILL, GROUND_TELEPORT }
 @export var projectile_knockback: float = 250.0
 @export var min_teleport_distance: float = 180.0
 @export var max_teleport_distance: float = 400.0
-@export var laser_color: Color = Color(1.0, 0.25, 0.05, 0.85)
 
 var current_phase: Phase = Phase.TELEGRAPH
 var phase_timer: float = 0.0
 var shoot_direction: Vector2 = Vector2.RIGHT
-var is_aim_locked: bool = false
-var target_laser: Line2D = null
-var target_reticle: Node2D = null
-var tele_particles: CPUParticles2D = null
 
 func enter() -> void:
 	var boss = character as PyroArchonBoss
 	if boss:
 		snipe_cooldown = boss.snipe_cooldown
-		telegraph_duration = boss.telegraph_duration
 		recovery_duration = boss.recovery_duration
 		projectile_speed = boss.projectile_speed
 		projectile_damage = boss.projectile_damage
 		projectile_knockback = boss.projectile_knockback
 		min_teleport_distance = boss.min_teleport_distance
 		max_teleport_distance = boss.max_teleport_distance
-		laser_color = boss.laser_color
-
-	SubBossCoordinator.request_attack(character)
-	_spawn_overhead_warning(telegraph_duration, laser_color)
-
-	current_phase = Phase.TELEGRAPH
-	phase_timer = 0.0
-	is_aim_locked = false
-	character.velocity = Vector2.ZERO
-
-	_setup_laser_line()
-	_setup_target_reticle()
 
 	if character.animation_manager:
 		var sprite = character.animation_manager.sprite
 		if sprite and sprite.sprite_frames and sprite.sprite_frames.has_animation("snipe"):
 			character.animation_manager.play_anim("snipe", 2)
+			var count = sprite.sprite_frames.get_frame_count("snipe")
+			var spd = sprite.sprite_frames.get_animation_speed("snipe")
+			if spd > 0:
+				telegraph_duration = float(count) / float(spd)
 		else:
 			character.animation_manager.play_anim("attack", 2)
+			telegraph_duration = 0.8
+
+	SubBossCoordinator.request_attack(character)
+	_spawn_overhead_warning(telegraph_duration, Color(1.0, 0.4, 0.1, 0.9))
+
+	current_phase = Phase.TELEGRAPH
+	phase_timer = 0.0
+	character.velocity = Vector2.ZERO
 
 func physics_update(delta: float) -> void:
 	phase_timer += delta
@@ -61,47 +55,12 @@ func physics_update(delta: float) -> void:
 			character.velocity = Vector2.ZERO
 			character.move_and_slide()
 
-			# Aim straight-line sniper laser at player torso
+			# Track direction towards player torso
 			var boss = character as Enemy
 			if boss and boss.target:
 				var spawn_pos = character.global_position + Vector2(character.facing_direction * 16, -18)
 				var player_torso = boss.target.global_position + Vector2(0, -21)
-				
-				# 2-Phase Aiming: Track for first part, then SNAP & FREEZE 0.45s before firing!
-				var time_left = telegraph_duration - phase_timer
-				var lock_threshold = 0.45
-
-				if time_left > lock_threshold:
-					# Phase 1: Smoothly tracking player
-					shoot_direction = (player_torso - spawn_pos).normalized()
-					if target_reticle:
-						target_reticle.global_position = player_torso
-
-				# Calculate laser end pos based on locked/tracking direction
-				var end_pos = target_laser.to_local(spawn_pos + shoot_direction * 1200.0)
-				target_laser.points = PackedVector2Array([target_laser.to_local(spawn_pos), end_pos])
-				target_laser.visible = true
-
-				# Reticle scaling
-				if target_reticle:
-					target_reticle.visible = true
-					var progress = clamp(phase_timer / telegraph_duration, 0.0, 1.0)
-					var reticle_scale = lerp(2.2, 0.6, progress)
-					target_reticle.scale = Vector2(reticle_scale, reticle_scale)
-
-				# Phase 2: Visual & Audio Lock Indicator when frozen
-				if time_left <= lock_threshold:
-					if not is_aim_locked:
-						is_aim_locked = true
-						_trigger_aim_lock_event()
-
-					# Rapid flash to signal AIM IS LOCKED - DODGE NOW!
-					var flash = (sin(phase_timer * 40.0) + 1.0) * 0.5
-					target_laser.default_color = lerp(Color(1.0, 0.2, 0.05, 1.0), Color.WHITE, flash)
-					target_laser.width = lerp(6.0, 12.0, flash * 0.5)
-				else:
-					target_laser.default_color = laser_color
-					target_laser.width = 3.0
+				shoot_direction = (player_torso - spawn_pos).normalized()
 
 				if shoot_direction.x != 0.0:
 					character.input_direction.x = sign(shoot_direction.x)
@@ -111,11 +70,9 @@ func physics_update(delta: float) -> void:
 				_fire_sniper_shot()
 
 		Phase.FIRE:
-			# Single frame transition state to recovery
 			pass
 
 		Phase.RECOVERY_STAND_STILL:
-			# Stand completely still for y seconds
 			character.velocity = Vector2.ZERO
 			character.move_and_slide()
 
@@ -123,19 +80,20 @@ func physics_update(delta: float) -> void:
 				_perform_ground_teleport()
 
 		Phase.GROUND_TELEPORT:
-			# Handled in async sequence
 			pass
 
 func _fire_sniper_shot() -> void:
 	current_phase = Phase.FIRE
 	phase_timer = 0.0
 
-	_cleanup_laser_and_reticle()
+	# Transition animation to idle to prevent snipe animation from replaying
+	if character.animation_manager:
+		character.animation_manager.play_anim("idle", 0)
 
 	var boss = character as PyroArchonBoss
 	var spawn_pos = character.global_position + Vector2(character.facing_direction * 16, -18)
 	
-	# Instantiate Sniper Projectile
+	# Instantiate Sniper Projectile (Animated Sprite Sheet Asset)
 	var proj_scene = boss.projectile_scene if (boss and boss.projectile_scene) else load("res://Scenes/Entities/Enemy/sniper_beam_projectile.tscn")
 	if proj_scene:
 		var projectile = proj_scene.instantiate()
@@ -149,8 +107,21 @@ func _fire_sniper_shot() -> void:
 	# Trigger Muzzle Recoil Blast
 	_trigger_muzzle_flash(spawn_pos)
 
-	# Transition to standing still for y seconds
+	# Transition to recovery stand still
 	current_phase = Phase.RECOVERY_STAND_STILL
+
+func start_emergency_teleport() -> void:
+	var boss = character as PyroArchonBoss
+	if boss:
+		min_teleport_distance = boss.min_teleport_distance
+		max_teleport_distance = boss.max_teleport_distance
+		
+	current_phase = Phase.GROUND_TELEPORT
+	phase_timer = 0.0
+	character.velocity = Vector2.ZERO
+	if character.animation_manager:
+		character.animation_manager.play_anim("idle", 0)
+	_perform_ground_teleport()
 
 func _perform_ground_teleport() -> void:
 	current_phase = Phase.GROUND_TELEPORT
@@ -196,7 +167,6 @@ func _perform_ground_teleport() -> void:
 
 func _finish_state() -> void:
 	SubBossCoordinator.release_attack(character)
-	_cleanup_laser_and_reticle()
 
 	var boss = character as PyroArchonBoss
 	if boss:
@@ -209,46 +179,11 @@ func _finish_state() -> void:
 
 func exit() -> void:
 	SubBossCoordinator.release_attack(character)
-	_cleanup_laser_and_reticle()
 
 func _spawn_overhead_warning(dur: float, col: Color) -> void:
 	var warn = AttackWarningIndicator.new()
 	warn.setup(dur, col)
 	character.add_child(warn)
-
-func _trigger_aim_lock_event() -> void:
-	if target_reticle:
-		var tween = target_reticle.create_tween()
-		target_reticle.scale = Vector2(2.8, 2.8)
-		tween.tween_property(target_reticle, "scale", Vector2(0.8, 0.8), 0.15)
-
-	if target_laser:
-		target_laser.width = 16.0
-
-func _setup_laser_line() -> void:
-	target_laser = character.find_child("PyroLaser", true, false) as Line2D
-	if not target_laser:
-		target_laser = Line2D.new()
-		target_laser.name = "PyroLaser"
-		target_laser.width = 4.0
-		target_laser.default_color = laser_color
-		target_laser.z_index = 10
-		character.add_child(target_laser)
-	target_laser.visible = false
-
-func _setup_target_reticle() -> void:
-	target_reticle = character.get_parent().find_child("PyroReticle", true, false) as Node2D
-	if not target_reticle:
-		target_reticle = VeilWalkerPhaseStrikeState.ReticleDrawer.new()
-		target_reticle.name = "PyroReticle"
-		character.get_parent().add_child(target_reticle)
-	target_reticle.visible = false
-
-func _cleanup_laser_and_reticle() -> void:
-	if target_laser:
-		target_laser.visible = false
-	if target_reticle:
-		target_reticle.visible = false
 
 func _trigger_muzzle_flash(spawn_pos: Vector2) -> void:
 	var flash = CPUParticles2D.new()

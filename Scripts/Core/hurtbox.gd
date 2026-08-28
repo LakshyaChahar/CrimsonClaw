@@ -27,7 +27,6 @@ var is_invincible: bool = false
 func _ready() -> void:
 	# Performance Optimization:
 	# Hurtboxes are passive receivers, so they don't need to scan for other areas.
-	# monitoring = false, monitorable = true.
 	monitoring = false
 	monitorable = true
 
@@ -37,47 +36,53 @@ func receive_hit(damage: float, knockback: Vector2, stun_duration: float, attack
 		return
 		
 	var entity = owner if owner else get_parent()
-		
+	
 	# Ignore hit if the entity is currently dashing
 	if entity and "is_dashing" in entity and entity.is_dashing:
 		return
 		
 	var final_damage = damage * damage_multiplier
 	
-	# Emit signal for custom visual effects, sound, or state changes
-	hit_received.emit(final_damage, knockback, stun_duration, attacker)
-	
 	# If entity has a directional shield (e.g. DreadVanguardBoss), process shield damage first
 	if entity and entity.has_method("process_shield_damage") and attacker:
 		final_damage = entity.process_shield_damage(final_damage, attacker.global_position)
 
-	# If the entity is a Character, apply the final damage
-	if entity and entity.has_method("take_damage"):
+	# Emit signal for custom visual effects, sound, or state changes
+	hit_received.emit(final_damage, knockback, stun_duration, attacker)
+
+	# Apply damage ONCE
+	if entity and entity.has_method("take_damage") and final_damage > 0.0:
 		var spawn_pos = entity.global_position
 		entity.take_damage(final_damage)
-		print("Damage taken")
-		var blood = blood_effects.instantiate()
-		get_tree().current_scene.add_child(blood)
-		blood.global_position = spawn_pos
-		blood.restart()
-		blood.finished.connect(func(): blood.queue_free())
-		
+		if blood_effects:
+			var blood = blood_effects.instantiate()
+			get_tree().current_scene.add_child(blood)
+			blood.global_position = spawn_pos
+			blood.restart()
+			blood.finished.connect(func(): blood.queue_free())
 		
 	# Apply fire status if enabled
 	if inflicts_fire and entity:
-		var burn_comp = entity.find_child("BurnComponent") as BurnComponent
-		if not burn_comp:
-			burn_comp = BurnComponent.new()
-			burn_comp.name = "BurnComponent"
-			entity.call_deferred("add_child", burn_comp)
-		burn_comp.apply_burn(fire_dps, fire_duration)
+		if entity.has_method("apply_burn"):
+			entity.apply_burn(fire_dps, fire_duration)
+		else:
+			var burn_comp = entity.find_child("BurnComponent") as BurnComponent
+			if not burn_comp:
+				burn_comp = BurnComponent.new()
+				burn_comp.name = "BurnComponent"
+				entity.call_deferred("add_child", burn_comp)
+			burn_comp.apply_burn(fire_dps, fire_duration)
 		
 	# Apply knockback/stun if the entity is a Character and we can manipulate its velocity
 	if entity is Character and not entity.is_dead:
-		# Apply knockback directly to character velocity if desired, or handle it via signal in a state
-		if knockback != Vector2.ZERO:
+		if entity.has_method("apply_knockback") and knockback != Vector2.ZERO:
+			entity.apply_knockback(knockback)
+		elif knockback != Vector2.ZERO:
 			entity.velocity = knockback
-		if stun_duration > 0.0 and entity.has_method("stun"):
+			
+		if entity.has_method("apply_stun") and stun_duration > 0.0:
+			entity.apply_stun(stun_duration)
+		elif stun_duration > 0.0 and entity.has_method("stun"):
 			entity.stun(stun_duration)
 			
 	# Start i-frames

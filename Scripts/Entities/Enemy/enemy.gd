@@ -4,10 +4,14 @@ class_name Enemy
 
 @export_group("Combat Stats")
 @export var contact_damage: float = 10.0
+## Horizontal knockback force applied to target when attacking (pixels/sec)
+@export var attack_knockback_force: float = 220.0
+## Duration of hit stagger/stun applied to target (seconds)
+@export var attack_stun_duration: float = 0.1
 
 @export_group("AI Settings")
 @export var detection_range: float = 300.0
-@export var attack_range: float = 40.0
+@export var attack_range: float = 55.0
 @export var attack_cooldown: float = 1.0
 
 @export_group("Stealth Settings")
@@ -23,6 +27,11 @@ var target: Node2D = null
 var attack_cooldown_timer: float = 0.0
 var is_revealed: bool = true
 var _original_collision_layer: int = 2
+var is_burning: bool = false
+var current_fire_dps: float = 0.0
+var burn_timer: float = 0.0
+var sprite_node: CanvasItem = null
+var burn_material: ShaderMaterial = null
 
 func _init() -> void:
 	move_speed = 100.0
@@ -35,10 +44,12 @@ func _ready() -> void:
 	_original_collision_layer = collision_layer
 	_find_target()
 	
-	# Automatically apply the exported contact damage to the Hitbox component
+	# Automatically apply exported combat stats to the Hitbox component
 	var hitbox = find_child("Hitbox") as Hitbox
 	if hitbox:
 		hitbox.damage = contact_damage
+		hitbox.knockback_force = attack_knockback_force
+		hitbox.stun_duration = attack_stun_duration
 	
 	if is_stealth:
 		is_revealed = false
@@ -60,6 +71,29 @@ func _setup_floating_health_bar() -> void:
 		
 		add_child(bar)
 
+func apply_burn(dps: float, duration: float) -> void:
+	if is_dead:
+		return
+		
+	current_fire_dps = dps
+	burn_timer = max(burn_timer, duration) 
+	
+	if not is_burning:
+		is_burning = true
+		_setup_burn_shader()
+		
+func _setup_burn_shader() -> void:
+	sprite_node = find_child("AnimatedSprite2D", true, false) as CanvasItem
+	if not sprite_node:
+		sprite_node = find_child("Sprite2D", true, false) as CanvasItem
+		
+	if sprite_node:
+		var shader = load("res://Scripts/Entities/Enemy/Shaders/enemy_shader.gdshader") as Shader
+		if shader:
+			burn_material = ShaderMaterial.new()
+			burn_material.shader = shader
+			sprite_node.material = burn_material
+
 func _physics_process(delta: float) -> void:
 	super._physics_process(delta)
 	
@@ -79,7 +113,33 @@ func _physics_process(delta: float) -> void:
 					reveal_enemy()
 			else:
 				reveal_enemy()
+	if is_burning and not is_dead:
+		burn_timer -= delta
+		
+		# Drive the shader burning effect dynamically
+		if burn_material:
+			burn_material.set_shader_parameter("burn_intensity", 1.0)
+		
+		# Apply smooth continuous damage (dps * delta)
+		current_health -= (current_fire_dps * delta) 
+		health_changed.emit(current_health + (current_fire_dps * delta), current_health)
+		
+		if current_health <= 0:
+			die()
+			
+		if burn_timer <= 0.0:
+			extinguish_fire()
 
+func extinguish_fire(_immediate: bool = false) -> void:
+	is_burning = false
+	
+	if burn_material and sprite_node:
+		burn_material.set_shader_parameter("burn_intensity", 0.0)
+		sprite_node.material = null
+		burn_material = null
+		
+	sprite_node = null
+	
 # Sets visibility, collision layers, and toggles Hitbox/Hurtbox monitoring
 func set_stealth_mode(enabled: bool) -> void:
 	visible = not enabled
@@ -147,3 +207,32 @@ func _find_target() -> void:
 		var player_node = root_node.find_child("Player", true, false)
 		if player_node is Node2D:
 			target = player_node
+
+## Calculates perpendicular outer horizontal distance between enemy collision shape and target collision shape
+func get_outer_distance_to_target() -> float:
+	if not target:
+		return 999999.0
+		
+	var my_center_x: float = global_position.x
+	var my_radius: float = 16.0
+	var my_shape = find_child("CollisionShape2D", false, false) as CollisionShape2D
+	if my_shape and my_shape.shape:
+		my_center_x = my_shape.global_position.x
+		if my_shape.shape is CapsuleShape2D or my_shape.shape is CircleShape2D:
+			my_radius = my_shape.shape.radius * abs(global_transform.get_scale().x)
+		elif my_shape.shape is RectangleShape2D:
+			my_radius = (my_shape.shape.size.x * 0.5) * abs(global_transform.get_scale().x)
+
+	var target_center_x: float = target.global_position.x
+	var target_radius: float = 16.0
+	var target_shape = target.find_child("CollisionShape2D", false, false) as CollisionShape2D
+	if target_shape and target_shape.shape:
+		target_center_x = target_shape.global_position.x
+		if target_shape.shape is CapsuleShape2D or target_shape.shape is CircleShape2D:
+			target_radius = target_shape.shape.radius * abs(target.global_transform.get_scale().x)
+		elif target_shape.shape is RectangleShape2D:
+			target_radius = (target_shape.shape.size.x * 0.5) * abs(target.global_transform.get_scale().x)
+
+	var center_dist_x = abs(my_center_x - target_center_x)
+	return max(0.0, center_dist_x - (my_radius + target_radius))
+

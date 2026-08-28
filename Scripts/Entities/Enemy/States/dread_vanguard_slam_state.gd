@@ -4,8 +4,8 @@ class_name DreadVanguardSlamState
 
 enum Phase { RISE_TELEGRAPH, SLAM_IMPACT, RECOVERY }
 
-@export var telegraph_duration: float = 1.0
-@export var recovery_duration: float = 0.5
+@export var telegraph_duration: float = 0.45
+@export var recovery_duration: float = 0.45
 @export var shockwave_speed: float = 450.0
 @export var shockwave_damage: float = 30.0
 
@@ -67,7 +67,7 @@ func _perform_slam_impact() -> void:
 
 	_cleanup_warning_telegraph()
 
-	var boss = character as DreadVanguardBoss
+	var _boss = character as DreadVanguardBoss
 	var slam_pos = character.global_position + Vector2(character.facing_direction * 15, 0)
 
 	# 1. Spawn Radial Circular Blast Shockwave expanding outward

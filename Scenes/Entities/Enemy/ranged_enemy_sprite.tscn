@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://cjyrkqk5amwde" path="res://Scripts/Entities/Enemy/ranged_enemy.gd" id="1_le26b"]
 [ext_resource type="PackedScene" path="res://Scenes/Entities/Enemy/lobbed_projectile.tscn" id="2_v56rn"]
 [ext_resource type="Texture2D" uid="uid://dcqwq2j1dbeve" path="res://Assets/Spritesheets/Final/High Attack.png" id="3_2k1te"]
+[ext_resource type="Shader" uid="uid://dcrg2hdm32nhj" path="res://Scripts/Entities/Enemy/Shaders/ash_particles.gdshader" id="3_x2eho"]
 [ext_resource type="Texture2D" uid="uid://m4wtfqr0rew5" path="res://Assets/Spritesheets/Final/death.png" id="4_x2eho"]
 [ext_resource type="Texture2D" uid="uid://bkdp8tp8flrb3" path="res://Assets/Spritesheets/Final/Idle and running.png" id="5_le26b"]
 [ext_resource type="Script" uid="uid://o574iqi28cq3" path="res://Scripts/Core/character_animation_manager.gd" id="8_na01d"]
@@ -18,6 +19,18 @@
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1"]
 radius = 20.0
 height = 68.0
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_of2al"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_of2al"]
+noise = SubResource("FastNoiseLite_of2al")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_npoue"]
+resource_local_to_scene = true
+shader = ExtResource("3_x2eho")
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_of2al")
+shader_parameter/dissolve_amount = -0.10000000149012
+shader_parameter/burn_color = Color(0.8, 0.1, 0.1, 1)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_v56rn"]
 atlas = ExtResource("3_2k1te")
@@ -265,6 +278,15 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_0fwr3"]
 radius = 27.202942
 
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_x2eho"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(26.93, 1.07, 1)
+gravity = Vector3(0, -100, 0)
+scale_min = 5.0
+scale_max = 10.0
+color = Color(0.5019608, 0, 0, 0.45490196)
+
 [node name="RangedEnemy" type="CharacterBody2D" unique_id=771122339]
 collision_layer = 8
 collision_mask = 3
@@ -276,6 +298,7 @@ position = Vector2(8, -49)
 shape = SubResource("CapsuleShape2D_1")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=771122341]
+material = SubResource("ShaderMaterial_npoue")
 position = Vector2(9, -45)
 scale = Vector2(1.6171875, 1.5703125)
 sprite_frames = SubResource("SpriteFrames_1")
@@ -327,3 +350,11 @@ script = ExtResource("16_tcq2v")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=771122353]
 position = Vector2(-54, -44)
 shape = SubResource("CapsuleShape2D_1")
+
+[node name="AshParticles" type="GPUParticles2D" parent="." unique_id=1283383254]
+emitting = false
+lifetime = 1.35
+one_shot = true
+explosiveness = 0.47
+randomness = 1.0
+process_material = SubResource("ParticleProcessMaterial_x2eho")

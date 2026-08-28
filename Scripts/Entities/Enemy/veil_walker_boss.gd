@@ -33,17 +33,17 @@ class_name VeilWalkerBoss
 @export var recovery_duration: float = 0.8
 
 ## Color of the warning laser line pointing at the player.
-@export var telegraph_line_color: Color = Color(0.85, 0.25, 1.0, 0.9)
+@export var telegraph_line_color: Color = Color(1.0, 0.2, 0.35, 0.95)
 
 ## Width of the warning laser line in pixels.
-@export var telegraph_line_width: float = 4.0
+@export var telegraph_line_width: float = 2.0
 
 var special_attack_cooldown_timer: float = 0.0
 
 func _ready() -> void:
 	super._ready()
-	# Set Phantom Amethyst tint & sub-boss defaults
-	modulate = Color(0.88, 0.78, 1.0)
+	# Standard clean sprite colors & sub-boss defaults
+	modulate = Color(1.0, 1.0, 1.0)
 	if max_health == 100.0:
 		max_health = 300.0
 		current_health = max_health

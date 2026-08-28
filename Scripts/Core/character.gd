@@ -12,6 +12,10 @@ signal died()
 @export var friction: float = 1500.0
 @export var air_control: float = 0.75 # Multiplier for acceleration in the air
 
+@export_group("Sprite & Facing")
+## Set to true if the raw sprite sheet artwork is natively facing left by default
+@export var sprite_faces_left: bool = false
+
 @export_group("Jump Parameters")
 @export var jump_force: float = -420.0
 @export var max_jumps: int = 2
@@ -32,7 +36,12 @@ var dash_cooldown_timer: float = 0.0
 
 @export_group("Health System")
 @export var max_health: float = 100.0
-@export var current_health: float = 100.0
+@export var current_health: float = 100.0:
+	set(val):
+		var old_health = current_health
+		current_health = clamp(val, 0.0, max_health)
+		if is_inside_tree() and old_health != current_health:
+			health_changed.emit(old_health, current_health)
 @export var health_regen_rate: float = 1.0 # Health regenerated per second
 @export var is_dead: bool = false
 
@@ -80,6 +89,8 @@ func _ready() -> void:
 	if not state_machine:
 		state_machine = find_child("*CharacterStateMachine*")
 
+	update_sprite_facing()
+
 func _physics_process(delta: float) -> void:
 	# Manage dash cooldown timer
 	if dash_cooldown_timer > 0.0:
@@ -115,7 +126,14 @@ func apply_horizontal_movement(delta: float, target_speed: float, accel: float, 
 func update_facing_direction() -> void:
 	if input_direction.x != 0.0:
 		facing_direction = sign(input_direction.x)
-		if animation_manager and animation_manager.sprite:
+	update_sprite_facing()
+
+## Updates the sprite's flip_h based on current facing_direction and sprite_faces_left setting
+func update_sprite_facing() -> void:
+	if animation_manager and animation_manager.sprite:
+		if sprite_faces_left:
+			animation_manager.sprite.flip_h = (facing_direction == 1)
+		else:
 			animation_manager.sprite.flip_h = (facing_direction == -1)
 
 ## Returns true if the character is physically on the floor or if the floor state is forced.
@@ -134,23 +152,16 @@ func consume_jump_buffer() -> void:
 func heal(amount: float) -> void:
 	if is_dead:
 		return
-	var old_health = current_health
-	current_health = min(current_health + amount, max_health)
-	if old_health != current_health:
-		health_changed.emit(old_health, current_health)
+	current_health += amount
 
 ## Deals damage to the character, clamping at 0 and triggering death if health reaches 0
 func take_damage(amount: float) -> void:
 	if is_dead or amount <= 0.0:
 		return
-	var old_health = current_health
-	current_health = max(current_health - amount, 0.0)
+	current_health -= amount
 	print("[Combat] ", name, " took ", amount, " damage. Health: ", current_health, "/", max_health)
 	
 	_play_hurt_reaction()
-	
-	if old_health != current_health:
-		health_changed.emit(old_health, current_health)
 		
 	if current_health <= 0.0:
 		die()
@@ -180,6 +191,8 @@ func _play_hurt_reaction() -> void:
 
 ## Handles death logic and triggers death state if configured
 func die() -> void:
+	if has_method("extinguish_fire"):
+		call("extinguish_fire", true)
 	is_dead = true
 	died.emit()
 	if state_machine:

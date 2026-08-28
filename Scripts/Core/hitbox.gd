@@ -53,13 +53,11 @@ func _on_area_entered(area: Area2D) -> void:
 		# Determine dynamic knockback direction if none is set
 		var kb_dir = knockback_direction
 		if kb_dir == Vector2.ZERO:
-			# Calculate direction pointing from this hitbox's owner/position to the target
 			var target_pos = victim.global_position if victim else hurtbox.global_position
 			var source_pos = attacker.global_position if attacker else global_position
-			kb_dir = (target_pos - source_pos).normalized()
-			# If positions are exactly the same, default to facing direction or right
-			if kb_dir == Vector2.ZERO:
-				kb_dir = Vector2.RIGHT
+			var diff_x = target_pos.x - source_pos.x
+			var dir_x = sign(diff_x) if diff_x != 0 else (attacker.facing_direction if ("facing_direction" in attacker) else 1.0)
+			kb_dir = Vector2(dir_x * 0.7, -0.7).normalized()
 		
 		# Apply hit to the hurtbox
 		hurtbox.receive_hit(damage, kb_dir * knockback_force, stun_duration, attacker, inflicts_fire, fire_dps, fire_duration)
