@@ -54,6 +54,7 @@
 [ext_resource type="PackedScene" uid="uid://7im83yx7a238" path="res://Scenes/Entities/Enemy/ranged_enemy_sprite.tscn" id="53_fphu2"]
 [ext_resource type="PackedScene" uid="uid://bafef1ybfsc8x" path="res://Scenes/Entities/Enemy/werewolf.tscn" id="53_t2rke"]
 [ext_resource type="PackedScene" uid="uid://dy6f7wyuq08p2" path="res://Scenes/Entities/Enemy/Stalkerghoul.tscn" id="54_t2rke"]
+[ext_resource type="PackedScene" uid="uid://c7x6k8nap0q2v" path="res://Scenes/Core/checkpoint.tscn" id="77_chkpt"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_vhas6"]
 texture = ExtResource("1_g2tj5")
@@ -8056,3 +8057,7 @@ position = Vector2(3687, -997)
 
 [node name="SawTrap" parent="." unique_id=795890666 instance=ExtResource("30_oheo7")]
 position = Vector2(-142, -831)
+
+[node name="Checkpoint" parent="." instance=ExtResource("77_chkpt")]
+position = Vector2(250, 480)
+
