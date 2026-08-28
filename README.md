@@ -27,53 +27,53 @@ Crimson Claw is engineered around a **decoupled, signal-driven composition archi
 
 ```mermaid
 graph TD
-    subgraph Core Physics & Character Base
-        C[Character] -->|emits: health_changed| UI_H[HUD / FloatingHealthBar]
-        C -->|emits: died| UI_H
-        C -->|calls: _physics_process| C
-    end
+	subgraph Core Physics & Character Base
+		C[Character] -->|emits: health_changed| UI_H[HUD / FloatingHealthBar]
+		C -->|emits: died| UI_H
+		C -->|calls: _physics_process| C
+	end
 
-    subgraph Player Subsystem
-        P[Player] -->|inherits| C
-        P -->|emits: bloodthirst_changed| HUD_B[HUD BloodthirstBar]
-        P -->|calls: activate_tyrant_mode| P
-        P -->|calls: deactivate_tyrant_mode| P
-        P -->|calls: add_bloodthirst| P
-        PSM[CharacterStateMachine] -->|calls: change_state| P_State[Melee / Ignis / Hellforge / Tyrant]
-        P_State -->|calls: consume_bloodthirst| P
-        P_State -->|calls: apply_gravity / move_and_slide| P
-    end
+	subgraph Player Subsystem
+		P[Player] -->|inherits| C
+		P -->|emits: bloodthirst_changed| HUD_B[HUD BloodthirstBar]
+		P -->|calls: activate_tyrant_mode| P
+		P -->|calls: deactivate_tyrant_mode| P
+		P -->|calls: add_bloodthirst| P
+		PSM[CharacterStateMachine] -->|calls: change_state| P_State[Melee / Ignis / Hellforge / Tyrant]
+		P_State -->|calls: consume_bloodthirst| P
+		P_State -->|calls: apply_gravity / move_and_slide| P
+	end
 
-    subgraph Combat System (Hitbox & Hurtbox)
-        P_HB[Hitbox] -->|signal: area_entered| P_HB
-        P_HB -->|custom call: check_overlapping_hits| P_HB
-        P_HB -->|custom call: receive_hit| E_HURT[Hurtbox]
-        P_HB -->|emits: hit_registered| P
-        P -->|slot: _on_attack_hit| P
-        E_HURT -->|custom call: process_shield_damage| DV[DreadVanguardBoss]
-        E_HURT -->|custom call: take_damage| E[Enemy / Boss]
-        E_HURT -->|custom call: apply_burn| BC[BurnComponent]
-        E_HURT -->|emits: hit_received| E
-    end
+	subgraph Combat System (Hitbox & Hurtbox)
+		P_HB[Hitbox] -->|signal: area_entered| P_HB
+		P_HB -->|custom call: check_overlapping_hits| P_HB
+		P_HB -->|custom call: receive_hit| E_HURT[Hurtbox]
+		P_HB -->|emits: hit_registered| P
+		P -->|slot: _on_attack_hit| P
+		E_HURT -->|custom call: process_shield_damage| DV[DreadVanguardBoss]
+		E_HURT -->|custom call: take_damage| E[Enemy / Boss]
+		E_HURT -->|custom call: apply_burn| BC[BurnComponent]
+		E_HURT -->|emits: hit_received| E
+	end
 
-    subgraph Enemy & Boss Subsystem
-        E -->|inherits| C
-        ESM[CharacterStateMachine] -->|calls: change_state| E_State[PhaseStrike / Snipe / Slam]
-        DV -->|emits: shield_changed| FHB[FloatingHealthBar]
-        DV -->|emits: shield_broken| DV_State[StunState]
-        E_State -->|calls: move_and_slide| E
-    end
+	subgraph Enemy & Boss Subsystem
+		E -->|inherits| C
+		ESM[CharacterStateMachine] -->|calls: change_state| E_State[PhaseStrike / Snipe / Slam]
+		DV -->|emits: shield_changed| FHB[FloatingHealthBar]
+		DV -->|emits: shield_broken| DV_State[StunState]
+		E_State -->|calls: move_and_slide| E
+	end
 
-    subgraph Tri-Boss Coordinator
-        SBC[SubBossCoordinator] -->|custom call: is_boss_inside_camera_viewport| CAM[Camera2D]
-        E_State -->|custom call: request_attack_token| SBC
-        SBC -->|returns: true / false| E_State
-    end
+	subgraph Tri-Boss Coordinator
+		SBC[SubBossCoordinator] -->|custom call: is_boss_inside_camera_viewport| CAM[Camera2D]
+		E_State -->|custom call: request_attack_token| SBC
+		SBC -->|returns: true / false| E_State
+	end
 
-    subgraph Global Autoloads
-        P_State -->|custom call: play_sfx| SFX[SfxManager]
-        E_State -->|custom call: play_sfx| SFX
-    end
+	subgraph Global Autoloads
+		P_State -->|custom call: play_sfx| SFX[SfxManager]
+		E_State -->|custom call: play_sfx| SFX
+	end
 ```
 
 ---
@@ -112,39 +112,39 @@ graph TD
 
 ```mermaid
 classDiagram
-    CharacterBody2D <|-- Character
-    Character <|-- Enemy
-    Enemy <|-- DreadVanguardBoss
-    Enemy <|-- PyroArchonBoss
-    Enemy <|-- VeilWalkerBoss
-    
-    class Character {
-        +float max_health
-        +float current_health
-        +take_damage(amount)
-        +stun(duration)
-        +die()
-    }
-    class Enemy {
-        +float detection_range
-        +float attack_range
-        +Node2D target
-        +_find_target()
-        +set_stealth_mode(enabled)
-    }
-    class DreadVanguardBoss {
-        +float max_shield_health
-        +float current_shield_health
-        +process_shield_damage(amount, attacker_pos)
-    }
-    class PyroArchonBoss {
-        +float snipe_range
-        +Line2D tracking_laser
-    }
-    class VeilWalkerBoss {
-        +float phase_strike_cooldown
-        +execute_teleport(target_pos)
-    }
+	CharacterBody2D <|-- Character
+	Character <|-- Enemy
+	Enemy <|-- DreadVanguardBoss
+	Enemy <|-- PyroArchonBoss
+	Enemy <|-- VeilWalkerBoss
+	
+	class Character {
+		+float max_health
+		+float current_health
+		+take_damage(amount)
+		+stun(duration)
+		+die()
+	}
+	class Enemy {
+		+float detection_range
+		+float attack_range
+		+Node2D target
+		+_find_target()
+		+set_stealth_mode(enabled)
+	}
+	class DreadVanguardBoss {
+		+float max_shield_health
+		+float current_shield_health
+		+process_shield_damage(amount, attacker_pos)
+	}
+	class PyroArchonBoss {
+		+float snipe_range
+		+Line2D tracking_laser
+	}
+	class VeilWalkerBoss {
+		+float phase_strike_cooldown
+		+execute_teleport(target_pos)
+	}
 ```
 
 ---
@@ -216,26 +216,26 @@ To orchestrate the Tri-Boss fight without overwhelming the player, the `SubBossC
 
 ```mermaid
 sequenceDiagram
-    participant BossState as PyroArchonSnipeState
-    participant Coordinator as SubBossCoordinator
-    participant Camera as Camera2D Viewport
-    
-    BossState->>Coordinator: request_attack_token(boss)
-    Coordinator->>Camera: is_boss_inside_camera_viewport(boss)
-    alt Boss Off-Screen
-        Camera-->>Coordinator: false
-        Coordinator-->>BossState: Token DENIED
-        BossState->>BossState: Fallback to Idle / Reposition
-    else Boss On-Screen
-        Camera-->>Coordinator: true
-        Coordinator->>Coordinator: Check active_attack_token_holder == null
-        alt Token Available & Cooldown Ready
-            Coordinator-->>BossState: Token GRANTED
-            BossState->>BossState: Execute Telegraph & Attack
-        else Token Busy
-            Coordinator-->>BossState: Token DENIED
-        end
-    end
+	participant BossState as PyroArchonSnipeState
+	participant Coordinator as SubBossCoordinator
+	participant Camera as Camera2D Viewport
+	
+	BossState->>Coordinator: request_attack_token(boss)
+	Coordinator->>Camera: is_boss_inside_camera_viewport(boss)
+	alt Boss Off-Screen
+		Camera-->>Coordinator: false
+		Coordinator-->>BossState: Token DENIED
+		BossState->>BossState: Fallback to Idle / Reposition
+	else Boss On-Screen
+		Camera-->>Coordinator: true
+		Coordinator->>Coordinator: Check active_attack_token_holder == null
+		alt Token Available & Cooldown Ready
+			Coordinator-->>BossState: Token GRANTED
+			BossState->>BossState: Execute Telegraph & Attack
+		else Token Busy
+			Coordinator-->>BossState: Token DENIED
+		end
+	end
 ```
 
 ---
