@@ -342,6 +342,8 @@ position = Vector2(1.1920929e-07, -30.000004)
 scale = Vector2(1.8072917, 1.734375)
 sprite_frames = SubResource("SpriteFrames_1")
 animation = &"attack"
+frame = 4
+frame_progress = 1.0
 
 [node name="CharacterAnimationManager" type="Node" parent="." unique_id=1859292065 node_paths=PackedStringArray("sprite")]
 script = ExtResource("2_anim_mgr")
