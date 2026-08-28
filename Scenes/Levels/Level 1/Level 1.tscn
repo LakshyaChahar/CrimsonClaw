@@ -55,6 +55,7 @@
 [ext_resource type="PackedScene" uid="uid://bafef1ybfsc8x" path="res://Scenes/Entities/Enemy/werewolf.tscn" id="53_t2rke"]
 [ext_resource type="PackedScene" uid="uid://dy6f7wyuq08p2" path="res://Scenes/Entities/Enemy/Stalkerghoul.tscn" id="54_t2rke"]
 [ext_resource type="PackedScene" uid="uid://c7x6k8nap0q2v" path="res://Scenes/Core/checkpoint.tscn" id="77_chkpt"]
+[ext_resource type="Script" uid="uid://dpj5p5vjajdxs" path="res://Scripts/Core/level_audio.gd" id="level_audio_script"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_vhas6"]
 texture = ExtResource("1_g2tj5")
@@ -8058,6 +8059,9 @@ position = Vector2(3687, -997)
 [node name="SawTrap" parent="." unique_id=795890666 instance=ExtResource("30_oheo7")]
 position = Vector2(-142, -831)
 
-[node name="Checkpoint" parent="." instance=ExtResource("77_chkpt")]
+[node name="Checkpoint" parent="." unique_id=1005253567 instance=ExtResource("77_chkpt")]
 position = Vector2(250, 480)
 
+[node name="Level1#LevelAudio" type="Node" parent="." unique_id=25862471]
+script = ExtResource("level_audio_script")
+music_key = "level 1"

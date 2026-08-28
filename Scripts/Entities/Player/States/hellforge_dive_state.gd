@@ -53,7 +53,7 @@ enum Phase { RISE, FALL, IMPACT }
 
 @export_group("Shockwave Projectile")
 ## Scene for the traveling ground shockwave projectile.
-@export var shockwave_scene: PackedScene 
+@export var shockwave_scene: PackedScene = preload("res://Scenes/Entities/Enemy/ground_shockwave.tscn")
 
 var current_phase: Phase = Phase.RISE
 var rise_timer: float = 0.0
@@ -135,8 +135,14 @@ func _trigger_impact() -> void:
 	# Trigger camera shake effect
 	if character.has_method("trigger_screen_shake"):
 		character.trigger_screen_shake(shake_intensity, shake_duration)
+
+	# Play Hellforge Dive impact sound effect
+	var sfx_mgr = character.get_node_or_null("/root/SfxManager")
+	if sfx_mgr and sfx_mgr.has_method("play_2d"):
+		sfx_mgr.play_2d("hellforgedive", character.global_position, 0.0, 1.0, 0.05)
 		
 	# Spawn the dual traveling projectiles
+
 	_spawn_dual_shockwaves()
 
 func _spawn_dual_shockwaves() -> void:
@@ -156,6 +162,8 @@ func _spawn_dual_shockwaves() -> void:
 	wave_left.collision_mask = c_mask
 	character.get_parent().add_child(wave_left)
 	wave_left.setup(character.global_position + Vector2(-15, 0), -1.0, -1.0, impact_damage)
+	if wave_left.has_method("set_fire_theme"):
+		wave_left.set_fire_theme(fire_dps, fire_duration)
 	
 	# Spawn Right Shockwave (1.0 direction)
 	var wave_right = shockwave_scene.instantiate() as GroundShockwave
@@ -164,6 +172,8 @@ func _spawn_dual_shockwaves() -> void:
 	wave_right.collision_mask = c_mask
 	character.get_parent().add_child(wave_right)
 	wave_right.setup(character.global_position + Vector2(15, 0), 1.0, -1.0, impact_damage)
+	if wave_right.has_method("set_fire_theme"):
+		wave_right.set_fire_theme(fire_dps, fire_duration)
 
 func _finish_dive() -> void:
 	if hitbox_shape:

@@ -70,6 +70,7 @@
 [ext_resource type="PackedScene" uid="uid://oky4prx3678a" path="res://Scenes/Entities/Enemy/Sorceress.tscn" id="68_xcd6y"]
 [ext_resource type="PackedScene" uid="uid://cc2a6kluxes7" path="res://Scenes/Entities/Enemy/enemy.tscn" id="69_3knpd"]
 [ext_resource type="PackedScene" uid="uid://7im83yx7a238" path="res://Scenes/Entities/Enemy/ranged_enemy_sprite.tscn" id="70_8615v"]
+[ext_resource type="Script" uid="uid://dpj5p5vjajdxs" path="res://Scripts/Core/level_audio.gd" id="level_audio_script"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_j5khb"]
 texture = ExtResource("5_ytr4e")
@@ -12915,3 +12916,7 @@ position = Vector2(3004, 100)
 
 [node name="PyroArchonBoss4" parent="." unique_id=724444006 instance=ExtResource("65_oj5ks")]
 position = Vector2(3882, 209)
+
+[node name="Node2D#LevelAudio" type="Node" parent="." unique_id=1215918716]
+script = ExtResource("level_audio_script")
+music_key = "level 2"

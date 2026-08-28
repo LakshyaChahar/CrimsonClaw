@@ -71,7 +71,12 @@ func enter() -> void:
 	character.velocity = character.dash_direction * dash_speed
 	dash_timer = dash_duration
 
+	var sfx_mgr = character.get_node_or_null("/root/SfxManager")
+	if sfx_mgr and sfx_mgr.has_method("play_2d"):
+		sfx_mgr.play_2d("dash", character.global_position, 0.0, 1.0, 0.05)
+
 	# Spawn initial afterimage ghost on dash start
+
 	if character.has_method("spawn_dash_afterimage"):
 		character.spawn_dash_afterimage()
 

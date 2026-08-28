@@ -6,6 +6,7 @@ class_name CrimsonTyrantState
 @export var damage_multiplier: float = 2.0
 @export var knockback_multiplier: float = 1.8
 @export var stun_multiplier: float = 1.5
+@export var health_regen: float = 5.0
 @export var min_required_bloodthirst: float = 100.0
 
 var active_timer: float = 0.0

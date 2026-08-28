@@ -35,6 +35,26 @@ func setup(start_pos: Vector2, move_direction: float, custom_speed: float = -1.0
 	knockback_force = 520.0
 	knockback_direction = Vector2(direction * 0.6, -1.0).normalized()
 
+## Configures the shockwave to use a yellowish fire color theme and inflict fire status on hit targets.
+func set_fire_theme(dps: float = 10.0, duration: float = 4.0) -> void:
+	inflicts_fire = true
+	fire_dps = dps
+	fire_duration = duration
+	
+	if not is_node_ready():
+		await ready
+		
+	if wave_aura:
+		wave_aura.color = Color(1.0, 0.75, 0.15, 0.8)
+	if wave_core:
+		wave_core.color = Color(1.0, 0.95, 0.6, 1.0)
+	if energy_sparks:
+		var spark_grad = Gradient.new()
+		spark_grad.add_point(0.0, Color(1.0, 1.0, 0.8, 1.0))
+		spark_grad.add_point(0.5, Color(1.0, 0.65, 0.1, 0.9))
+		spark_grad.add_point(1.0, Color(0.85, 0.2, 0.0, 0.0))
+		energy_sparks.color_ramp = spark_grad
+
 func _physics_process(delta: float) -> void:
 	var step = direction * speed * delta
 	global_position.x += step

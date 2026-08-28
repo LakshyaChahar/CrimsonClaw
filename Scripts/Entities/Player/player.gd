@@ -55,6 +55,9 @@ signal bloodthirst_changed(old_value: float, new_value: float)
 ## Multiplier for player stun duration in Tyrant mode (e.g. 1.5 = 1.5x stun)
 @export var tyrant_stun_multiplier: float = 1.5
 
+## Health regenerated per second while in Crimson Tyrant mode (e.g. 5.0 = 5 HP/sec)
+@export var tyrant_health_regen: float = 5.0
+
 ## Minimum required bloodthirst to enter Crimson Tyrant transformation
 @export var tyrant_min_required_bloodthirst: float = 100.0
 
@@ -213,11 +216,14 @@ var tyrant_timer: float = 0.0
 var ghost_trail_timer: float = 0.0
 var tyrant_overlay_canvas: CanvasLayer = null
 var tyrant_overlay_rect: ColorRect = null
+var _base_health_regen_rate: float = 1.0
 
 func activate_tyrant_mode() -> void:
 	if is_tyrant:
 		return
 		
+	_base_health_regen_rate = health_regen_rate
+	health_regen_rate = tyrant_health_regen
 	is_tyrant = true
 	tyrant_timer = tyrant_duration
 	ghost_trail_timer = 0.0
@@ -228,6 +234,7 @@ func activate_tyrant_mode() -> void:
 	_apply_tyrant_sprite_glow(true)
 
 func deactivate_tyrant_mode() -> void:
+	health_regen_rate = _base_health_regen_rate
 	is_tyrant = false
 	tyrant_timer = 0.0
 	_apply_tyrant_sprite_glow(false)
