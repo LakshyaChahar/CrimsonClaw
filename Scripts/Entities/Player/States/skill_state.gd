@@ -2,13 +2,19 @@ extends CharacterState
 class_name SkillState
 
 @export var skill_duration: float = 0.4
+@export var bloodthirst_cost: float = 6.0
 var timer: float = 0.0
 var anim_finished: bool = false
 
 func enter() -> void:
+	character.wants_skill = false
+	if bloodthirst_cost > 0.0 and character.has_method("consume_bloodthirst"):
+		if not character.consume_bloodthirst(bloodthirst_cost):
+			state_machine.change_state("idle" if character.is_grounded() else "fall")
+			return
+			
 	anim_finished = false
 	timer = skill_duration
-	character.wants_skill = false
 	
 	if character.animation_manager:
 		character.animation_manager.play_anim("attack", 2)

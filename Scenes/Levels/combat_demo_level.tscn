@@ -5,9 +5,11 @@
 [ext_resource type="PackedScene" uid="uid://dy6f7wyuq08p2" path="res://Scenes/Entities/Enemy/Stalkerghoul.tscn" id="6_b62ms"]
 [ext_resource type="PackedScene" uid="uid://cc2a6kluxes7" path="res://Scenes/Entities/Enemy/enemy.tscn" id="8_11doo"]
 [ext_resource type="PackedScene" uid="uid://cqv2yal5oh765" path="res://Scenes/Entities/Enemy/dread_vanguard_boss.tscn" id="9_es6fr"]
+[ext_resource type="PackedScene" uid="uid://c4f0b13hm2toh" path="res://Scenes/Entities/Enemy/veil_walker_boss.tscn" id="10_1cu4p"]
 [ext_resource type="PackedScene" uid="uid://7im83yx7a238" path="res://Scenes/Entities/Enemy/ranged_enemy_sprite.tscn" id="11_3t6kx"]
 [ext_resource type="PackedScene" uid="uid://cm1t3b37lel3n" path="res://Scenes/Entities/Player/player_spriteTest.tscn" id="11_3vkxv"]
 [ext_resource type="Script" uid="uid://q4vlj5kjqoe" path="res://Scripts/Core/sub_boss_coordinator.gd" id="11_coord"]
+[ext_resource type="PackedScene" uid="uid://d2ciunjfjxgry" path="res://Scenes/Entities/Enemy/pyro_archon_boss.tscn" id="12_3t6kx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_floor"]
 size = Vector2(3467, 40)
@@ -56,6 +58,9 @@ position = Vector2(-1317, 191)
 [node name="RangedEnemy3" parent="." unique_id=1505774920 instance=ExtResource("11_3t6kx")]
 position = Vector2(-1396, 180)
 
+[node name="PyroArchonBoss" parent="." unique_id=3761819 instance=ExtResource("12_3t6kx")]
+position = Vector2(1361, 170)
+
 [node name="Enemy" parent="." unique_id=1481718111 instance=ExtResource("8_11doo")]
 position = Vector2(-770, 147)
 
@@ -64,3 +69,6 @@ position = Vector2(-711, 161)
 
 [node name="DreadVanguardBoss" parent="." unique_id=507606381 instance=ExtResource("9_es6fr")]
 position = Vector2(1184, 175)
+
+[node name="VeilWalkerBoss" parent="." unique_id=175719164 instance=ExtResource("10_1cu4p")]
+position = Vector2(1456, 153)
