@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 SfxManager="*res://Scenes/Core/Autoloads/sfx_manager.tscn"
 PostProcessOverlay="*res://Scenes/Core/post_process_overlay.tscn"
 PauseMenu="*res://PauseMenu.tscn"
+SceneTransition="*res://autoload/SceneTransition.gd"
 
 [display]
 

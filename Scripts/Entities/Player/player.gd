@@ -474,6 +474,15 @@ func respawn() -> void:
 		
 	print("[Combat] Player respawned at ", respawn_target)
 	
+	# Respawn all level enemies
+	var enemies = get_tree().get_nodes_in_group("Enemies")
+	for e in enemies:
+		if e and is_instance_valid(e):
+			if e.has_method("respawn_enemy"):
+				e.respawn_enemy()
+			elif e.has_method("respawn"):
+				e.respawn()
+
 	# Transition back to idle state
 	if state_machine:
 		state_machine.change_state("idle")

@@ -85,7 +85,10 @@ func _on_quit_to_menu() -> void:
 	get_tree().paused = false
 	visible = false
 	_is_open = false
-	get_tree().change_scene_to_file(MAIN_MENU_SCENE)
+	if has_node("/root/SceneTransition"):
+		get_node("/root/SceneTransition").change_scene_to_file(MAIN_MENU_SCENE)
+	else:
+		get_tree().change_scene_to_file(MAIN_MENU_SCENE)
 
 func _on_quit_desktop() -> void:
 	get_tree().quit()

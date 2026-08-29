@@ -1,16 +1,14 @@
 extends Control
 
-@onready var Level_button: Button = _find_button(["LevelButton", "StartButton", "PlayButton"])
-@onready var settings_button: Button = _find_button(["SettingsButton", "OptionButton"])
-@onready var quit_button: Button = _find_button(["QuitButton", "ExitButton"])
+@onready var level1_button: Button = _find_button(["Level1", "Level 1", "LevelButton"])
+@onready var level2_button: Button = _find_button(["Level2", "Level 2", "SettingsButton"])
+@onready var back_button: Button = _find_button(["QuitButton", "BackButton", "Quit", "ExitButton"])
 
 @onready var fade_overlay: ColorRect = find_child("FadeOverlay", true, false) as ColorRect
 @onready var blood_fill: ColorRect = find_child("BloodBarFill", true, false) as ColorRect
-@onready var health_fill: ColorRect = find_child("HealthBarFill", true, false) as ColorRect
 
-const SAVE_PATH := "user://savegame.dat"
-const GAME_SCENE := "res://levels.tscn"
-const Levl2_scene := "res://Level 2.tscn"
+const LEVEL_1_SCENE := "res://Scenes/Levels/Level 1/Level 1.tscn"
+const LEVEL_2_SCENE := "res://Level2.tscn"
 
 var _menu_buttons: Array[Button] = []
 var _is_transitioning := false
@@ -24,15 +22,15 @@ func _find_button(candidate_names: Array[String]) -> Button:
 
 func _ready() -> void:
 	_menu_buttons.clear()
-	if Level_button:
-		_menu_buttons.append(Level_button)
-		Level_button.pressed.connect(_on_start_pressed)
-	if settings_button:
-		_menu_buttons.append(settings_button)
-		settings_button.pressed.connect(_on_settings_pressed)
-	if quit_button:
-		_menu_buttons.append(quit_button)
-		quit_button.pressed.connect(_on_quit_pressed)
+	if level1_button:
+		_menu_buttons.append(level1_button)
+		level1_button.pressed.connect(_on_level1_pressed)
+	if level2_button:
+		_menu_buttons.append(level2_button)
+		level2_button.pressed.connect(_on_level2_pressed)
+	if back_button:
+		_menu_buttons.append(back_button)
+		back_button.pressed.connect(_on_back_pressed)
 
 	for b in _menu_buttons:
 		if b:
@@ -43,8 +41,8 @@ func _ready() -> void:
 			b.button_down.connect(_on_button_down.bind(b))
 			b.button_up.connect(_on_button_up.bind(b))
 
-	if Level_button:
-		Level_button.grab_focus()
+	if level1_button:
+		level1_button.grab_focus()
 	_fade_in()
 	_pulse_blood_bar()
 
@@ -81,14 +79,14 @@ func _on_button_unhover(b: Button) -> void:
 		var tween := create_tween()
 		tween.tween_property(b, "scale", Vector2.ONE, 0.12).set_trans(Tween.TRANS_SINE)
 
-func _on_start_pressed() -> void:
-	_transition_to(GAME_SCENE)
+func _on_level1_pressed() -> void:
+	_transition_to(LEVEL_1_SCENE)
 
-func _on_settings_pressed() -> void:
-	pass
+func _on_level2_pressed() -> void:
+	_transition_to(LEVEL_2_SCENE)
 
-func _on_quit_pressed() -> void:
-	get_tree().quit()
+func _on_back_pressed() -> void:
+	_transition_to("res://StartScreen.tscn")
 
 func _transition_to(scene_path: String) -> void:
 	if has_node("/root/SceneTransition"):
