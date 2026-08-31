@@ -41,6 +41,9 @@ enum Phase { RISE, FALL, IMPACT }
 ## Minimum required bloodthirst to execute skill.
 @export var min_required_bloodthirst: float = 7.0
 
+## Cooldown in seconds before Hellforge Dive can be used again.
+@export var cooldown: float = 4.0
+
 @export_group("Hitbox & Screen Shake")
 ## Name of the Hitbox Node in Scene Tree.
 @export var hitbox_node_name: String = "HellforgeHitbox"
@@ -65,13 +68,22 @@ func enter() -> void:
 	if "wants_hellforge_dive" in character:
 		character.wants_hellforge_dive = false
 
+	# Cooldown check
+	if "hellforge_dive_cooldown_timer" in character and character.hellforge_dive_cooldown_timer > 0.0:
+		_cancel_dive()
+		return
+
 	# Deduct bloodthirst cost
 	var cost_to_check = bloodthirst_cost if bloodthirst_cost > 0.0 else min_required_bloodthirst
 	if cost_to_check > 0.0 and character.has_method("consume_bloodthirst"):
 		if not character.consume_bloodthirst(cost_to_check):
 			push_warning("HellforgeDiveState: Insufficient bloodthirst! Required: " + str(cost_to_check) + ", Current: " + str(character.current_bloodthirst if "current_bloodthirst" in character else 0.0))
-			state_machine.change_state("idle" if character.is_grounded() else "fall")
+			_cancel_dive()
 			return
+
+	# Apply cooldown timer on character
+	if "hellforge_dive_cooldown_timer" in character:
+		character.hellforge_dive_cooldown_timer = cooldown
 
 	# Start Phase 1: RISE
 	current_phase = Phase.RISE
@@ -243,3 +255,7 @@ func _disconnect_animation_signals() -> void:
 func _on_animation_finished() -> void:
 	if current_phase == Phase.IMPACT:
 		anim_finished = true
+
+func _cancel_dive() -> void:
+	if state_machine:
+		state_machine.change_state("idle" if character.is_grounded() else "fall")

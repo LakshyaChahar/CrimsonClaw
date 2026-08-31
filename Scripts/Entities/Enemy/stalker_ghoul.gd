@@ -6,5 +6,5 @@ class_name StalkerGhoul
 
 func _init() -> void:
 	super._init()
-	sprite_faces_left = true
+	sprite_faces_left = false
 	gravity_scale = 0.0

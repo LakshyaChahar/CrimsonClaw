@@ -42,6 +42,7 @@ var jump_buffer_timer: float = 0.0
 @export var dash_bloodthirst_gain: float = 10.0
 signal bloodthirst_changed(old_value: float, new_value: float)
 
+
 @export_group("Crimson Tyrant Transformation (Designer Panel)")
 ## Key/Action duration of Crimson Tyrant state in seconds
 @export var tyrant_duration: float = 10.0
@@ -101,6 +102,9 @@ var is_tyrant: bool = false:
 @export var ignis_min_required_bloodthirst: float = 6.0
 ## Bloodthirst gained on hit with Ignis Claw skill (0.0 = non-basic attack).
 @export var ignis_bloodthirst_gain: float = 0.0
+## Cooldown in seconds before Ignis Claw can be used again.
+@export var ignis_claw_cooldown: float = 3.0
+var ignis_claw_cooldown_timer: float = 0.0
 
 @export_group("Hellforge Dive Skill")
 ## Upward force launching player into dive rise phase.
@@ -133,6 +137,15 @@ var is_tyrant: bool = false:
 @export var hellforge_shake_intensity: float = 8.0
 ## Camera shake duration on impact.
 @export var hellforge_shake_duration: float = 0.25
+## Cooldown in seconds before Hellforge Dive can be used again.
+@export var hellforge_dive_cooldown: float = 4.0
+var hellforge_dive_cooldown_timer: float = 0.0
+
+@export_group("Showcase & Move Unlock Tutorials")
+## If true, triggers move unlock tutorial popups when reaching bloodthirst thresholds
+@export var enable_move_unlock_tutorials: bool = true
+static var shown_tutorials_this_session: Dictionary = {}
+var popup_scene: PackedScene = preload("res://Scenes/UI/move_unlock_popup.tscn")
 
 @onready var health_bar: TextureProgressBar = $HUD/VBoxContainer/HealthBar
 @onready var bloodthirst_bar: TextureProgressBar = $HUD/VBoxContainer/BloodthirstBar
@@ -142,6 +155,8 @@ func _ready() -> void:
 	add_to_group("Player")
 	if spawn_position == Vector2.ZERO:
 		spawn_position = global_position
+	if Checkpoint.saved_respawn_position != Vector2.ZERO:
+		global_position = Checkpoint.saved_respawn_position
 	_init_input_actions()
 	_sync_attack_properties()
 	
@@ -159,6 +174,8 @@ func _ready() -> void:
 		bloodthirst_bar.max_value = max_bloodthirst
 		bloodthirst_bar.value = current_bloodthirst
 
+
+
 	# Connect change signals
 	health_changed.connect(_on_health_changed)
 	bloodthirst_changed.connect(_on_bloodthirst_changed)
@@ -173,6 +190,174 @@ func _on_health_changed(_old_value: float, new_value: float) -> void:
 func _on_bloodthirst_changed(_old_value: float, new_value: float) -> void:
 	if bloodthirst_bar:
 		bloodthirst_bar.value = new_value
+	_check_move_unlock_tutorials(new_value)
+
+func _check_move_unlock_tutorials(current_bt: float) -> void:
+	if not enable_move_unlock_tutorials or is_dead or is_tyrant:
+		return
+
+	# Deferred to prevent opening during node instantiation before first physics frame
+	call_deferred("_eval_tutorials_deferred", current_bt)
+
+func _eval_tutorials_deferred(current_bt: float) -> void:
+	if not enable_move_unlock_tutorials or is_dead or is_tyrant or get_tree().paused:
+		return
+
+	# Only trigger move unlock demo popups in combat demo levels
+	if get_tree().current_scene:
+		var scene_file: String = get_tree().current_scene.scene_file_path.get_file().to_lower()
+		var scene_name: String = get_tree().current_scene.name.to_lower()
+		var is_combat_demo: bool = ("combat" in scene_file or "demo" in scene_file or 
+									"combat" in scene_name or "demo" in scene_name or 
+									"level0" in scene_file or "level 0" in scene_file or
+									"level_0" in scene_file)
+		if not is_combat_demo:
+			return
+
+	# Dash Tutorial (triggers when bloodthirst >= dash_min_required_bloodthirst)
+	if current_bt >= dash_min_required_bloodthirst and not shown_tutorials_this_session.get("dash", false):
+		shown_tutorials_this_session["dash"] = true
+		_trigger_move_popup({
+			"header": "MOVEMENT ABILITY UNLOCKED!",
+			"title": "CRIMSON DASH",
+			"input_prompt": "Press B / Shift to Dash",
+			"min_bloodthirst": dash_min_required_bloodthirst,
+			"description": "Perform a rapid horizontal evade, granting complete invincibility during the dash while leaving crimson afterimages.",
+			"anim_name": "dash"
+		})
+		return
+
+	# Ignis Claw Tutorial (triggers when bloodthirst >= ignis_min_required_bloodthirst)
+	if ignis_min_required_bloodthirst > 0.0 and current_bt >= ignis_min_required_bloodthirst and not shown_tutorials_this_session.get("ignis_claw", false):
+		shown_tutorials_this_session["ignis_claw"] = true
+		_trigger_move_popup({
+			"header": "NEW SKILL UNLOCKED!",
+			"title": "IGNIS CLAW",
+			"input_prompt": "Press Y / RMB / [E] to perform Ignis Claw",
+			"min_bloodthirst": ignis_min_required_bloodthirst,
+			"description": "Unleash a fierce demonic claw strike forward, igniting enemies with persistent fire damage.",
+			"anim_name": "ignis_claw"
+		})
+		return
+
+	# Hellforge Dive Tutorial (triggers when bloodthirst >= hellforge_min_required_bloodthirst)
+	if hellforge_min_required_bloodthirst > 0.0 and current_bt >= hellforge_min_required_bloodthirst and not shown_tutorials_this_session.get("hellforge_dive", false):
+		shown_tutorials_this_session["hellforge_dive"] = true
+		_trigger_move_popup({
+			"header": "NEW MOVE UNLOCKED!",
+			"title": "HELLFORGE DIVE",
+			"input_prompt": "Press RB / [R] while in mid-air",
+			"min_bloodthirst": hellforge_min_required_bloodthirst,
+			"description": "Slam into the earth from mid-air to create a devastating crimson shockwave that burns surrounding foes.",
+			"anim_name": "hellforge_fall"
+		})
+		return
+
+	# Crimson Tyrant Tutorial (triggers when bloodthirst >= tyrant_min_required_bloodthirst)
+	if tyrant_min_required_bloodthirst > 0.0 and current_bt >= tyrant_min_required_bloodthirst and not shown_tutorials_this_session.get("tyrant", false):
+		shown_tutorials_this_session["tyrant"] = true
+		_trigger_move_popup({
+			"header": "ULTIMATE FORM UNLOCKED!",
+			"title": "CRIMSON TYRANT",
+			"input_prompt": "Press LB / [T] to unleash Crimson Tyrant",
+			"min_bloodthirst": tyrant_min_required_bloodthirst,
+			"description": "Transcends mortal limits! Gain maximum movement speed, doubled damage, massive knockback, and rapid health regeneration.",
+			"anim_name": "attack_1"
+		})
+		return
+
+var _level0_tutorial_queue: Array[Dictionary] = []
+var _on_tutorials_complete_callback: Callable = Callable()
+
+func show_remaining_level0_tutorials(on_complete_callback: Callable = Callable()) -> void:
+	_on_tutorials_complete_callback = on_complete_callback
+	_level0_tutorial_queue.clear()
+	
+	var all_tutorials = [
+		{
+			"key": "dash",
+			"header": "MOVEMENT ABILITY UNLOCKED!",
+			"title": "CRIMSON DASH",
+			"input_prompt": "Press B / Shift to Dash",
+			"min_bloodthirst": dash_min_required_bloodthirst,
+			"description": "Perform a rapid horizontal evade, granting complete invincibility during the dash while leaving crimson afterimages.",
+			"anim_name": "dash"
+		},
+		{
+			"key": "ignis_claw",
+			"header": "NEW SKILL UNLOCKED!",
+			"title": "IGNIS CLAW",
+			"input_prompt": "Press Y / RMB / [E] to perform Ignis Claw",
+			"min_bloodthirst": ignis_min_required_bloodthirst,
+			"description": "Unleash a fierce demonic claw strike forward, igniting enemies with persistent fire damage.",
+			"anim_name": "ignis_claw"
+		},
+		{
+			"key": "hellforge_dive",
+			"header": "NEW MOVE UNLOCKED!",
+			"title": "HELLFORGE DIVE",
+			"input_prompt": "Press RB / [R] while in mid-air",
+			"min_bloodthirst": hellforge_min_required_bloodthirst,
+			"description": "Slam into the earth from mid-air to create a devastating crimson shockwave that burns surrounding foes.",
+			"anim_name": "hellforge_fall"
+		},
+		{
+			"key": "tyrant",
+			"header": "ULTIMATE FORM UNLOCKED!",
+			"title": "CRIMSON TYRANT",
+			"input_prompt": "Press LB / [T] to unleash Crimson Tyrant",
+			"min_bloodthirst": tyrant_min_required_bloodthirst,
+			"description": "Transcends mortal limits! Gain maximum movement speed, doubled damage, massive knockback, and rapid health regeneration.",
+			"anim_name": "attack_1"
+		}
+	]
+	
+	for tut in all_tutorials:
+		var key: String = tut.get("key", "")
+		if not shown_tutorials_this_session.get(key, false):
+			_level0_tutorial_queue.append(tut)
+			
+	if _level0_tutorial_queue.is_empty():
+		if _on_tutorials_complete_callback.is_valid():
+			var cb = _on_tutorials_complete_callback
+			_on_tutorials_complete_callback = Callable()
+			cb.call()
+		return
+		
+	_process_next_level0_tutorial()
+
+func _process_next_level0_tutorial() -> void:
+	if _level0_tutorial_queue.is_empty():
+		if _on_tutorials_complete_callback.is_valid():
+			var cb = _on_tutorials_complete_callback
+			_on_tutorials_complete_callback = Callable()
+			cb.call()
+		return
+	
+	var data = _level0_tutorial_queue.pop_front()
+	var key: String = data.get("key", "")
+	if key != "":
+		shown_tutorials_this_session[key] = true
+	
+	var popup = _trigger_move_popup(data)
+	if popup and popup.has_signal("popup_dismissed"):
+		popup.popup_dismissed.connect(func(): call_deferred("_process_next_level0_tutorial"), CONNECT_ONE_SHOT)
+	else:
+		call_deferred("_process_next_level0_tutorial")
+
+func _trigger_move_popup(data: Dictionary) -> MoveUnlockPopup:
+	if not popup_scene:
+		return null
+
+	get_tree().paused = true
+	var popup = popup_scene.instantiate() as MoveUnlockPopup
+	var sprite_node = find_child("AnimatedSprite2D") as AnimatedSprite2D
+	var sprite_frames = sprite_node.sprite_frames if sprite_node else null
+	
+	get_tree().root.add_child(popup)
+	popup.setup_move_info(data, sprite_frames)
+	return popup
+
 
 ## Safely increases bloodthirst, capped at max_bloodthirst
 func add_bloodthirst(amount: float) -> void:
@@ -191,6 +376,17 @@ func consume_bloodthirst(amount: float) -> bool:
 		bloodthirst_changed.emit(old_value, current_bloodthirst)
 		return true
 	return false
+
+## Returns true if player can execute Hellforge Dive (has enough bloodthirst and no active cooldown).
+func can_hellforge_dive() -> bool:
+	if is_dead:
+		return false
+	if hellforge_dive_cooldown_timer > 0.0:
+		return false
+	if is_tyrant:
+		return true
+	var cost = hellforge_bloodthirst_cost if hellforge_bloodthirst_cost > 0.0 else hellforge_min_required_bloodthirst
+	return current_bloodthirst >= cost
 
 func _on_attack_hit(_hurtbox: Hurtbox, hitbox: Hitbox = null) -> void:
 	if not is_tyrant:
@@ -370,6 +566,10 @@ func _process(delta: float) -> void:
 	hellforge_dive_buffer_timer = max(0.0, hellforge_dive_buffer_timer - delta)
 	tyrant_buffer_timer = max(0.0, tyrant_buffer_timer - delta)
 
+	# Tick skill cooldowns
+	ignis_claw_cooldown_timer = max(0.0, ignis_claw_cooldown_timer - delta)
+	hellforge_dive_cooldown_timer = max(0.0, hellforge_dive_cooldown_timer - delta)
+
 	# Read movement inputs
 	input_direction.x = Input.get_axis(final_left, final_right)
 	input_direction.y = Input.get_axis("look_up", "look_down")
@@ -439,53 +639,12 @@ func _physics_process(delta: float) -> void:
 	if not is_dead and global_position.y > pit_death_y:
 		die()
 
-## Respawns the player at spawn_position with restored health and bloodthirst
+## Triggers a smooth level reload on player death via SceneTransition
 func respawn() -> void:
-	is_dead = false
-	current_health = max_health
-	health_changed.emit(0.0, current_health)
-	
-	current_bloodthirst = max_bloodthirst
-	bloodthirst_changed.emit(0.0, current_bloodthirst)
-	
-	# Restore collision layer (Player layer 2) and mask (World 1 + Breakable/Trap 8)
-	collision_layer = 2
-	collision_mask = 9
-	
-	# Re-enable Hurtbox
-	var hurtbox = find_child("Hurtbox")
-	if hurtbox:
-		for child in hurtbox.get_children():
-			if child is CollisionShape2D:
-				child.set_deferred("disabled", false)
-				
-	# Reset sprite modulate tint
-	if animation_manager and animation_manager.sprite:
-		animation_manager.sprite.modulate = Color.WHITE
-		
-	# Move to active checkpoint position or initial spawn position and reset velocity
-	var respawn_target = Checkpoint.get_best_respawn_position(global_position, spawn_position)
-	global_position = respawn_target
-	velocity = Vector2.ZERO
-	
-	# Deactivate Tyrant mode if active
-	if is_tyrant:
-		deactivate_tyrant_mode()
-		
-	print("[Combat] Player respawned at ", respawn_target)
-	
-	# Respawn all level enemies
-	var enemies = get_tree().get_nodes_in_group("Enemies")
-	for e in enemies:
-		if e and is_instance_valid(e):
-			if e.has_method("respawn_enemy"):
-				e.respawn_enemy()
-			elif e.has_method("respawn"):
-				e.respawn()
-
-	# Transition back to idle state
-	if state_machine:
-		state_machine.change_state("idle")
+	if SceneTransition and SceneTransition.has_method("reload_current_scene"):
+		SceneTransition.reload_current_scene(0.4, 0.4)
+	elif get_tree():
+		get_tree().reload_current_scene()
 
 func consume_jump_buffer() -> void:
 	jump_buffer_timer = 0.0
@@ -566,6 +725,8 @@ func _sync_attack_properties() -> void:
 		ignis_state.min_required_bloodthirst = ignis_bloodthirst_cost
 		if "bloodthirst_cost" in ignis_state:
 			ignis_state.bloodthirst_cost = ignis_bloodthirst_cost
+		if "cooldown" in ignis_state:
+			ignis_state.cooldown = ignis_claw_cooldown
 		
 	var hellforge_state = find_child("HellforgeDive", true, false) as HellforgeDiveState
 	if hellforge_state:
@@ -582,6 +743,8 @@ func _sync_attack_properties() -> void:
 		hellforge_state.min_required_bloodthirst = hellforge_bloodthirst_cost
 		if "bloodthirst_cost" in hellforge_state:
 			hellforge_state.bloodthirst_cost = hellforge_bloodthirst_cost
+		if "cooldown" in hellforge_state:
+			hellforge_state.cooldown = hellforge_dive_cooldown
 		hellforge_state.shake_intensity = hellforge_shake_intensity
 		hellforge_state.shake_duration = hellforge_shake_duration
 

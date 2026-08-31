@@ -12,6 +12,8 @@ var current_music_key: String = ""
 func _ready() -> void:
 	_setup_music_player()
 	call_deferred("_check_auto_bgm")
+	if get_tree():
+		get_tree().tree_changed.connect(func(): call_deferred("_check_auto_bgm"))
 
 func _setup_music_player() -> void:
 	if music_player and is_instance_valid(music_player):
@@ -130,8 +132,21 @@ func _check_auto_bgm() -> void:
 		return
 	var scene_path = tree.current_scene.scene_file_path.to_lower()
 	var scene_name = tree.current_scene.name.to_lower()
-	if "level 1" in scene_path or "level 1" in scene_name or "level1" in scene_name:
+
+	if "start" in scene_path or "start" in scene_name or "menu" in scene_path or "levels" in scene_path or "levels" in scene_name:
 		play_music("level 1")
-	elif "level2" in scene_path or "level 2" in scene_name or "level2" in scene_name:
-		play_music("level 2")
+	elif "combat_demo" in scene_path or "level0" in scene_name or "level_0" in scene_path:
+		play_music("level 1")
+	elif "level 1" in scene_path or "level 1" in scene_name or "level1" in scene_name:
+		play_music("level 1")
+	elif "level2" in scene_path or "level 2" in scene_name or "level2" in scene_name or "level3" in scene_path or "level 3" in scene_name or "level3" in scene_name:
+		var stream2 = _get_sound_stream("level 2")
+		if stream2:
+			play_music("level 2")
+		else:
+			play_music("level 1")
+	else:
+		# Fallback BGM for any other level scene
+		play_music("level 1")
+
 

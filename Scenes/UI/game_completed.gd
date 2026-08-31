@@ -1,26 +1,19 @@
 extends Control
 
-@onready var Level_button: Button = _find_button(["LevelButton", "StartButton", "PlayButton"])
-@onready var settings_button: Button = _find_button(["SettingsButton", "OptionButton"])
-@onready var quit_button: Button = _find_button(["QuitButton", "ExitButton"])
+@onready var replay_button: Button = find_child("ReplayButton", true, false) as Button
+@onready var levels_button: Button = find_child("LevelsButton", true, false) as Button
+@onready var menu_button: Button = find_child("MenuButton", true, false) as Button
+@onready var quit_button: Button = find_child("QuitButton", true, false) as Button
 
 @onready var fade_overlay: ColorRect = find_child("FadeOverlay", true, false) as ColorRect
 @onready var blood_fill: ColorRect = find_child("BloodBarFill", true, false) as ColorRect
-@onready var health_fill: ColorRect = find_child("HealthBarFill", true, false) as ColorRect
 
-const SAVE_PATH := "user://savegame.dat"
-const GAME_SCENE := "res://levels.tscn"
-const Levl2_scene := "res://Level 2.tscn"
+const LEVEL_1_SCENE := "res://Scenes/Levels/Level 1/Level 1.tscn"
+const LEVEL_SELECT_SCENE := "res://levels.tscn"
+const MAIN_MENU_SCENE := "res://StartScreen.tscn"
 
-var _menu_buttons: Array[Button] = []
+var _buttons: Array[Button] = []
 var _is_transitioning := false
-
-func _find_button(candidate_names: Array[String]) -> Button:
-	for cname in candidate_names:
-		var btn = find_child(cname, true, false) as Button
-		if btn:
-			return btn
-	return null
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -30,18 +23,21 @@ func _ready() -> void:
 	if has_node("/root/SceneTransition"):
 		get_node("/root/SceneTransition").force_reset()
 
-	_menu_buttons.clear()
-	if Level_button:
-		_menu_buttons.append(Level_button)
-		Level_button.pressed.connect(_on_start_pressed)
-	if settings_button:
-		_menu_buttons.append(settings_button)
-		settings_button.pressed.connect(_on_settings_pressed)
+	_buttons.clear()
+	if replay_button:
+		_buttons.append(replay_button)
+		replay_button.pressed.connect(_on_replay_pressed)
+	if levels_button:
+		_buttons.append(levels_button)
+		levels_button.pressed.connect(_on_levels_pressed)
+	if menu_button:
+		_buttons.append(menu_button)
+		menu_button.pressed.connect(_on_menu_pressed)
 	if quit_button:
-		_menu_buttons.append(quit_button)
+		_buttons.append(quit_button)
 		quit_button.pressed.connect(_on_quit_pressed)
 
-	for b in _menu_buttons:
+	for b in _buttons:
 		if b:
 			b.pivot_offset = b.size / 2.0
 			b.mouse_entered.connect(_on_button_hover.bind(b))
@@ -56,8 +52,8 @@ func _ready() -> void:
 	_pulse_blood_bar()
 
 func _setup_initial_focus() -> void:
-	if Level_button and Level_button.is_inside_tree():
-		Level_button.grab_focus()
+	if replay_button and replay_button.is_inside_tree():
+		replay_button.grab_focus()
 
 func _animate_button(b: Button, target_scale: Vector2, duration: float, trans_type: Tween.TransitionType = Tween.TRANS_SINE) -> void:
 	if not (b and b.is_inside_tree() and is_inside_tree()):
@@ -81,6 +77,12 @@ func _on_button_down(b: Button) -> void:
 func _on_button_up(b: Button) -> void:
 	_animate_button(b, Vector2(1.05, 1.05), 0.08, Tween.TRANS_BACK)
 
+func _on_button_hover(b: Button) -> void:
+	_animate_button(b, Vector2(1.05, 1.05), 0.12, Tween.TRANS_BACK)
+
+func _on_button_unhover(b: Button) -> void:
+	_animate_button(b, Vector2.ONE, 0.12, Tween.TRANS_SINE)
+
 func _fade_in() -> void:
 	if fade_overlay:
 		fade_overlay.visible = true
@@ -93,20 +95,17 @@ func _pulse_blood_bar() -> void:
 	if blood_fill:
 		var tween := create_tween().set_loops()
 		tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
-		tween.tween_property(blood_fill, "modulate:a", 0.55, 0.9).set_trans(Tween.TRANS_SINE)
-		tween.tween_property(blood_fill, "modulate:a", 1.0, 0.9).set_trans(Tween.TRANS_SINE)
+		tween.tween_property(blood_fill, "modulate:a", 0.4, 1.0).set_trans(Tween.TRANS_SINE)
+		tween.tween_property(blood_fill, "modulate:a", 1.0, 1.0).set_trans(Tween.TRANS_SINE)
 
-func _on_button_hover(b: Button) -> void:
-	_animate_button(b, Vector2(1.05, 1.05), 0.12, Tween.TRANS_BACK)
+func _on_replay_pressed() -> void:
+	_transition_to(LEVEL_1_SCENE)
 
-func _on_button_unhover(b: Button) -> void:
-	_animate_button(b, Vector2.ONE, 0.12, Tween.TRANS_SINE)
+func _on_levels_pressed() -> void:
+	_transition_to(LEVEL_SELECT_SCENE)
 
-func _on_start_pressed() -> void:
-	_transition_to(GAME_SCENE)
-
-func _on_settings_pressed() -> void:
-	pass
+func _on_menu_pressed() -> void:
+	_transition_to(MAIN_MENU_SCENE)
 
 func _on_quit_pressed() -> void:
 	get_tree().quit()
@@ -121,3 +120,4 @@ func _transition_to(scene_path: String) -> void:
 		get_tree().change_scene_to_file(scene_path)
 	else:
 		_is_transitioning = false
+

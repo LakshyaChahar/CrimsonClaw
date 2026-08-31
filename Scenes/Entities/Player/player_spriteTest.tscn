@@ -428,15 +428,30 @@ radius = 80.0
 
 [node name="Player" type="CharacterBody2D" unique_id=1658174949 groups=["Player"]]
 z_index = 2
+scale = Vector2(1.0627154, 1.0096537)
 collision_layer = 2
 collision_mask = 9
 script = ExtResource("1_pxnb0")
+current_bloodthirst = 0.0
+dash_bloodthirst_gain = 0.0
+tyrant_duration = 15.0
+tyrant_damage_multiplier = 1.5
+tyrant_stun_multiplier = 1.2
+tyrant_min_required_bloodthirst = 80.0
+melee_bloodthirst_gain = 6.0
+ignis_bloodthirst_cost = 5.0
+ignis_min_required_bloodthirst = 40.0
+hellforge_bloodthirst_cost = 10.0
+hellforge_min_required_bloodthirst = 60.0
+dash_cooldown = 1.2
+dash_min_required_bloodthirst = 10.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=810423284]
 position = Vector2(-1, -34)
 shape = SubResource("CapsuleShape2D_1")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=2045404950]
+position = Vector2(1.8819714, -56.454998)
 position_smoothing_enabled = true
 position_smoothing_speed = 10.0
 drag_left_margin = 0.0

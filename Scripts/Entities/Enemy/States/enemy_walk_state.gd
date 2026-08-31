@@ -45,7 +45,7 @@ func physics_update(delta: float) -> void:
 	var is_in_attack_range = allows_basic_attack and enemy.attack_range > 0.0 and (dist <= enemy.attack_range or outer_dist <= 5.0)
 
 	if is_in_attack_range and enemy.attack_cooldown_timer <= 0.0:
-		if enemy.is_visible_in_screen():
+		if enemy.is_visible_in_screen() or (enemy is Sorceress):
 			state_machine.change_state("attack")
 			return
 		

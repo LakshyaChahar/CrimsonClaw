@@ -658,20 +658,34 @@ color = Color(0, 0, 0, 1)
 [node name="MenuButtons" type="VBoxContainer" parent="." unique_id=1328392427]
 layout_mode = 0
 offset_left = 91.0
-offset_top = 155.0
+offset_top = 100.0
 offset_right = 398.0
-offset_bottom = 308.0
+offset_bottom = 320.0
 size_flags_horizontal = 4
-theme_override_constants/separation = 12
+theme_override_constants/separation = 6
 
-[node name="Level1" type="Button" parent="MenuButtons" unique_id=175444989]
-custom_minimum_size = Vector2(307.985, 43.585)
+[node name="Level0" type="Button" parent="MenuButtons" unique_id=2000000001]
+custom_minimum_size = Vector2(307.985, 36)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0.95, 0.9, 0.85, 1)
 theme_override_colors/font_hover_color = Color(1, 0.95, 0.7, 1)
 theme_override_fonts/font = ExtResource("12_10gqg")
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_btn_hover")
+text = "Level 0 (Combat Demo)"
+
+[node name="Level1" type="Button" parent="MenuButtons" unique_id=175444989]
+custom_minimum_size = Vector2(307.985, 36)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.95, 0.9, 0.85, 1)
+theme_override_colors/font_hover_color = Color(1, 0.95, 0.7, 1)
+theme_override_fonts/font = ExtResource("12_10gqg")
+theme_override_font_sizes/font_size = 18
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
 theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
@@ -679,30 +693,43 @@ theme_override_styles/focus = SubResource("StyleBoxFlat_btn_hover")
 text = "Level 1"
 
 [node name="Level2" type="Button" parent="MenuButtons" unique_id=1345109093]
-custom_minimum_size = Vector2(307.985, 43.585)
+custom_minimum_size = Vector2(307.985, 36)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0.95, 0.9, 0.85, 1)
 theme_override_colors/font_hover_color = Color(1, 0.95, 0.7, 1)
 theme_override_fonts/font = ExtResource("12_10gqg")
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 18
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
 theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
 theme_override_styles/focus = SubResource("StyleBoxFlat_btn_hover")
-text = "Level 2
-"
+text = "Level 2"
+
+[node name="Level3" type="Button" parent="MenuButtons" unique_id=3000000001]
+custom_minimum_size = Vector2(307.985, 36)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.95, 0.9, 0.85, 1)
+theme_override_colors/font_hover_color = Color(1, 0.95, 0.7, 1)
+theme_override_fonts/font = ExtResource("12_10gqg")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_btn_hover")
+text = "Level 3"
 
 [node name="QuitButton" type="Button" parent="MenuButtons" unique_id=146190502]
-custom_minimum_size = Vector2(307.985, 43.585)
+custom_minimum_size = Vector2(307.985, 36)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0.95, 0.9, 0.85, 1)
 theme_override_colors/font_hover_color = Color(1, 0.95, 0.7, 1)
 theme_override_fonts/font = ExtResource("12_10gqg")
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 18
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
 theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
 theme_override_styles/focus = SubResource("StyleBoxFlat_btn_hover")
-text = "QUIT"
+text = "Return to Main Menu"

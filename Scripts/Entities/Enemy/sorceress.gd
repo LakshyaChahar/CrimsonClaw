@@ -40,7 +40,7 @@ func _init() -> void:
 	max_health = 60.0
 	current_health = 60.0
 	detection_range = 450.0
-	attack_range = 350.0
+	attack_range = 260.0
 	attack_cooldown = bat_spawn_frequency
 
 func _ready() -> void:
@@ -81,11 +81,6 @@ func summon_bats() -> void:
 		if not bat_instance:
 			continue
 			
-		# Fan out spawn locations vertically and slightly forward in front of her staff/hands
-		var vert_offset = (float(i) - float(count - 1) / 2.0) * 14.0
-		var horiz_offset = facing_direction * (abs(i - count / 2) * 6.0)
-		bat_instance.global_position = spawn_origin + Vector2(horiz_offset, vert_offset)
-		
 		# Configure exported bat parameters
 		if "facing_direction" in bat_instance:
 			bat_instance.facing_direction = facing_direction
@@ -96,7 +91,13 @@ func summon_bats() -> void:
 		if "target" in bat_instance:
 			bat_instance.target = target
 			
+		# Add to tree BEFORE setting global_position to avoid transform matrix calculation glitches
 		main_scene.add_child(bat_instance)
+		
+		# Fan out spawn locations vertically and slightly forward in front of her staff/hands
+		var vert_offset = (float(i) - float(count - 1) / 2.0) * 14.0
+		var horiz_offset = facing_direction * (abs(i - count / 2) * 6.0)
+		bat_instance.global_position = spawn_origin + Vector2(horiz_offset, vert_offset)
 
 ## Instantiates and fires linear magic projectiles (Moving.png -> Explode.png) toward player chest
 func fire_projectiles() -> void:
@@ -120,12 +121,16 @@ func fire_projectiles() -> void:
 		if not proj_instance:
 			continue
 			
-		var vert_offset = (float(i) - float(count - 1) / 2.0) * 16.0
-		proj_instance.global_position = spawn_origin + Vector2(0.0, vert_offset)
 		if "damage" in proj_instance:
 			proj_instance.damage = damage_per_projectile
 		if "speed" in proj_instance:
 			proj_instance.speed = projectile_speed
+		
+		# Add to tree BEFORE setting global_position
+		main_scene.add_child(proj_instance)
+		
+		var vert_offset = (float(i) - float(count - 1) / 2.0) * 16.0
+		proj_instance.global_position = spawn_origin + Vector2(0.0, vert_offset)
 		
 		# Direct towards player chest or facing direction
 		var target_pos = global_position + Vector2(facing_direction * 200.0, -16.0)
@@ -135,5 +140,3 @@ func fire_projectiles() -> void:
 		var dir = (target_pos - proj_instance.global_position).normalized()
 		if "direction" in proj_instance:
 			proj_instance.direction = dir
-		
-		main_scene.add_child(proj_instance)

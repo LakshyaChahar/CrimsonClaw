@@ -5,6 +5,7 @@
 [ext_resource type="AudioStream" uid="uid://c67q4yxa2d11h" path="res://Assets/SFX/Sound effects/hellforge_dive.wav" id="3_hfquw"]
 [ext_resource type="AudioStream" uid="uid://ql1bvn1nw3fs" path="res://Assets/SFX/Sound effects/sword-slash.wav" id="4_hfbri"]
 [ext_resource type="AudioStream" uid="uid://babjncbh4c2mf" path="res://Assets/SFX/Sound effects/Era of Vampires/Era of Vampires/Souls_Below_Loop.wav" id="7_04h0y"]
+[ext_resource type="AudioStream" uid="uid://diueakc4v2is0" path="res://Assets/SFX/ghoul_ambush.wav" id="7_tlj15"]
 [ext_resource type="AudioStream" uid="uid://b0n1eacr5lh8t" path="res://Assets/SFX/Sound effects/ignis claw.wav" id="9_ignis"]
 
 [sub_resource type="AudioStreamWAV" id="AudioStreamWAV_8jnqn"]
@@ -16,9 +17,10 @@ stereo = true
 script = ExtResource("1_sfx")
 sounds = Dictionary[String, AudioStream]({
 "dash": ExtResource("2_la2dx"),
+"ghoul_ambush": ExtResource("7_tlj15"),
 "hellforgedive": ExtResource("3_hfquw"),
 "ignis claw": ExtResource("9_ignis"),
 "level 1": ExtResource("7_04h0y"),
-"level 2 ": SubResource("AudioStreamWAV_8jnqn"),
+"level 2": SubResource("AudioStreamWAV_8jnqn"),
 "slash_attack": ExtResource("4_hfbri")
 })

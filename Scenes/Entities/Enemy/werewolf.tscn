@@ -206,6 +206,8 @@ color = Color(0.5019608, 0, 0, 0.45490196)
 collision_layer = 8
 collision_mask = 3
 script = ExtResource("1_lijvd")
+max_health = 60.0
+current_health = 60.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1308292761]
 position = Vector2(1, -5)

@@ -23,6 +23,9 @@ class_name IgnisClawState
 ## Minimum required bloodthirst to perform Ignis Claw skill.
 @export var min_required_bloodthirst: float = 6.0
 
+## Cooldown in seconds before Ignis Claw can be used again.
+@export var cooldown: float = 3.0
+
 @export_group("State & Hitbox Settings")
 ## The exact name of the Hitbox Node in the Scene Tree.
 @export var hitbox_node_name: String = "IgnisClawHitbox"
@@ -41,13 +44,22 @@ func enter() -> void:
 	if "wants_ignis_claw" in character:
 		character.wants_ignis_claw = false
 
+	# Cooldown check
+	if "ignis_claw_cooldown_timer" in character and character.ignis_claw_cooldown_timer > 0.0:
+		_fallback_to_basic_attack()
+		return
+
 	# Deduct bloodthirst cost
 	var cost_to_check = bloodthirst_cost if bloodthirst_cost > 0.0 else min_required_bloodthirst
 	if cost_to_check > 0.0 and character.has_method("consume_bloodthirst"):
 		if not character.consume_bloodthirst(cost_to_check):
 			push_warning("IgnisClawState: Insufficient bloodthirst! Required: " + str(cost_to_check) + ", Current: " + str(character.current_bloodthirst if "current_bloodthirst" in character else 0.0))
-			state_machine.change_state("idle" if character.is_grounded() else "fall")
+			_fallback_to_basic_attack()
 			return
+
+	# Apply cooldown timer on character
+	if "ignis_claw_cooldown_timer" in character:
+		character.ignis_claw_cooldown_timer = cooldown
 				
 	anim_finished = false
 	timer = attack_duration
@@ -147,3 +159,12 @@ func _on_frame_changed() -> void:
 
 func _on_animation_finished() -> void:
 	anim_finished = true
+
+func _fallback_to_basic_attack() -> void:
+	if state_machine:
+		if state_machine.states.has("skill"):
+			state_machine.change_state("skill")
+		elif state_machine.states.has("attack"):
+			state_machine.change_state("attack")
+		else:
+			state_machine.change_state("idle" if character.is_grounded() else "fall")

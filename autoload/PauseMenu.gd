@@ -25,10 +25,43 @@ func _ready() -> void:
 	dim_overlay.color.a = 0.0
 	dim_overlay.mouse_filter = Control.MOUSE_FILTER_STOP
 
+	_ensure_controller_input_mappings()
+
 	resume_button.pressed.connect(close)
 	settings_button.pressed.connect(_on_settings_pressed)
 	quit_to_menu_button.pressed.connect(_on_quit_to_menu)
 	quit_desktop_button.pressed.connect(_on_quit_desktop)
+
+func _ensure_controller_input_mappings() -> void:
+	# Ensure Controller A button (JOY_BUTTON_A = 0) is bound to ui_accept for menu selection
+	if InputMap.has_action("ui_accept"):
+		var has_a := false
+		for ev in InputMap.action_get_events("ui_accept"):
+			if ev is InputEventJoypadButton and ev.button_index == JOY_BUTTON_A:
+				has_a = true
+				break
+		if not has_a:
+			var joy_a := InputEventJoypadButton.new()
+			joy_a.button_index = JOY_BUTTON_A
+			InputMap.action_add_event("ui_accept", joy_a)
+
+	# Ensure Controller Start (JOY_BUTTON_START = 6) and Back (JOY_BUTTON_BACK = 4) trigger pause/ui_cancel.
+	# Remove JOY_BUTTON_B from ui_cancel so B button is reserved exclusively for Dash!
+	if InputMap.has_action("ui_cancel"):
+		for ev in InputMap.action_get_events("ui_cancel"):
+			if ev is InputEventJoypadButton and ev.button_index == JOY_BUTTON_B:
+				InputMap.action_erase_event("ui_cancel", ev)
+
+		var buttons_to_add := [JOY_BUTTON_START, JOY_BUTTON_BACK]
+		var existing_buttons: Array = []
+		for ev in InputMap.action_get_events("ui_cancel"):
+			if ev is InputEventJoypadButton:
+				existing_buttons.append(ev.button_index)
+		for btn in buttons_to_add:
+			if not existing_buttons.has(btn):
+				var joy_btn := InputEventJoypadButton.new()
+				joy_btn.button_index = btn
+				InputMap.action_add_event("ui_cancel", joy_btn)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not event.is_action_pressed("ui_cancel"):
@@ -40,9 +73,22 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 
 	var scene := get_tree().current_scene
-	if scene and scene.is_in_group("pausable"):
+	if _is_scene_pausable(scene):
 		open()
 		get_viewport().set_input_as_handled()
+
+func _is_scene_pausable(scene: Node) -> bool:
+	if not scene:
+		return false
+	if scene.is_in_group("pausable"):
+		return true
+	var scene_path := scene.scene_file_path.to_lower()
+	var scene_name := scene.name.to_lower()
+	if "startscreen" in scene_name or "startscreen" in scene_path or "levels" in scene_name or "levels" in scene_path:
+		return false
+	if "level" in scene_name or "level" in scene_path or "demo" in scene_name or "demo" in scene_path or "combat" in scene_path:
+		return true
+	return false
 
 func open() -> void:
 	if _is_open:
@@ -86,7 +132,9 @@ func _on_quit_to_menu() -> void:
 	visible = false
 	_is_open = false
 	if has_node("/root/SceneTransition"):
-		get_node("/root/SceneTransition").change_scene_to_file(MAIN_MENU_SCENE)
+		var st = get_node("/root/SceneTransition")
+		st.force_reset()
+		st.change_scene_to_file(MAIN_MENU_SCENE)
 	else:
 		get_tree().change_scene_to_file(MAIN_MENU_SCENE)
 

@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://7dkxkaqfmmy5"]
+
+[node name="Level 0" type="Node2D" unique_id=163493174 groups=["pausable"]]
+
+[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1858780468]
+
+[node name="TileMapLayer2" type="TileMapLayer" parent="." unique_id=1424596981]

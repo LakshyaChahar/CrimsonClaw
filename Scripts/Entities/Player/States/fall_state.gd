@@ -42,8 +42,13 @@ func physics_update(delta: float) -> void:
 		return
 		
 	if "wants_hellforge_dive" in character and character.wants_hellforge_dive:
-		state_machine.change_state("hellforge_dive")
-		return
+		if character.has_method("can_hellforge_dive") and not character.can_hellforge_dive():
+			character.wants_hellforge_dive = false
+			if "hellforge_dive_buffer_timer" in character:
+				character.hellforge_dive_buffer_timer = 0.0
+		else:
+			state_machine.change_state("hellforge_dive")
+			return
 
 	if "wants_ignis_claw" in character and character.wants_ignis_claw:
 		state_machine.change_state("ignis_claw")

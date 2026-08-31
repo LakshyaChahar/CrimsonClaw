@@ -259,40 +259,4 @@ func respawn_enemy() -> void:
 	collision_layer = _original_collision_layer
 	collision_mask = _original_collision_mask
 
-	if is_stealth:
-		is_revealed = false
-		set_stealth_mode(true)
-	else:
-		var hurtbox = find_child("Hurtbox")
-		if hurtbox:
-			hurtbox.set_deferred("monitoring", true)
-			hurtbox.set_deferred("monitorable", true)
-			for child in hurtbox.get_children():
-				if child is CollisionShape2D:
-					child.set_deferred("disabled", false)
-
-		var hitbox = find_child("Hitbox")
-		if hitbox:
-			hitbox.set_deferred("monitoring", true)
-			hitbox.set_deferred("monitorable", true)
-			for child in hitbox.get_children():
-				if child is CollisionShape2D:
-					child.set_deferred("disabled", false)
-
-	extinguish_fire(true)
-
-	if animation_manager and animation_manager.sprite:
-		animation_manager.sprite.modulate = Color.WHITE
-		if animation_manager.sprite.material:
-			animation_manager.sprite.material.set_shader_parameter("dissolve_amount", 0.0)
-
-	var bar = find_child("FloatingHealthBar", false, false)
-	if bar and bar.has_method("update_health"):
-		bar.update_health(current_health, max_health)
-
-	if state_machine:
-		if state_machine.states.has("idle"):
-			state_machine.change_state("idle")
-		elif state_machine.states.has("walk"):
-			state_machine.change_state("walk")
 
