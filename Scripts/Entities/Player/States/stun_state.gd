@@ -14,6 +14,11 @@ func enter() -> void:
 			character.animation_manager.play_anim("stun", 80, true)
 		elif character.has_method("_play_hurt_reaction"):
 			character._play_hurt_reaction()
+	
+	if character is Player:
+		var sfx_mgr = character.get_node_or_null("/root/SfxManager")
+		if sfx_mgr and sfx_mgr.has_method("play_2d"):
+			sfx_mgr.play_2d("player_hurt", character.global_position, 0.0, 1.0, 0.1)
 
 func physics_update(delta: float) -> void:
 	# Apply gravity while stunned in case we are in mid-air
@@ -37,4 +42,3 @@ func physics_update(delta: float) -> void:
 func exit() -> void:
 	if character and character.animation_manager:
 		character.animation_manager.current_priority = 0
-

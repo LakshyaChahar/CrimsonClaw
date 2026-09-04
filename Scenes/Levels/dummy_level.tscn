@@ -10,7 +10,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_floor"]
 size = Vector2(2001, 40)
 
-[node name="DummyLevel" type="Node2D" unique_id=1427923591]
+[node name="DummyLevel" type="Node2D" unique_id=1427923591 groups=["pausable"]]
 
 [node name="Floor" type="StaticBody2D" parent="." unique_id=39950600]
 position = Vector2(0, 100)

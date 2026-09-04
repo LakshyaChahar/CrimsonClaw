@@ -20,6 +20,12 @@ var original_collision_mask: int = 0
 func enter() -> void:
 	timer = 0.0
 	
+	# Play ghoul ambush sound effect
+	if character:
+		var sfx = get_node_or_null("/root/SfxManager")
+		if sfx and sfx.has_method("play_2d"):
+			sfx.play_2d("ghoul_ambush", character.global_position)
+
 	# Determine direction to player and face them
 	var enemy = character as Enemy
 	var current_lunge_speed = 350.0

@@ -51,4 +51,7 @@ func physics_update(delta: float) -> void:
 	
 	despawn_timer -= delta
 	if despawn_timer <= 0.0:
-		character.queue_free()
+		if character and character.has_method("despawn_for_respawn"):
+			character.despawn_for_respawn()
+		elif character:
+			character.queue_free()

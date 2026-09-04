@@ -27,6 +27,8 @@ var target: Node2D = null
 var attack_cooldown_timer: float = 0.0
 var is_revealed: bool = true
 var _original_collision_layer: int = 2
+var _original_collision_mask: int = 1
+var initial_spawn_position: Vector2 = Vector2.ZERO
 var is_burning: bool = false
 var current_fire_dps: float = 0.0
 var burn_timer: float = 0.0
@@ -41,7 +43,10 @@ func _init() -> void:
 
 func _ready() -> void:
 	super._ready()
+	initial_spawn_position = global_position
 	_original_collision_layer = collision_layer
+	_original_collision_mask = collision_mask
+	add_to_group("Enemies")
 	_find_target()
 	
 	# Automatically apply exported combat stats to the Hitbox component
@@ -235,3 +240,23 @@ func get_outer_distance_to_target() -> float:
 
 	var center_dist_x = abs(my_center_x - target_center_x)
 	return max(0.0, center_dist_x - (my_radius + target_radius))
+
+func despawn_for_respawn() -> void:
+	visible = false
+	process_mode = Node.PROCESS_MODE_DISABLED
+	is_dead = true
+	collision_layer = 0
+	collision_mask = 0
+
+func respawn_enemy() -> void:
+	is_dead = false
+	current_health = max_health
+	global_position = initial_spawn_position
+	velocity = Vector2.ZERO
+	visible = true
+	process_mode = Node.PROCESS_MODE_INHERIT
+
+	collision_layer = _original_collision_layer
+	collision_mask = _original_collision_mask
+
+

@@ -1,0 +1,140 @@
+[gd_scene load_steps=12 format=3 uid="uid://b6b7iqqhoaavj"]
+
+[ext_resource type="Script" path="res://Scripts/UI/move_unlock_popup.gd" id="1_popup_script"]
+[ext_resource type="Script" path="res://Scripts/UI/typewriter_label.gd" id="2_typewriter_script"]
+[ext_resource type="FontFile" uid="uid://cbl1dredhwvmn" path="res://Assets/alagard.ttf" id="3_font"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_crimson_card"]
+bg_color = Color(0.08, 0.04, 0.06, 0.94)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.85, 0.15, 0.2, 0.9)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0.8, 0.05, 0.1, 0.3)
+shadow_size = 12
+
+[sub_resource type="LabelSettings" id="LabelSettings_header"]
+font = ExtResource("3_font")
+font_size = 16
+font_color = Color(0.95, 0.25, 0.3, 1)
+outline_size = 2
+outline_color = Color(0.3, 0, 0, 0.8)
+
+[sub_resource type="LabelSettings" id="LabelSettings_title"]
+font = ExtResource("3_font")
+font_size = 22
+font_color = Color(1, 0.92, 0.92, 1)
+outline_size = 3
+outline_color = Color(0.2, 0, 0.05, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_prompt"]
+font = ExtResource("3_font")
+font_size = 15
+font_color = Color(1, 0.75, 0.3, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_bt"]
+font = ExtResource("3_font")
+font_size = 14
+font_color = Color(0.95, 0.35, 0.4, 1)
+outline_size = 1
+outline_color = Color(0.2, 0, 0, 0.8)
+
+[sub_resource type="LabelSettings" id="LabelSettings_continue"]
+font = ExtResource("3_font")
+font_size = 13
+font_color = Color(0.75, 0.75, 0.8, 1)
+
+[node name="MoveUnlockPopup" type="CanvasLayer"]
+process_mode = 3
+layer = 100
+script = ExtResource("1_popup_script")
+
+[node name="Backdrop" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.75)
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="CenterContainer"]
+custom_minimum_size = Vector2(460, 270)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_crimson_card")
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="HeaderLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "NEW MOVE UNLOCKED!"
+label_settings = SubResource("LabelSettings_header")
+horizontal_alignment = 1
+
+[node name="TitleLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "HELLFORGE DIVE"
+label_settings = SubResource("LabelSettings_title")
+horizontal_alignment = 1
+
+[node name="SpriteCenter" type="CenterContainer" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="Control" type="Control" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SpriteCenter"]
+layout_mode = 2
+
+[node name="SpritePreview" type="AnimatedSprite2D" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/SpriteCenter/Control"]
+scale = Vector2(2, 2)
+
+[node name="InputPromptLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Press RB / [R] to perform Hellforge Dive"
+label_settings = SubResource("LabelSettings_prompt")
+horizontal_alignment = 1
+
+[node name="MinBloodthirstLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "REQ. BLOODTHIRST: 6.0"
+label_settings = SubResource("LabelSettings_bt")
+horizontal_alignment = 1
+
+[node name="DescriptionLabel" type="RichTextLabel" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(420, 70)
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("3_font")
+theme_override_font_sizes/normal_font_size = 14
+bbcode_enabled = true
+text = "Slam down into the earth from mid-air, creating a devastating crimson shockwave that burns surrounding foes."
+fit_content = true
+scroll_active = false
+autowrap_mode = 3
+script = ExtResource("2_typewriter_script")
+chars_per_second = 35.0
+
+[node name="ContinuePrompt" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "[ Press ANY BUTTON to Continue ]"
+label_settings = SubResource("LabelSettings_continue")
+horizontal_alignment = 1

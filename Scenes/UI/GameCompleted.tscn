@@ -1,0 +1,281 @@
+[gd_scene format=3 uid="uid://c851k3d4qw820"]
+
+[ext_resource type="Script" uid="uid://d3y0q8x6a7b1c" path="res://Scenes/UI/game_completed.gd" id="1_gc_script"]
+[ext_resource type="Shader" uid="uid://c57h0lpa7psg3" path="res://Shaders/fog_background.gdshader" id="2_fog"]
+[ext_resource type="Shader" uid="uid://dw2wmp305334o" path="res://Shaders/vignette.gdshader" id="3_vignette"]
+[ext_resource type="FontFile" uid="uid://cbl1dredhwvmn" path="res://Assets/alagard.ttf" id="4_font"]
+[ext_resource type="Script" uid="uid://cohjj71uw86te" path="res://ui/MenuButtonFX.gd" id="5_sfx"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fog"]
+shader = ExtResource("2_fog")
+shader_parameter/color_top = Color(0.18, 0.04, 0.06, 1)
+shader_parameter/color_bottom = Color(0.04, 0.01, 0.02, 1)
+shader_parameter/fog_color = Color(0.35, 0.05, 0.08, 0.45)
+shader_parameter/fog_speed = 0.02
+shader_parameter/fog_scale = 4.5
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vignette"]
+shader = ExtResource("3_vignette")
+shader_parameter/vignette_color = Color(0, 0, 0, 1)
+shader_parameter/intensity = 1.6
+shader_parameter/radius = 0.8
+
+[sub_resource type="Curve" id="Curve_embers"]
+_data = [Vector2(0, 0.01), 0.0, 0.0, 0, 0, Vector2(0.2, 0.8), 0.0, 0.0, 0, 0, Vector2(0.5, 0.1), 0.0, 0.0, 0, 0, Vector2(0.8, 1), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_blood_bg"]
+bg_color = Color(0.05, 0.01, 0.02, 0.85)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.65, 0.1, 0.15, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+content_margin_left = 32.0
+content_margin_top = 28.0
+content_margin_right = 32.0
+content_margin_bottom = 28.0
+bg_color = Color(0.08, 0.02, 0.03, 0.88)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.55, 0.1, 0.12, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0, 0, 0, 0.7)
+shadow_size = 14
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_normal"]
+bg_color = Color(0.12, 0.03, 0.05, 0.85)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.55, 0.09, 0.11, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+shadow_color = Color(0, 0, 0, 0.5)
+shadow_size = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_pressed"]
+bg_color = Color(0.48, 0.08, 0.1, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.95, 0.8, 0.3, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_hover"]
+bg_color = Color(0.35, 0.06, 0.08, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.88, 0.7, 0.25, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+shadow_color = Color(0.45, 0.06, 0.08, 0.6)
+shadow_size = 6
+
+[node name="GameCompleted" type="Control" unique_id=987123456]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_gc_script")
+
+[node name="Background" type="ColorRect" parent="." unique_id=1122334455]
+material = SubResource("ShaderMaterial_fog")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.08, 0.02, 0.03, 1)
+
+[node name="Embers" type="CPUParticles2D" parent="." unique_id=5566778899]
+position = Vector2(320, 360)
+amount = 45
+lifetime = 5.5
+preprocess = 3.0
+speed_scale = 0.7
+randomness = 1.0
+emission_shape = 3
+emission_rect_extents = Vector2(320, 10)
+direction = Vector2(0, -1)
+spread = 25.0
+gravity = Vector2(0, -25)
+initial_velocity_min = 20.0
+initial_velocity_max = 50.0
+scale_amount_min = 2.0
+scale_amount_max = 3.0
+scale_amount_curve = SubResource("Curve_embers")
+color = Color(0.9, 0.15, 0.15, 1)
+
+[node name="Vignette" type="ColorRect" parent="." unique_id=9988776655]
+material = SubResource("ShaderMaterial_vignette")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="MainPanel" type="PanelContainer" parent="." unique_id=123456789]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -230.0
+offset_top = -160.0
+offset_right = 230.0
+offset_bottom = 160.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="VBox" type="VBoxContainer" parent="MainPanel" unique_id=234567890]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="VictoryTitle" type="Label" parent="MainPanel/VBox" unique_id=345678901]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.15, 0.18, 1)
+theme_override_colors/font_outline_color = Color(0.02, 0.01, 0.01, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 36
+text = "VICTORY ATTAINED"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="MainPanel/VBox" unique_id=456789012]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.75, 0.65, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 14
+text = "You have conquered all trials of Crimson Claw!"
+horizontal_alignment = 1
+
+[node name="BloodAccentBar" type="Panel" parent="MainPanel/VBox" unique_id=567890123]
+custom_minimum_size = Vector2(0, 14)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_blood_bg")
+
+[node name="BloodBarFill" type="ColorRect" parent="MainPanel/VBox/BloodAccentBar" unique_id=678901234]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 3.0
+offset_top = 2.0
+offset_right = -3.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.75, 0.1, 0.15, 1)
+
+[node name="Spacer" type="Control" parent="MainPanel/VBox" unique_id=789012345]
+custom_minimum_size = Vector2(0, 8)
+layout_mode = 2
+
+[node name="ButtonsVBox" type="VBoxContainer" parent="MainPanel/VBox" unique_id=890123456]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="ReplayButton" type="Button" parent="MainPanel/VBox/ButtonsVBox" unique_id=901234567]
+custom_minimum_size = Vector2(280, 42)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.95, 0.9, 0.85, 1)
+theme_override_colors/font_hover_color = Color(1, 0.95, 0.7, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_btn_hover")
+text = "PLAY AGAIN"
+script = ExtResource("5_sfx")
+
+[node name="LevelsButton" type="Button" parent="MainPanel/VBox/ButtonsVBox" unique_id=012345678]
+custom_minimum_size = Vector2(280, 42)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.95, 0.9, 0.85, 1)
+theme_override_colors/font_hover_color = Color(1, 0.95, 0.7, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_btn_hover")
+text = "LEVEL SELECT"
+script = ExtResource("5_sfx")
+
+[node name="MenuButton" type="Button" parent="MainPanel/VBox/ButtonsVBox" unique_id=123456780]
+custom_minimum_size = Vector2(280, 42)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.95, 0.9, 0.85, 1)
+theme_override_colors/font_hover_color = Color(1, 0.95, 0.7, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_btn_hover")
+text = "MAIN MENU"
+script = ExtResource("5_sfx")
+
+[node name="QuitButton" type="Button" parent="MainPanel/VBox/ButtonsVBox" unique_id=234567891]
+custom_minimum_size = Vector2(280, 42)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.95, 0.9, 0.85, 1)
+theme_override_colors/font_hover_color = Color(1, 0.95, 0.7, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_btn_hover")
+text = "QUIT"
+script = ExtResource("5_sfx")
+
+[node name="FadeOverlay" type="ColorRect" parent="." unique_id=345678902]
+visible = false
+material = SubResource("ShaderMaterial_vignette")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)

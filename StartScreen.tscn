@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://dc5n8lb2eqgb5" path="res://StartScreen.gd" id="1"]
 [ext_resource type="Shader" uid="uid://c57h0lpa7psg3" path="res://Shaders/fog_background.gdshader" id="2_t2adt"]
 [ext_resource type="Texture2D" uid="uid://drh2egsmjlaay" path="res://Assets/Spritesheets/2D_SL_Knight_v1.0/Attacks.png" id="2_ykci1"]
-[ext_resource type="Shader" uid="uid://dw2wmp305334o" path="res://shaders/vignette.gdshader" id="3"]
 [ext_resource type="Texture2D" uid="uid://j5851x0wf0qi" path="res://Assets/Spritesheets/2D_SL_Knight_v1.0/Pray.png" id="3_343mv"]
 [ext_resource type="Texture2D" uid="uid://biko0weq3wrjc" path="res://Assets/Spritesheets/2D_SL_Knight_v1.0/Jump.png" id="4_kwitn"]
 [ext_resource type="Shader" uid="uid://dw2wmp305334o" path="res://Shaders/vignette.gdshader" id="4_vno1p"]
@@ -414,7 +413,7 @@ _data = [Vector2(0, 0.018194318), 0.0, 0.0, 0, 0, Vector2(0.19067797, 0.6876073)
 point_count = 4
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vignette"]
-shader = ExtResource("3")
+shader = ExtResource("4_vno1p")
 shader_parameter/vignette_color = Color(0, 0, 0, 1)
 shader_parameter/intensity = 1.5
 shader_parameter/radius = 0.85
@@ -665,7 +664,7 @@ offset_bottom = 308.0
 size_flags_horizontal = 4
 theme_override_constants/separation = 12
 
-[node name="StartButton" type="Button" parent="MenuButtons" unique_id=175444989]
+[node name="LevelButton" type="Button" parent="MenuButtons" unique_id=175444989]
 custom_minimum_size = Vector2(307.985, 43.585)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -677,7 +676,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
 theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
 theme_override_styles/focus = SubResource("StyleBoxFlat_btn_hover")
-text = "START"
+text = "LEVELS"
 
 [node name="SettingsButton" type="Button" parent="MenuButtons" unique_id=1345109093]
 custom_minimum_size = Vector2(307.985, 43.585)

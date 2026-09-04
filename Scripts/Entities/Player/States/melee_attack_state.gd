@@ -43,6 +43,10 @@ func enter() -> void:
 	anim_finished = false
 	timer = attack_duration
 	
+	var sfx_mgr = character.get_node_or_null("/root/SfxManager")
+	if sfx_mgr and sfx_mgr.has_method("play_2d"):
+		sfx_mgr.play_2d("slash_attack", character.global_position, 0.0, 1.0, 0.1)
+	
 	# Find the sword hitbox collision shape dynamically
 	var hitbox = character.find_child(hitbox_node_name) as Hitbox
 	if hitbox:
